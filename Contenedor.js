@@ -20,18 +20,18 @@ class Contenedor {
   async save(item) {
     try {
       //fs.appendFile(`./${this.fileName}`,`"${item.id}":`+JSON.stringify(item, null, 2)+`,\n`, (err)=>{
-      const fileRead = await read(`items.txt`);
+      const fileRead = await read(`productos.txt`);
 
       if (fileRead.length) {
         const items = JSON.parse(fileRead);
         item.id = items.length + 1;
         items.push(item);
         this.products = items;
-        await write(`items.txt`, this.products);
+        await write(`productos.txt`, this.products);
       } else {
         item.id = 1;
         this.products.push(item);
-        await write(`items.txt`, this.products);
+        await write(`productos.txt`, this.products);
       }
     } catch (err) {
       throw err;
@@ -39,7 +39,7 @@ class Contenedor {
   }
 
   async getById(number) {
-    const fileRead = await read(`items.txt`);
+    const fileRead = await read(`productos.txt`);
 
     const items = JSON.parse(fileRead);
 
@@ -51,14 +51,14 @@ class Contenedor {
   }
 
   async getAll() {
-    const fileRead = await read(`items.txt`);
+    const fileRead = await read(`productos.txt`);
 
     const allItems = JSON.parse(fileRead);
-    console.log(`Todos los items:,`, allItems);
+    return allItems;
   }
 
   async deleteById(number) {
-    const fileRead = await read(`items.txt`);
+    const fileRead = await read(`productos.txt`);
 
     let items = JSON.parse(fileRead);
 
@@ -71,18 +71,18 @@ class Contenedor {
       }
     });
 
-    await write(`items.txt`, items)
+    await write(`productos.txt`, items)
   };
 
   async deleteAll() {
-      const fileRead = await read(`items.txt`);
+      const fileRead = await read(`productos.txt`);
       //Reviso si existe o almenos hay contenido en el archivo.
       if (fileRead.length){
         //parseo a objeto y reviso que tenga o no objetos en el array
         let items = JSON.parse(fileRead);
         if (items.length){
           items.length = 0;
-          await write(`items.txt`, items)
+          await write(`productos.txt`, items)
           console.log(`Se eliminaron todos los items.`);
           return
         };

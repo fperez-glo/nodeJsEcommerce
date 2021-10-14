@@ -10,5 +10,11 @@
     "price": 78,
     "picture": "foto de harina",
     "id": 2
+  },
+  {
+    "title": "Arroz",
+    "price": 140,
+    "picture": "foto de arroz",
+    "id": 3
   }
 ]
