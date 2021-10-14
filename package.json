@@ -1,0 +1,28 @@
+{
+  "name": "nodeJsEcommerce",
+  "version": "1.0.0",
+  "description": "Proyecto de backend Ecommerce hecho con Express de nodeJs",
+  "main": "main.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "moment": "^2.29.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.13"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fperez-glo/nodeJsEcommerce.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fperez-glo/nodeJsEcommerce/issues"
+  },
+  "homepage": "https://github.com/fperez-glo/nodeJsEcommerce#readme"
+}

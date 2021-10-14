@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Huevos",
+    "price": 112,
+    "picture": "foto de maple",
+    "id": 1
+  },
+  {
+    "title": "Harina",
+    "price": 78,
+    "picture": "foto de harina",
+    "id": 2
+  }
+]
