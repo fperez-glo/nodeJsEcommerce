@@ -17,22 +17,22 @@ app.get(`/api`, (req, res) => {
     res.send({message: `Entraste a la ruta /api`})
 })
 
-app.get(`/productos`, (req, res) => {
+app.get(`/productos`, async(req, res) => {
     //send permite enviar string / objetos o JSON tambien.
-    (async() =>{
-        const productos =  await itemContainer.getAll()
-        res.send(productos)
-    })();
+    
+    const productos =  await itemContainer.getAll();
+    res.send(productos);
+    
     // res.send(itemContainer.getAll());
 })
 
-app.get(`/productoRandom`, (req, res) => {
+app.get(`/productoRandom`, async(req, res) => {
     //send permite enviar string / objetos o JSON tambien.
-    (async() =>{
-        const productos =  await itemContainer.getAll()
-        const randomProduct = productos[Math.floor(Math.random()*productos.length)];
-        res.send(randomProduct);
-    })();
+   
+    const productos =  await itemContainer.getAll()
+    const randomProduct = productos[Math.floor(Math.random()*productos.length)];
+    res.send(randomProduct);
+
     // res.send(itemContainer.getAll());
 })
 
