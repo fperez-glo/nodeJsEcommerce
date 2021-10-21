@@ -1,41 +1,19 @@
 const express = require(`express`);
 
+
 const app = express();
 const port = process.env.PORT || 8080;
+const prodRoutes = require('./router/routes/products/products');
+const cartRoutes = require('./router/routes/cart/cart');
+const authRoutes = require('./router/routes/auth/auth');
 
-const Contenedor = require("./Contenedor")
-const itemContainer = new Contenedor();
+//Esta semilla te permite recibir el body que se envia como JSON desde POSTMAN por ej.
+app.use(express.json());
 
-//RUTAS
-app.get(`/`, (req, res) => {
-    //send permite enviar string / objetos o JSON tambien.
-    res.json({json: `Envio un JSON`})
-})
-
-app.get(`/api`, (req, res) => {
-    //send permite enviar string / objetos o JSON tambien.
-    res.send({message: `Entraste a la ruta /api`})
-})
-
-app.get(`/productos`, async(req, res) => {
-    //send permite enviar string / objetos o JSON tambien.
-    
-    const productos =  await itemContainer.getAll();
-    res.send(productos);
-    
-    // res.send(itemContainer.getAll());
-})
-
-app.get(`/productoRandom`, async(req, res) => {
-    //send permite enviar string / objetos o JSON tambien.
-   
-    const productos =  await itemContainer.getAll()
-    const randomProduct = productos[Math.floor(Math.random()*productos.length)];
-    res.send(randomProduct);
-
-    // res.send(itemContainer.getAll());
-})
-
+//Rutas definidas
+app.use('/products', prodRoutes);
+app.use('/cart', cartRoutes);
+app.use('/auth', authRoutes);
 
 app.listen(port, ()=>{
     console.log(`Server run on port ${port}.`)
