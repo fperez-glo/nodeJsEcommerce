@@ -5,7 +5,7 @@ const { Router } = express
 const router = new Router();
 
 router.get('/',(req, res) => {
-    res.send({message: 'Estas en la ruta products'})
+    res.send({message: 'Estas en la ruta productos'})
 })
 
 module.exports = router

@@ -33,21 +33,25 @@ class Contenedor {
         this.products.push(item);
         await write(`productos.txt`, this.products);
       }
+      return item;
     } catch (err) {
       throw err;
     }
   }
 
   async getById(number) {
+    let element
     const fileRead = await read(`productos.txt`);
 
     const items = JSON.parse(fileRead);
 
     items.forEach((item) => {
-      if (item.id === number) {
-        console.log(`Id ${number} encontrado:`, item);
+      if (item.id === parseInt(number)) {
+        element = item;
       }
     });
+
+    return element;
   }
 
   async getAll() {
@@ -63,7 +67,7 @@ class Contenedor {
     let items = JSON.parse(fileRead);
 
     items.forEach((item) => {
-      if (item.id === number) {
+      if (item.id === parseInt(number)) {
         const index = items.indexOf(item);
         console.log(`indice:`, index);
         const deletedItem = items.splice(index, 1);
@@ -91,6 +95,35 @@ class Contenedor {
         
       };
   };
+
+  async updateItem(id, params) {
+    let finded = false;
+    const fileRead = await read(`productos.txt`);
+    //Reviso si existe o almenos hay contenido en el archivo.
+    if (fileRead.length){
+      //parseo a objeto y reviso que tenga o no objetos en el array
+      let items = JSON.parse(fileRead);
+      items.forEach((item)=>{
+        if (item.id === parseInt(id)){
+          const { title, price, thumbnail } = params;
+          const index = items.indexOf(item);
+          //Le asigno directamente params que contiene el body enviado a la api { title, price, thumbnail }.
+          items[index] =  { title, price, thumbnail, id};
+          finded = true
+        };
+      });
+
+      if (!finded){
+        throw `No se encontro el producto con id: ${id}`
+      };
+
+      await write(`productos.txt`, items)
+
+    } else {
+      throw 'No se encontraron productos.'
+    };
+  };
+
 };
 
 module.exports = Contenedor;
