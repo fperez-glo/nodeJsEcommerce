@@ -12,12 +12,6 @@
     "id": 2
   },
   {
-    "title": "Arroz",
-    "price": 140,
-    "picture": "foto de arroz",
-    "id": 3
-  },
-  {
     "title": "Arandanos",
     "price": 170,
     "thumbnail": "foto de arandanos",
@@ -28,12 +22,6 @@
     "price": 15400,
     "thumbnail": "foto de SmartPhone",
     "id": 5
-  },
-  {
-    "title": "Ciruelas",
-    "price": 250,
-    "thumbnail": "foto de Ciruelas",
-    "id": 6
   },
   {
     "title": "Aceite Cañuelas",

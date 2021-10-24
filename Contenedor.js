@@ -61,22 +61,7 @@ class Contenedor {
     return allItems;
   }
 
-  async deleteById(number) {
-    const fileRead = await read(`productos.txt`);
-
-    let items = JSON.parse(fileRead);
-
-    items.forEach((item) => {
-      if (item.id === parseInt(number)) {
-        const index = items.indexOf(item);
-        console.log(`indice:`, index);
-        const deletedItem = items.splice(index, 1);
-        console.log(`Se borro el item:`, deletedItem);
-      }
-    });
-
-    await write(`productos.txt`, items)
-  };
+  
 
   async deleteAll() {
       const fileRead = await read(`productos.txt`);
@@ -114,14 +99,40 @@ class Contenedor {
       });
 
       if (!finded){
+        //Con este throw, saldria de la ejecucion
         throw `No se encontro el producto con id: ${id}`
       };
 
-      await write(`productos.txt`, items)
+      await write(`productos.txt`, items);
 
     } else {
       throw 'No se encontraron productos.'
     };
+  };
+
+  async deleteById(id) {
+    let finded = false;
+    const fileRead = await read(`productos.txt`);
+
+    let items = JSON.parse(fileRead);
+    
+    items.forEach((item) => {
+      if (item.id === id) {
+        const index = items.indexOf(item);
+        const deletedItem = items.splice(index, 1);
+        finded= true;
+        
+      };
+    });
+    
+    if (!finded) {
+      //Con este throw, saldria de la ejecucion
+      console.log('pasa por acaaaa')
+      //throw 'holaaa'
+      throw `No se encontro el producto con id: ${id}`
+    };
+
+    await write(`productos.txt`, items)
   };
 
 };

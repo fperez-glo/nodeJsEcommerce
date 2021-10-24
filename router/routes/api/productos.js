@@ -57,8 +57,15 @@ async ({ body, params }, res) => {
 
 /** Elimina un producto segun su id */
 router.delete('/:id',
-async (req, res) => {
-    res.send({message: 'Elimino un producto'})
+async ({ params }, res) => {
+    try {
+        const { id } = params;
+        await itemContainer.deleteById(parseInt(id));
+        res.send({message: 'Producto eliminado.'})
+    } catch (err) {
+        res.send({err})
+    };
+    
 });
 
 
