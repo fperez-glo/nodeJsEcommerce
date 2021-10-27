@@ -27,6 +27,24 @@
     "title": "Aceite Cañuelas",
     "price": 363,
     "thumbnail": "foto de Aceite",
+    "id": 6
+  },
+  {
+    "title": "Berenjena",
+    "price": "55134",
+    "thumbnail": "",
     "id": 7
+  },
+  {
+    "title": "Manteca",
+    "price": "55551",
+    "thumbnail": "",
+    "id": 8
+  },
+  {
+    "title": "Chocolate",
+    "price": "543",
+    "thumbnail": "IMG_20200310_152307.jpg",
+    "id": 9
   }
 ]

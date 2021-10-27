@@ -30,8 +30,13 @@ const authRoutes = require('./router/routes/auth/auth');
 
 const desafioClase7 = require('./router/routes/api/productos')
 
+//Midleware para poner archivos public staticos
+//__dirname + '/public' seria una "ruta relativa". Estaria parado en "D:\Desarrollo\Repositorios GIT\nodeJsEcommerce\public"
+app.use(express.static(__dirname+'/public'));
 //Este midleware te permite recibir el body que se envia como JSON desde POSTMAN por ej.
 app.use(express.json());
+//Este midleware te permite recibir el body que se envia como POST desde un formulario HTML
+app.use(express.urlencoded({extended: false}));
 
 //Rutas definidas
 app.use('/products', prodRoutes);

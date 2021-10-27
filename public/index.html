@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <title>Carga de Productos</title>
+</head>
+<body>
+    <div id='form'>
+        <h1>Ingrese su producto</h1>
+        <form action="/api/productos" method="post">
+            
+            <label for="prodInput">Producto:</label>
+            <input type='text' id='prodInput' name='title'></input>
+            <label for="priceInput">Precio:</label>
+            <input type='number' id='priceInput' name='price'></input>
+            <label for="fileInput">Miniatura:</label>
+            <input type='file' id='fileInput' name='thumbnail'></input>
+
+            <div id='buttons'>
+                <button type='submit' onsubmit="">Enviar</button>
+                <button type='reset'>Limpiar</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
