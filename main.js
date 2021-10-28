@@ -4,6 +4,10 @@ const multer = require('multer')
 const app = express();
 const port = process.env.PORT || 8080;
 
+//Seteo las rutas del motor de plantillas ejs.
+app.set('view engine', 'ejs');
+app.set('views', './views');
+
 //Configurar multer para poder recibir archivos con distintos formatos.
 const storage = multer.diskStorage({
 
@@ -30,9 +34,10 @@ const authRoutes = require('./router/routes/auth/auth');
 
 const desafioClase7 = require('./router/routes/api/productos')
 
-//Midleware para poner archivos public staticos
-//__dirname + '/public' seria una "ruta relativa". Estaria parado en "D:\Desarrollo\Repositorios GIT\nodeJsEcommerce\public"
-app.use(express.static(__dirname+'/public'));
+app.get('/', (req, res)=> {
+    res.render('index.ejs')
+});
+
 //Este midleware te permite recibir el body que se envia como JSON desde POSTMAN por ej.
 app.use(express.json());
 //Este midleware te permite recibir el body que se envia como POST desde un formulario HTML
