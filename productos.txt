@@ -15,36 +15,78 @@
     "title": "Arandanos",
     "price": 170,
     "thumbnail": "foto de arandanos",
-    "id": 4
+    "id": 3
   },
   {
     "title": "SmartPhone",
     "price": 15400,
     "thumbnail": "foto de SmartPhone",
-    "id": 5
+    "id": 4
   },
   {
     "title": "Aceite Cañuelas",
     "price": 363,
     "thumbnail": "foto de Aceite",
-    "id": 6
+    "id": 5
   },
   {
     "title": "Berenjena",
     "price": "55134",
     "thumbnail": "",
-    "id": 7
+    "id": 6
   },
   {
     "title": "Manteca",
     "price": "55551",
     "thumbnail": "",
-    "id": 8
+    "id": 7
   },
   {
     "title": "Chocolate",
     "price": "543",
     "thumbnail": "IMG_20200310_152307.jpg",
+    "id": 8
+  },
+  {
+    "title": "cocacola",
+    "price": "11234",
+    "thumbnail": "",
     "id": 9
+  },
+  {
+    "title": "Azucar",
+    "price": "9984",
+    "thumbnail": "",
+    "id": 10
+  },
+  {
+    "title": "Alfombra",
+    "price": "5880",
+    "thumbnail": "",
+    "id": 11
+  },
+  {
+    "title": "Mouse Inalambrico",
+    "price": "6625",
+    "thumbnail": "",
+    "id": 12
+  },
+  {
+    "title": "Macbook",
+    "price": "999999",
+    "thumbnail": "",
+    "id": 13
+  },
+  {
+    "title": "Canela",
+    "price": "88876",
+    "thumbnail": "",
+    "id": 14
+  },
+  {
+    "title": "",
+    "price": "",
+    "thumbnail": "",
+    "id": 15
   }
 ]

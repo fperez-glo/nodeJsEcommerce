@@ -32,11 +32,13 @@ const prodRoutes = require('./router/routes/products/products');
 const cartRoutes = require('./router/routes/cart/cart');
 const authRoutes = require('./router/routes/auth/auth');
 
-const desafioClase7 = require('./router/routes/api/productos')
-
 app.get('/', (req, res)=> {
-    res.render('index.ejs')
+    res.render('index.ejs');
 });
+
+// app.get('/productos', (req, res)=> {
+//     res.render('productos.ejs', {data: 'array de productos'});
+// });
 
 //Este midleware te permite recibir el body que se envia como JSON desde POSTMAN por ej.
 app.use(express.json());
@@ -44,12 +46,12 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
 //Rutas definidas
-app.use('/products', prodRoutes);
+app.use('/productos', prodRoutes);
 app.use('/cart', cartRoutes);
 app.use('/auth', authRoutes);
 
-//Para el desafio de la clase 7
-app.use('/api/productos', desafioClase7);
+
+
 
 app.listen(port, ()=>{
     console.log(`Server run on port ${port}.`)

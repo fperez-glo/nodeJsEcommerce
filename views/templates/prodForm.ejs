@@ -1,57 +1,38 @@
 <div class='container' id='form'>
-    <h1>Ingrese su producto</h1>
-    <form action="/api/productos" method="post">
+   
+    <h2>Formulario de productos</h2>
         
-        <label for="prodInput">Producto:</label>
-        <input type='text' id='prodInput' name='title'></input>
-        <label for="priceInput">Precio:</label>
-        <input type='number' id='priceInput' name='price'></input>
-        <label for="fileInput">Miniatura:</label>
-        <input type='file' id='fileInput' name='thumbnail'></input>
-
-        <hr><hr>
-
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">@</span>
-            <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+      <form class="row g-3 needs-validation" action="/productos" method="post" novalidate>
+        <div class="col-md-4">
+          <label for="validationCustom01" class="form-label">Producto</label>
+          <input type="text" class="form-control" id="validationCustom01" name='title' required>
+          <div class="valid-feedback">
+            Parece bien!
           </div>
-          
-          <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
-            <span class="input-group-text" id="basic-addon2">@example.com</span>
-          </div>
-          
-          <label for="basic-url" class="form-label">Your vanity URL</label>
-          <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon3">https://example.com/users/</span>
-            <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
-          </div>
-          
-          <div class="input-group mb-3">
-            <span class="input-group-text">$</span>
-            <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-            <span class="input-group-text">.00</span>
-          </div>
-          
-          <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Username" aria-label="Username">
-            <span class="input-group-text">@</span>
-            <input type="text" class="form-control" placeholder="Server" aria-label="Server">
-          </div>
-          
-          <div class="input-group">
-            <span class="input-group-text">With textarea</span>
-            <textarea class="form-control" aria-label="With textarea"></textarea>
-          </div>
-
-          <hr><hr>
-
-        <div id='buttons'>
-            <button class='btn btn-primary' type='submit' onsubmit="">Enviar</button>
-            <button class='btn btn-primary' type='reset'>Limpiar</button>
         </div>
 
+        <div class="col-md-4">
+          <label for="validationCustom02" class="form-label">Precio</label>
+          <input type="text" class="form-control" id="validationCustom02"  aria-describedby="inputGroupPrepend" name='price' required>
+          <div class="valid-feedback">
+            Parece bien!
+          </div>
+        </div>
 
-    </form>
+        <div class="col-md-3">
+          <label for="validationCustom05" class="form-label">Miniatura</label>
+          <input type="file" class="form-control" id="validationCustom05" name='thumbnail' required>
+          <div class="invalid-feedback">
+            Adjunte un archivo valido.
+          </div>
+        </div>
+        
+        <div class="col-12">
+          <button class="btn btn-primary" type="submit">Enviar</button>
+          <button class="btn btn-primary" type="reset">Limpiar</button>
+        </div>
+        <a href="/productos">Ver lista de productos</a>
+      </form>
+
 </div>
 
