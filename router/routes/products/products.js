@@ -6,14 +6,6 @@ const itemContainer = new Contenedor();
 
 const router = new Router();
 
-const array = 
-[{
-  "title": "Huevos",
-  "price": 112,
-  "picture": "foto de maple",
-  "id": 1
-}]
-
 /** Devuelve todos los productos */
 router.get('/',
 async (req, res) => {
