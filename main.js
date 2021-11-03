@@ -33,12 +33,8 @@ const cartRoutes = require('./router/routes/cart/cart');
 const authRoutes = require('./router/routes/auth/auth');
 
 app.get('/', (req, res)=> {
-    res.render('index.ejs');
+    res.render('index');
 });
-
-// app.get('/productos', (req, res)=> {
-//     res.render('productos.ejs', {data: 'array de productos'});
-// });
 
 //Este midleware te permite recibir el body que se envia como JSON desde POSTMAN por ej.
 app.use(express.json());

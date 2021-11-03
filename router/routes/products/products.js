@@ -18,7 +18,7 @@ const array =
 router.get('/',
 async (req, res) => {
     const products = await itemContainer.getAll();
-    res.render('productos.ejs',{ products });
+    res.render('productos',{ products });
 });
 
 /** Devuelve un producto segun su id */
@@ -44,7 +44,7 @@ async ({ body }, res) => {
         const { title, price, thumbnail } = body
         const itemCreated = await itemContainer.save({ title, price, thumbnail });
         //res.send(itemCreated)
-        res.render('index.ejs');
+        res.render('index');
 
     } catch (err) {
         res.send({err})
