@@ -19,7 +19,7 @@
                     <th scope="row"><%= prod.id %></th>
                     <td><%= prod.title %></td>
                     <td>$ <%= prod.price %></td>
-                    <td><%= prod.thumbnail %></td>
+                    <td><img src="<%= prod.thumbnail %>" alt="" height="50" width="50"></td>
                   </tr>
             <% }) %>
         </tbody>

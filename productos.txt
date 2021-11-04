@@ -1,104 +1,56 @@
 [
   {
-    "title": "Huevos",
-    "price": 112,
-    "picture": "foto de maple",
-    "id": 1
-  },
-  {
-    "title": "Harina",
-    "price": 78,
-    "picture": "foto de harina",
-    "id": 2
-  },
-  {
-    "title": "Arandanos",
-    "price": 170,
-    "thumbnail": "foto de arandanos",
-    "id": 3
-  },
-  {
     "title": "SmartPhone",
     "price": 15400,
-    "thumbnail": "foto de SmartPhone",
-    "id": 4
+    "thumbnail": "https://cdn3.iconfinder.com/data/icons/flat-set-1/64/flat_set_1-25-256.png",
+    "id": 0
   },
   {
     "title": "Aceite Cañuelas",
     "price": 363,
-    "thumbnail": "foto de Aceite",
-    "id": 5
-  },
-  {
-    "title": "Berenjena",
-    "price": "55134",
-    "thumbnail": "",
-    "id": 6
-  },
-  {
-    "title": "Manteca",
-    "price": "55551",
-    "thumbnail": "",
-    "id": 7
+    "thumbnail": "https://cdn4.iconfinder.com/data/icons/materia-flat-kitchen-vol-2/24/036_053_bottle_wine_drink_olive_oil_alcohol_food-256.png",
+    "id": 1
   },
   {
     "title": "Chocolate",
     "price": "543",
-    "thumbnail": "IMG_20200310_152307.jpg",
-    "id": 8
+    "thumbnail": "https://cdn2.iconfinder.com/data/icons/bakery-kitchen-3/512/chocolate-sweet-candy-256.png",
+    "id": 2
   },
   {
-    "title": "cocacola",
+    "title": "Cocacola",
     "price": "11234",
-    "thumbnail": "",
-    "id": 9
+    "thumbnail": "https://cdn3.iconfinder.com/data/icons/food-3-11/128/food_Soda-Pepsi-Cola-Coke-Beverage-256.png",
+    "id": 3
   },
   {
     "title": "Azucar",
     "price": "9984",
-    "thumbnail": "",
-    "id": 10
-  },
-  {
-    "title": "Alfombra",
-    "price": "5880",
-    "thumbnail": "",
-    "id": 11
+    "thumbnail": "https://cdn3.iconfinder.com/data/icons/food-set-8/100/objects-06-256.png",
+    "id": 4
   },
   {
     "title": "Mouse Inalambrico",
     "price": "6625",
-    "thumbnail": "",
-    "id": 12
+    "thumbnail": "https://cdn2.iconfinder.com/data/icons/unigrid-phantom-devices-vol-4/60/017_179_mouse_hardware-256.png",
+    "id": 5
   },
   {
     "title": "Macbook",
     "price": "999999",
-    "thumbnail": "",
-    "id": 13
-  },
-  {
-    "title": "Canela",
-    "price": "88876",
-    "thumbnail": "",
-    "id": 14
-  },
-  {
-    "title": "",
-    "price": "",
-    "thumbnail": "",
-    "id": 15
-  },
-  {
-    "title": "Jamon Cocido",
-    "price": "551",
-    "thumbnail": "",
-    "id": 16
+    "thumbnail": "https://cdn2.iconfinder.com/data/icons/basic-flat-icon-set/128/macbook-256.png",
+    "id": 6
   },
   {
     "title": "Queso",
     "price": "260",
-    "thumbnail": "",
-    "id": 17
+    "thumbnail": "https://cdn4.iconfinder.com/data/icons/bakery-kitchen-3/512/z5-cheese-cheddard-food-256.png",
+    "id": 7
+  },
+  {
+    "title": "Lentes de sol",
+    "price": "16709",
+    "thumbnail": "https://cdn4.iconfinder.com/data/icons/glyphlibrary-one/100/sunglasses-256.png",
+    "id": 9
   }
 ]
