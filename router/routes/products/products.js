@@ -36,7 +36,7 @@ async ({ body }, res) => {
         const { title, price, thumbnail } = body
         const itemCreated = await itemContainer.save({ title, price, thumbnail });
         //res.send(itemCreated)
-        res.render('index');
+        res.redirect('/');
 
     } catch (err) {
         res.send({err})
