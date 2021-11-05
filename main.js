@@ -1,5 +1,5 @@
 const express = require(`express`);
-const multer = require('multer')
+const multer = require('multer');
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -23,32 +23,62 @@ const storage = multer.diskStorage({
 
 const update = multer({ storage }); // Middleware
 
-app.post('/', update.single('fileUpload'), (req, res) => {
-    console.log(req.file)
-    res.send(`Archivo guardado con exito.`)
-});
+const prodRoutes = require('./routes/products/products');
+const cartRoutes = require('./routes/cart/cart');
+const authRoutes = require('./routes/auth/auth');
 
-const prodRoutes = require('./router/routes/products/products');
-const cartRoutes = require('./router/routes/cart/cart');
-const authRoutes = require('./router/routes/auth/auth');
-
-app.get('/', (req, res)=> {
-    res.render('index');
-});
 
 //Este midleware te permite recibir el body que se envia como JSON desde POSTMAN por ej.
 app.use(express.json());
 //Este midleware te permite recibir el body que se envia como POST desde un formulario HTML
 app.use(express.urlencoded({extended: false}));
 
+app.use(express.static(__dirname+'/views'))
+
 //Rutas definidas
-app.use('/productos', prodRoutes);
+app.use('/', prodRoutes);
 app.use('/cart', cartRoutes);
 app.use('/auth', authRoutes);
 
 
+app.post('/', update.single('fileUpload'), (req, res) => {
+    console.log(req.file)
+    res.send(`Archivo guardado con exito.`)
+});
 
 
-app.listen(port, ()=>{
+//Server compatible para webSockets
+const http = require('http');
+const server = http.createServer(app);
+
+//Socket
+const { Server } = require('socket.io');
+const io = new Server(server);
+
+//Conexion con el Socket para el cliente.
+io.on("connection", ( socket )=> {
+
+    console.log('cliente conectado')
+    socket.emit("message","Hola señor cliente, esta conectado")
+
+    socket.on("clientResponse",(data)=>{
+        console.log('Respuesta del cliente: ',data)
+    })
+
+});
+
+app.get('/', (req, res)=> {
+    res.render('index');
+});
+
+// app.get('/', (req, res)=> {
+//     res.sendFile(__dirname+'/public/index.html');
+// });
+
+
+
+
+
+server.listen(port, ()=>{
     console.log(`Server run on port ${port}.`)
-})
+});

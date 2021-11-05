@@ -1,6 +1,6 @@
 const express = require(`express`);
 const { Router } = express;
-const Contenedor = require('../../../Contenedor');
+const Contenedor = require('../../Contenedor');
 
 const itemContainer = new Contenedor();
 
@@ -10,7 +10,7 @@ const router = new Router();
 router.get('/',
 async (req, res) => {
     const products = await itemContainer.getAll();
-    res.render('productos',{ products });
+    res.render('index',{ products });
 });
 
 /** Devuelve un producto segun su id */

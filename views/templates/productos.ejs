@@ -1,0 +1,33 @@
+<div>
+  <h1>Productos registrados:</h1>
+  <hr />
+  <% if(products.length){ %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#ID</th>
+        <th scope="col">Producto</th>
+        <th scope="col">Precio</th>
+        <th scope="col">Miniatura</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% products.map((prod)=>{ %>
+      <tr>
+        <th scope="row"><%= prod.id %></th>
+        <td><%= prod.title %></td>
+        <td>$ <%= prod.price %></td>
+        <td>
+          <img src="<%= prod.thumbnail %>" alt="" height="50" width="50" />
+        </td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  <% }else { %>
+  <hr />
+  
+  <h3>No hay productos para mostrar.</h3>
+  <% }; %>
+</div>
+
