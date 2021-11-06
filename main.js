@@ -70,10 +70,9 @@ io.on("connection", ( socket )=> {
         const { title, price, thumbnail } = prod
         const itemCreated = await itemContainer.save({ title, price, thumbnail });
         
-        //obtengo todos los productos actualizados
+        //Obtengo todos los productos actualizados
+        //Tuve que hacerlo de esta forma ya que el metodo save es el que me genera el identificador al producto ingresado.
         const products = await itemContainer.getAll();
-
-        console.log('Respuesta del cliente: ',prod)
         
         //Envio los productos a los clientes.
         io.sockets.emit('serverResponse',products)
