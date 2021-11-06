@@ -4,6 +4,10 @@ const multer = require('multer');
 const app = express();
 const port = process.env.PORT || 8080;
 
+//Importo la clase contenedor para trabajar con los productos
+const Contenedor = require('./Contenedor');
+const itemContainer = new Contenedor();
+
 //Seteo las rutas del motor de plantillas ejs.
 app.set('view engine', 'ejs');
 app.set('views', './views');
@@ -40,11 +44,11 @@ app.use('/', prodRoutes);
 app.use('/cart', cartRoutes);
 app.use('/auth', authRoutes);
 
-
-app.post('/', update.single('fileUpload'), (req, res) => {
-    console.log(req.file)
-    res.send(`Archivo guardado con exito.`)
-});
+//Lo comento momentaneamente para que no utilice esta ruta post a "/"
+// app.post('/', update.single('fileUpload'), (req, res) => {
+//     console.log(req.file)
+//     res.send(`Archivo guardado con exito.`)
+// });
 
 
 //Server compatible para webSockets
@@ -55,28 +59,28 @@ const server = http.createServer(app);
 const { Server } = require('socket.io');
 const io = new Server(server);
 
+
 //Conexion con el Socket para el cliente.
 io.on("connection", ( socket )=> {
+    
+    console.log('Se ha conectado un cliente')
 
-    console.log('cliente conectado')
-    socket.emit("message","Hola señor cliente, esta conectado")
+    socket.on("clietProdSend", async(prod)=>{
+        //Guardo el producto en mi array/database local.
+        const { title, price, thumbnail } = prod
+        const itemCreated = await itemContainer.save({ title, price, thumbnail });
+        
+        //obtengo todos los productos actualizados
+        const products = await itemContainer.getAll();
 
-    socket.on("clientResponse",(data)=>{
-        console.log('Respuesta del cliente: ',data)
+        console.log('Respuesta del cliente: ',prod)
+        
+        //Envio los productos a los clientes.
+        io.sockets.emit('serverResponse',products)
+        
     })
-
+    
 });
-
-app.get('/', (req, res)=> {
-    res.render('index');
-});
-
-// app.get('/', (req, res)=> {
-//     res.sendFile(__dirname+'/public/index.html');
-// });
-
-
-
 
 
 server.listen(port, ()=>{

@@ -9,17 +9,19 @@
         <th scope="col">Producto</th>
         <th scope="col">Precio</th>
         <th scope="col">Miniatura</th>
+        <th scope="col"></th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id='tbody'>
       <% products.map((prod)=>{ %>
       <tr>
-        <th scope="row"><%= prod.id %></th>
+        <th scope="row" id="prodId"><%= prod.id %></th>
         <td><%= prod.title %></td>
         <td>$ <%= prod.price %></td>
         <td>
           <img src="<%= prod.thumbnail %>" alt="" height="50" width="50" />
         </td>
+        <td><button class='btn' onclick="deleteItem()"><img src="https://cdn1.iconfinder.com/data/icons/color-bold-style/21/56-256.png" alt="" height="20" width="20"></button></td>
       </tr>
       <% }) %>
     </tbody>

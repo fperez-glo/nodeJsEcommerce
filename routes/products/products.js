@@ -11,6 +11,7 @@ router.get('/',
 async (req, res) => {
     const products = await itemContainer.getAll();
     res.render('index',{ products });
+    
 });
 
 /** Devuelve un producto segun su id */
@@ -68,6 +69,5 @@ async ({ params }, res) => {
     };
     
 });
-
 
 module.exports = router
