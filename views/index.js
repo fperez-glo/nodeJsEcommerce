@@ -1,5 +1,7 @@
 const socket = io();
 
+let chatOpened = false
+
 socket.on("serverResponse", (products)=>{
     
     renderProds(products);
@@ -7,6 +9,7 @@ socket.on("serverResponse", (products)=>{
 
 const renderProds = (products) => {
     const html = products.map((prod) => {
+        //Se arma el bulk para insertar al DOM html
         return `
         <tr>
             <th scope="row" id="prodId"> ${prod.id} </th>
@@ -15,12 +18,15 @@ const renderProds = (products) => {
             <td>
             <img src="${prod.thumbnail}" alt="" height="50" width="50" />
             </td>
-            <td><button class='btn' ><img src="https://cdn1.iconfinder.com/data/icons/color-bold-style/21/56-256.png" alt="" height="20" width="20"></button></td>
+            <td>
+                <button value="${prod.id}" class='btn' onclick="deleteItem(event)">
+                    <img value="${prod.id}" src="https://cdn1.iconfinder.com/data/icons/color-bold-style/21/56-256.png" alt="" height="20" width="20">
+                </button>
+            </td>
         </tr>      
         `;
     })
-    .join(' ')
-
+    
     document.querySelector("#tbody").innerHTML = html;
 };
 
@@ -32,10 +38,10 @@ const sendInfo = () => {
         price: document.querySelector("#pr").value,
         thumbnail: document.querySelector("#tb").value,
     };
-    console.log('entra en sendinfo', item)
     
     socket.emit('clietProdSend', item);
-
+    
+    //Limpio los inputs del DOM html
     document.querySelector('#tt').value = '';
     document.querySelector('#pr').value = '';
     document.querySelector('#tb').value = '';
@@ -43,10 +49,18 @@ const sendInfo = () => {
     return false;
 };
 
+const openChatBox = () => { 
+    console.log('Abro el chat')
+    
+    if (chatOpened) {
+        console.log('Cierro el chat')
+    };
 
-const deleteItem = () => {
-    //FIXME: NO PUDE TODAVIA MIRAR ESTO.. ME DEVUELVE EL MISMO ID = 1 EN CUALQUIER FILA QUE HAGA CLICK.
-    const prodId = document.querySelector('#prodId');
-    console.log('borro el item: ',prodId)
 
+
+};
+
+const deleteItem = (event) => {
+    const prodId = event.target['value'] || event.target.parentNode['value'];
+    socket.emit('clientDeleteItem', prodId);
 };

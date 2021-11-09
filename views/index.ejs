@@ -4,6 +4,17 @@
 <body>
     <%- include('templates/prodForm') %>
     <%- include('templates/productos') %>
+    <hr>
+
+    <div class="container">
+        <button class='btn btn-success' onclick={openChatBox()}>CHAT</button>
+    </div>
+
+    <hr>
+   
+    <div id='chatBox'>
+        <%- include('templates/chat')  %>
+    </div>
 
     <script src='socket.io/socket.io.js'></script>
     <script src="./index.js"></script>

@@ -78,6 +78,19 @@ io.on("connection", ( socket )=> {
         io.sockets.emit('serverResponse',products)
         
     })
+
+    socket.on('clientDeleteItem', async(prodId) => {
+        try {
+            console.log('producto id: ', prodId)
+            console.log('paso 1')
+            const filteredProducts = await itemContainer.deleteById(prodId);
+            io.sockets.emit('serverResponse',filteredProducts)
+            console.log('paso 2')    
+        } catch (error) {
+            console.log('Salio por el catch de clientDeleteItem. Error: ',error)
+        }
+        
+    })
     
 });
 

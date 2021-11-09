@@ -111,6 +111,8 @@ class Contenedor {
   };
 
   async deleteById(id) {
+    id=parseInt(id);
+    
     let finded = false;
     const fileRead = await read(`productos.txt`);
 
@@ -120,6 +122,7 @@ class Contenedor {
       if (item.id === id) {
         const index = items.indexOf(item);
         const deletedItem = items.splice(index, 1);
+        console.log('deletedItem: ',items)
         finded= true;
         
       };
@@ -127,12 +130,11 @@ class Contenedor {
     
     if (!finded) {
       //Con este throw, saldria de la ejecucion
-      console.log('pasa por acaaaa')
-      //throw 'holaaa'
       throw `No se encontro el producto con id: ${id}`
     };
 
     await write(`productos.txt`, items)
+    return items;
   };
 
 };
