@@ -1,0 +1,47 @@
+[
+  {
+    "email": "fperez@globaltechsa.com.ar",
+    "msg": "Buenas tardes Esteban!",
+    "datetime": "10/11/2021 08:24:16"
+  },
+  {
+    "email": "esteban@gmail.com",
+    "msg": "Buenas Facu",
+    "datetime": "10/11/2021 08:25:02"
+  },
+  {
+    "email": "esteban@gmail.com",
+    "msg": "Hola Juan Carlos..",
+    "datetime": "10/11/2021 08:25:23"
+  },
+  {
+    "email": "Juan Carlos",
+    "msg": "Buenass",
+    "datetime": "10/11/2021 08:25:29"
+  },
+  {
+    "email": "homero@ff.com",
+    "msg": "Hola",
+    "datetime": "10/11/2021 08:27:03"
+  },
+  {
+    "email": "Inesä@lld.com",
+    "msg": "Que tal",
+    "datetime": "10/11/2021 08:27:23"
+  },
+  {
+    "email": "Inesä@lld.com",
+    "msg": "todo bien",
+    "datetime": "10/11/2021 08:27:45"
+  },
+  {
+    "email": "facundd@asdad",
+    "msg": "Hola",
+    "datetime": "10/11/2021 08:28:30"
+  },
+  {
+    "email": "Pepejuan@gmail.com",
+    "msg": "Hola soy pepe",
+    "datetime": "10/11/2021 08:28:57"
+  }
+]

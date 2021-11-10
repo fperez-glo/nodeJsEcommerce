@@ -1,8 +1,11 @@
 const socket = io();
 
 let chatOpened = false
+//Tuve que declarar esta variable global porque sino perdia el dato.
+let user
+//-----
 
-socket.on("serverResponse", (products)=>{
+socket.on("serverProductsResponse", (products)=>{
     
     renderProds(products);
 });
@@ -28,6 +31,25 @@ const renderProds = (products) => {
     })
     
     document.querySelector("#tbody").innerHTML = html;
+};
+
+socket.on('serverChatResponse', (chats)=>{
+    renderChat(chats);
+});
+
+const renderChat = (chats) => {
+    const html = chats.map((chat)=> {
+        return `
+                <div id='msgLabel'>
+                    <p id='userEmail'>${chat.email}</p>
+                    <p id='msgDate'>${chat.datetime} --> </p>
+                    <p id='msg'>${chat.msg}</p>
+                </div>
+            
+        `;
+    }).join(' ');
+
+    document.querySelector('#chatArea').innerHTML = html;
 };
 
 
@@ -56,11 +78,56 @@ const openChatBox = () => {
         console.log('Cierro el chat')
     };
 
-
+    //No me anduvo esto.. queria que incruste este codigo y renderize el chat.
+    const html =  `<%- include('templates/chat')  %>`
+    document.querySelector("#chatBox").innerHTML = html;
+    chatOpened = true;
 
 };
 
 const deleteItem = (event) => {
     const prodId = event.target['value'] || event.target.parentNode['value'];
     socket.emit('clientDeleteItem', prodId);
+};
+
+const sendMsg = () => {
+    console.log('mensaje:',document.getElementById("msgInput").value)
+    
+    const message = {
+        email: user,
+        msg: document.getElementById("msgInput").value,
+    };
+
+    
+    socket.emit('userMessage',message);
+
+    document.getElementById("msgInput").value = '';
+    
+};
+
+const confirmUser = () => {
+    //console.log('confirmo el usuario.', event.target.parentNode.parentNode)
+    user = document.getElementById('user').value
+
+    let html = `<div><b>Usuario Registrado: </b>${user}</div>`
+
+    document.querySelector('#userInput').innerHTML = html;
+    
+    html = `<div class="input-group">
+                <textarea id="msgInput" placeholder="Mensaje" class="form-control" aria-label="With textarea"></textarea>
+                <span onclick="sendMsg()" class="input-group-text" id="basic-addon1"><button class='btn btn-primary'>Enviar</button></span>
+            </div>`;
+
+    document.querySelector('#textChatBox').innerHTML = html;
+    
+};
+
+const onChangeText = (value) => {
+    console.log('value:', value)
+};
+
+if (chatOpened) {
+    const textChatBox = document.querySelector('#msg')
+    console.log('textChatBox:',textChatBox)
+    textChatBox.addEventListener('change',onChangeText(value))
 };

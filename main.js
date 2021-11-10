@@ -1,3 +1,9 @@
+//Lo pongo momentaneamente para el desafio de webSockets
+const fs = require("fs");
+const moment = require('moment')
+const dateFormat = 'DD/MM/YYYY hh:mm:ss';
+///-----------------
+
 const express = require(`express`);
 const multer = require('multer');
 
@@ -75,7 +81,7 @@ io.on("connection", ( socket )=> {
         const products = await itemContainer.getAll();
         
         //Envio los productos a los clientes.
-        io.sockets.emit('serverResponse',products)
+        io.sockets.emit('serverProductsResponse',products)
         
     })
 
@@ -84,13 +90,30 @@ io.on("connection", ( socket )=> {
             console.log('producto id: ', prodId)
             console.log('paso 1')
             const filteredProducts = await itemContainer.deleteById(prodId);
-            io.sockets.emit('serverResponse',filteredProducts)
+            io.sockets.emit('serverProductsResponse',filteredProducts)
             console.log('paso 2')    
         } catch (error) {
             console.log('Salio por el catch de clientDeleteItem. Error: ',error)
         }
         
     })
+
+    socket.on('userMessage', async(message) => {
+        const date = moment()
+        const fileRead = await fs.promises.readFile(`./chat.txt`, `utf-8`);
+        const chats = JSON.parse(fileRead);
+
+        message.datetime = date.format(dateFormat);
+        chats.push(message)
+
+        await fs.promises.writeFile(
+            `./chat.txt`,
+            JSON.stringify(chats, null, 2) + `\n`
+          );
+
+        io.sockets.emit('serverChatResponse',chats);
+        
+    });
     
 });
 

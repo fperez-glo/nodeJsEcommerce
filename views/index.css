@@ -1,0 +1,30 @@
+{
+
+}
+
+#chatBox {
+    margin-bottom: 100px;
+}
+
+#msgLabel {
+    display: flex;
+    flex-direction: row;
+    
+}
+
+p {
+    margin: 20px 5px;
+}
+
+#userEmail {
+    color: green;
+}
+
+#msgDate {
+    color: brown;
+}
+
+#msg {
+    color: green;
+    font-style: italic;
+}
