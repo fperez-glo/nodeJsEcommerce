@@ -2,23 +2,27 @@
   "name": "nodeJsEcommerce",
   "version": "1.0.0",
   "description": "Proyecto de backend Ecommerce hecho con Express de nodeJs",
-  "main": "main.js",
+  "main": "src/main.js",
   "dependencies": {
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "moment": "^2.29.1",
     "multer": "^1.4.3",
-    "socket.io": "^4.3.1" 
+    "socket.io": "^4.3.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.0",
     "@babel/preset-env": "^7.16.0",
-    "nodemon": "^2.0.13"
+    "nodemon": "^2.0.13",
+    "webpack": "^5.64.0",
+    "webpack-cli": "^4.9.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon main.js",
-    "build": "babel main.js -d dist"
+    "start": "nodemon src/main.js",
+    "start:prod": "nodemon dist/main.js",
+    "build:prod": "webpack --watch --config=webpack.config.js --mode production",
+    "build": "webpack --watch --config=webpack.config.js --mode development"
   },
   "repository": {
     "type": "git",

@@ -1,7 +1,7 @@
 //Lo pongo momentaneamente para el desafio de webSockets
 const fs = require("fs");
-const moment = require('moment')
-const dateFormat = 'DD/MM/YYYY hh:mm:ss';
+//const moment = require('moment')
+//const dateFormat = 'DD/MM/YYYY hh:mm:ss';
 ///-----------------
 
 const express = require(`express`);
@@ -43,7 +43,7 @@ app.use(express.json());
 //Este midleware te permite recibir el body que se envia como POST desde un formulario HTML
 app.use(express.urlencoded({extended: false}));
 
-app.use(express.static(__dirname+'/views'))
+app.use(express.static(__dirname+'/src/views'))
 
 //Rutas definidas
 app.use('/', prodRoutes);
@@ -87,11 +87,8 @@ io.on("connection", ( socket )=> {
 
     socket.on('clientDeleteItem', async(prodId) => {
         try {
-            console.log('producto id: ', prodId)
-            console.log('paso 1')
             const filteredProducts = await itemContainer.deleteById(prodId);
             io.sockets.emit('serverProductsResponse',filteredProducts)
-            console.log('paso 2')    
         } catch (error) {
             console.log('Salio por el catch de clientDeleteItem. Error: ',error)
         }
@@ -99,11 +96,11 @@ io.on("connection", ( socket )=> {
     })
 
     socket.on('userMessage', async(message) => {
-        const date = moment()
+        //const date = moment()
         const fileRead = await fs.promises.readFile(`./chat.txt`, `utf-8`);
         const chats = JSON.parse(fileRead);
 
-        message.datetime = date.format(dateFormat);
+        //message.datetime = date.format(dateFormat);
         chats.push(message)
 
         await fs.promises.writeFile(
