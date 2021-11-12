@@ -1,7 +1,7 @@
 //Lo pongo momentaneamente para el desafio de webSockets
 const fs = require("fs");
-//const moment = require('moment')
-//const dateFormat = 'DD/MM/YYYY hh:mm:ss';
+const moment = require('moment')
+const dateFormat = 'DD/MM/YYYY hh:mm:ss';
 ///-----------------
 
 const express = require(`express`);
@@ -16,7 +16,7 @@ const itemContainer = new Contenedor();
 
 //Seteo las rutas del motor de plantillas ejs.
 app.set('view engine', 'ejs');
-app.set('views', './views');
+app.set('views', './src/views');
 
 //Configurar multer para poder recibir archivos con distintos formatos.
 const storage = multer.diskStorage({
@@ -43,7 +43,7 @@ app.use(express.json());
 //Este midleware te permite recibir el body que se envia como POST desde un formulario HTML
 app.use(express.urlencoded({extended: false}));
 
-app.use(express.static(__dirname+'/src/views'))
+app.use(express.static(__dirname+'./views'))
 
 //Rutas definidas
 app.use('/', prodRoutes);
@@ -96,11 +96,11 @@ io.on("connection", ( socket )=> {
     })
 
     socket.on('userMessage', async(message) => {
-        //const date = moment()
-        const fileRead = await fs.promises.readFile(`./chat.txt`, `utf-8`);
+        const date = moment()
+        const fileRead = await fs.promises.readFile(`./src/chat.txt`, `utf-8`);
         const chats = JSON.parse(fileRead);
 
-        //message.datetime = date.format(dateFormat);
+        message.datetime = date.format(dateFormat);
         chats.push(message)
 
         await fs.promises.writeFile(

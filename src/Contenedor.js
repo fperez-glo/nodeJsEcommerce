@@ -1,13 +1,13 @@
 const fs = require("fs");
 
 const read = async (file) => {
-  const read = await fs.promises.readFile(`./${file}`, `utf-8`);
+  const read = await fs.promises.readFile(`./src/${file}`, `utf-8`);
   return read;
 };
 
 const write = async (file, items) => {
   await fs.promises.writeFile(
-    `./${file}`,
+    `./src/${file}`,
     JSON.stringify(items, null, 2) + `\n`
   );
 };
