@@ -33,9 +33,9 @@ const storage = multer.diskStorage({
 
 const update = multer({ storage }); // Middleware
 
-const prodRoutes = require('./routes/products/products');
-const cartRoutes = require('./routes/cart/cart');
-const authRoutes = require('./routes/auth/auth');
+const prodApi = require('./api/products/products');
+const cartApi = require('./api/cart/cart');
+const authApi = require('./api/auth/auth');
 
 
 //Este midleware te permite recibir el body que se envia como JSON desde POSTMAN por ej.
@@ -43,12 +43,12 @@ app.use(express.json());
 //Este midleware te permite recibir el body que se envia como POST desde un formulario HTML
 app.use(express.urlencoded({extended: false}));
 
-app.use(express.static(__dirname+'./views'))
-
+app.use(express.static(__dirname+'/views'))
+console.log('dirname:', __dirname)
 //Rutas definidas
-app.use('/', prodRoutes);
-app.use('/cart', cartRoutes);
-app.use('/auth', authRoutes);
+app.use('/', prodApi);
+app.use('/cart', cartApi);
+app.use('/auth', authApi);
 
 //Lo comento momentaneamente para que no utilice esta ruta post a "/"
 // app.post('/', update.single('fileUpload'), (req, res) => {

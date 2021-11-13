@@ -6,12 +6,6 @@
     "id": 1
   },
   {
-    "title": "Aceite Cañuelas",
-    "price": 363,
-    "thumbnail": "https://cdn4.iconfinder.com/data/icons/materia-flat-kitchen-vol-2/24/036_053_bottle_wine_drink_olive_oil_alcohol_food-256.png",
-    "id": 2
-  },
-  {
     "title": "Chocolate",
     "price": "543",
     "thumbnail": "https://cdn2.iconfinder.com/data/icons/bakery-kitchen-3/512/chocolate-sweet-candy-256.png",
