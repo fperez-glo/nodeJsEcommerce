@@ -18,12 +18,6 @@
     "id": 5
   },
   {
-    "title": "Mouse Inalambrico",
-    "price": "6625",
-    "thumbnail": "https://cdn2.iconfinder.com/data/icons/unigrid-phantom-devices-vol-4/60/017_179_mouse_hardware-256.png",
-    "id": 6
-  },
-  {
     "title": "Macbook",
     "price": "999999",
     "thumbnail": "https://cdn2.iconfinder.com/data/icons/basic-flat-icon-set/128/macbook-256.png",
@@ -34,11 +28,5 @@
     "price": "9987",
     "thumbnail": "https://cdn4.iconfinder.com/data/icons/glyphlibrary-one/100/sunglasses-256.png",
     "id": 9
-  },
-  {
-    "title": "Coca Zero",
-    "price": "1233",
-    "thumbnail": "https://cdn3.iconfinder.com/data/icons/food-3-11/128/food_Soda-Pepsi-Cola-Coke-Beverage-256.png",
-    "id": 10
   }
 ]

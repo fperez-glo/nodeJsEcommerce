@@ -104,7 +104,7 @@ io.on("connection", ( socket )=> {
         chats.push(message)
 
         await fs.promises.writeFile(
-            `./chat.txt`,
+            `./src/chat.txt`,
             JSON.stringify(chats, null, 2) + `\n`
           );
 

@@ -23,8 +23,8 @@ const renderProds = (products) => {
             <img src="${prod.thumbnail}" alt="" height="50" width="50" />
             </td>
             <td>
-                <button sku="${prod.id}" class='btn' onclick="deleteItem(event)">
-                    <img sku="${prod.id}" src="https://cdn1.iconfinder.com/data/icons/color-bold-style/21/56-256.png" alt="" height="20" width="20">
+                <button value="${prod.id}" class='btn' onclick="deleteItem(event)">
+                    <img value="${prod.id}" src="https://cdn1.iconfinder.com/data/icons/color-bold-style/21/56-256.png" alt="" height="20" width="20">
                 </button>
             </td>
         </tr>      
@@ -90,25 +90,19 @@ const openChatBox = () => {
 };
 
 const deleteItem = (event) => {
-    const prodId = event.target['prodId'] || event.target.parentNode['prodId'];
-    console.log('prodId:',event.target || event.target.parentNode)
-    return;
+    const prodId = event.target['value'] || event.target.parentNode['value'];
     socket.emit('clientDeleteItem', prodId);
 };
 
 const sendMsg = () => {
-    console.log('mensaje:',document.getElementById("msgInput").value)
-    
     const message = {
         email: user,
         msg: document.getElementById("msgInput").value,
     };
-
     
     socket.emit('userMessage',message);
 
     document.getElementById("msgInput").value = '';
-    
 };
 
 const confirmUser = () => {
