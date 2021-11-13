@@ -16,7 +16,7 @@ const itemContainer = new Contenedor();
 
 //Seteo las rutas del motor de plantillas ejs.
 app.set('view engine', 'ejs');
-app.set('views', './views');
+app.set('views', './src/views');
 
 //Configurar multer para poder recibir archivos con distintos formatos.
 const storage = multer.diskStorage({
@@ -33,9 +33,9 @@ const storage = multer.diskStorage({
 
 const update = multer({ storage }); // Middleware
 
-const prodRoutes = require('./routes/products/products');
-const cartRoutes = require('./routes/cart/cart');
-const authRoutes = require('./routes/auth/auth');
+const prodApi = require('./api/products/products');
+const cartApi = require('./api/cart/cart');
+const authApi = require('./api/auth/auth');
 
 
 //Este midleware te permite recibir el body que se envia como JSON desde POSTMAN por ej.
@@ -44,11 +44,11 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
 app.use(express.static(__dirname+'/views'))
-
+console.log('dirname:', __dirname)
 //Rutas definidas
-app.use('/', prodRoutes);
-app.use('/cart', cartRoutes);
-app.use('/auth', authRoutes);
+app.use('/', prodApi);
+app.use('/cart', cartApi);
+app.use('/auth', authApi);
 
 //Lo comento momentaneamente para que no utilice esta ruta post a "/"
 // app.post('/', update.single('fileUpload'), (req, res) => {
@@ -87,11 +87,8 @@ io.on("connection", ( socket )=> {
 
     socket.on('clientDeleteItem', async(prodId) => {
         try {
-            console.log('producto id: ', prodId)
-            console.log('paso 1')
             const filteredProducts = await itemContainer.deleteById(prodId);
             io.sockets.emit('serverProductsResponse',filteredProducts)
-            console.log('paso 2')    
         } catch (error) {
             console.log('Salio por el catch de clientDeleteItem. Error: ',error)
         }
@@ -100,14 +97,14 @@ io.on("connection", ( socket )=> {
 
     socket.on('userMessage', async(message) => {
         const date = moment()
-        const fileRead = await fs.promises.readFile(`./chat.txt`, `utf-8`);
+        const fileRead = await fs.promises.readFile(`./src/chat.txt`, `utf-8`);
         const chats = JSON.parse(fileRead);
 
         message.datetime = date.format(dateFormat);
         chats.push(message)
 
         await fs.promises.writeFile(
-            `./chat.txt`,
+            `./src/chat.txt`,
             JSON.stringify(chats, null, 2) + `\n`
           );
 

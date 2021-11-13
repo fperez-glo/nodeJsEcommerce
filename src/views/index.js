@@ -1,10 +1,11 @@
 const socket = io();
-
-let chatOpened = false
+console.log('hola desde index js')
 //Tuve que declarar esta variable global porque sino perdia el dato.
 let user
 //-----
 
+
+//PRODUCTOS
 socket.on("serverProductsResponse", (products)=>{
     
     renderProds(products);
@@ -33,6 +34,8 @@ const renderProds = (products) => {
     document.querySelector("#tbody").innerHTML = html;
 };
 
+
+//CHAT
 socket.on('serverChatResponse', (chats)=>{
     renderChat(chats);
 });
@@ -71,6 +74,7 @@ const sendInfo = () => {
     return false;
 };
 
+//Abro el chat box
 const openChatBox = () => { 
     console.log('Abro el chat')
     
@@ -93,18 +97,14 @@ const deleteItem = (event) => {
 };
 
 const sendMsg = () => {
-    console.log('mensaje:',document.getElementById("msgInput").value)
-    
     const message = {
         email: user,
         msg: document.getElementById("msgInput").value,
     };
-
     
     socket.emit('userMessage',message);
 
     document.getElementById("msgInput").value = '';
-    
 };
 
 const confirmUser = () => {
@@ -126,10 +126,4 @@ const confirmUser = () => {
 
 const onChangeText = (value) => {
     console.log('value:', value)
-};
-
-if (chatOpened) {
-    const textChatBox = document.querySelector('#msg')
-    console.log('textChatBox:',textChatBox)
-    textChatBox.addEventListener('change',onChangeText(value))
 };
