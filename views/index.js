@@ -87,6 +87,8 @@ const openChatBox = () => {
 
 const deleteItem = (event) => {
     const prodId = event.target['value'] || event.target.parentNode['value'];
+    console.log('prodId:',prodId)
+    return;
     socket.emit('clientDeleteItem', prodId);
 };
 
