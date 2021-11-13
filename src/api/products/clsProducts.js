@@ -12,14 +12,14 @@ const write = async (file, items) => {
   );
 };
 
-class Contenedor {
-  constructor(fileName) {
+module.exports = class clsProducts {
+  constructor() {
     this.products = [];
   }
 
   async save(item) {
     try {
-      //fs.appendFile(`./${this.fileName}`,`"${item.id}":`+JSON.stringify(item, null, 2)+`,\n`, (err)=>{
+      
       const fileRead = await read(`productos.txt`);
 
       if (fileRead.length) {
@@ -122,7 +122,6 @@ class Contenedor {
       if (item.id === id) {
         const index = items.indexOf(item);
         const deletedItem = items.splice(index, 1);
-        console.log('deletedItem: ',items)
         finded= true;
         
       };
@@ -139,4 +138,3 @@ class Contenedor {
 
 };
 
-module.exports = Contenedor;

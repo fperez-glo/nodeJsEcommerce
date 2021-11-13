@@ -40,11 +40,5 @@
     "price": "9987",
     "thumbnail": "https://cdn4.iconfinder.com/data/icons/glyphlibrary-one/100/sunglasses-256.png",
     "id": 9
-  },
-  {
-    "title": "Coca Zero",
-    "price": "1233",
-    "thumbnail": "https://cdn3.iconfinder.com/data/icons/food-3-11/128/food_Soda-Pepsi-Cola-Coke-Beverage-256.png",
-    "id": 10
   }
 ]
