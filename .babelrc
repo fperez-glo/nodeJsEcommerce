@@ -2,5 +2,4 @@
   "sourceType": "unambiguous",
   "presets": ["@babel/preset-env"],
   "plugins": ["@babel/transform-runtime"]
-  
 }

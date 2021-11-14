@@ -1,0 +1,53 @@
+[
+  {
+    "id": 1,
+    "timestamp": "fecha creacion del carrito..",
+    "products": [
+      {
+        "id": 5,
+        "timestamp": "fecha de insert del producto en el carrito..",
+        "name": "Cartera",
+        "description": "Cartera de Cuero Ecologico",
+        "sku": "C0239A",
+        "thumbnail": "",
+        "price": 7889,
+        "stock": 3
+      },
+      {
+        "id": 2,
+        "timestamp": "fecha de insert del producto en el carrito..",
+        "name": "Adidas Superstar",
+        "description": "Zapatillas Adidas SuperStar",
+        "sku": "Z3778N",
+        "thumbnail": "",
+        "price": 12699,
+        "stock": 7
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "timeStamp": "14/11/2021 03:21:52",
+    "products": []
+  },
+  {
+    "id": 3,
+    "timeStamp": "14/11/2021 03:21:52",
+    "products": []
+  },
+  {
+    "id": 4,
+    "timeStamp": "14/11/2021 03:22:35",
+    "products": []
+  },
+  {
+    "id": 6,
+    "timeStamp": "14/11/2021 03:22:35",
+    "products": []
+  },
+  {
+    "id": 7,
+    "timeStamp": "14/11/2021 03:31:20",
+    "products": []
+  }
+]

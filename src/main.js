@@ -46,9 +46,9 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.static(__dirname + '/views'))
 
 //Rutas definidas
-app.use('/', prodApi);
-app.use('/cart', cartApi);
-app.use('/auth', authApi);
+app.use('/api/productos', prodApi);
+app.use('/api/carrito', cartApi);
+app.use('/api/auth', authApi);
 
 //Lo comento momentaneamente para que no utilice esta ruta post a "/"
 // app.post('/', update.single('fileUpload'), (req, res) => {

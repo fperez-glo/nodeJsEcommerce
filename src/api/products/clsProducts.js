@@ -20,18 +20,18 @@ module.exports = class clsProducts {
   async save(item) {
     try {
       
-      const fileRead = await read(`productos.txt`);
+      const fileRead = await read(`productos.json`);
 
       if (fileRead.length) {
         const items = JSON.parse(fileRead);
         item.id = items.length + 1;
         items.push(item);
         this.products = items;
-        await write(`productos.txt`, this.products);
+        await write(`productos.json`, this.products);
       } else {
         item.id = 1;
         this.products.push(item);
-        await write(`productos.txt`, this.products);
+        await write(`productos.json`, this.products);
       }
       return item;
     } catch (err) {
@@ -41,7 +41,7 @@ module.exports = class clsProducts {
 
   async getById(number) {
     let element
-    const fileRead = await read(`productos.txt`);
+    const fileRead = await read(`productos.json`);
 
     const items = JSON.parse(fileRead);
 
@@ -55,7 +55,7 @@ module.exports = class clsProducts {
   }
 
   async getAll() {
-    const fileRead = await read(`productos.txt`);
+    const fileRead = await read(`productos.json`);
 
     const allItems = JSON.parse(fileRead);
     return allItems;
@@ -64,14 +64,14 @@ module.exports = class clsProducts {
   
 
   async deleteAll() {
-      const fileRead = await read(`productos.txt`);
+      const fileRead = await read(`productos.json`);
       //Reviso si existe o almenos hay contenido en el archivo.
       if (fileRead.length){
         //parseo a objeto y reviso que tenga o no objetos en el array
         let items = JSON.parse(fileRead);
         if (items.length){
           items.length = 0;
-          await write(`productos.txt`, items)
+          await write(`productos.json`, items)
           console.log(`Se eliminaron todos los items.`);
           return
         };
@@ -83,7 +83,7 @@ module.exports = class clsProducts {
 
   async updateItem(id, params) {
     let finded = false;
-    const fileRead = await read(`productos.txt`);
+    const fileRead = await read(`productos.json`);
     //Reviso si existe o almenos hay contenido en el archivo.
     if (fileRead.length){
       //parseo a objeto y reviso que tenga o no objetos en el array
@@ -103,7 +103,7 @@ module.exports = class clsProducts {
         throw `No se encontro el producto con id: ${id}`
       };
 
-      await write(`productos.txt`, items);
+      await write(`productos.json`, items);
 
     } else {
       throw 'No se encontraron productos.'
@@ -114,7 +114,7 @@ module.exports = class clsProducts {
     id=parseInt(id);
     
     let finded = false;
-    const fileRead = await read(`productos.txt`);
+    const fileRead = await read(`productos.json`);
 
     let items = JSON.parse(fileRead);
     
@@ -132,7 +132,7 @@ module.exports = class clsProducts {
       throw `No se encontro el producto con id: ${id}`
     };
 
-    await write(`productos.txt`, items)
+    await write(`productos.json`, items)
     return items;
   };
 
