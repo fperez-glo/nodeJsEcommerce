@@ -42,21 +42,21 @@ module.exports = class clsCart {
       return this.cart.id;
     };
 
-    async getCartProducts ( { id } ) {
+    async getCartProducts ( { cartId } ) {
       let cartProducts, findedCart = false;
       const cartRead = await read('cart.json');
       const carts = JSON.parse(cartRead);
       
       if (carts.length) {
         carts.forEach(cart => {
-          if (cart.id === id) {
+          if (cart.id === cartId) {
             findedCart = true;
             cartProducts = cart.products;
           };
         });
 
         if (!findedCart) {
-          throw `No se encontro el carrito con id: ${id}.`
+          throw `No se encontro el carrito con id: ${cartId}.`
         };
 
         if (!cartProducts.length){
@@ -68,6 +68,47 @@ module.exports = class clsCart {
       } else {
         throw `No existen carritos disponibles.`
       };
+    };
+
+    async postAddCartProducts (product) {
+      const cartRead = await read('cart.json');
+      const carts = JSON.parse(cartRead);
+
+
+    };
+
+    async deleteCart ({ cartId }) {
+      const cartRead = await read('cart.json');
+      const carts = JSON.parse(cartRead); 
+      
+      const filteredCarts = carts.filter(cart => cart.id != cartId );
+
+      await write('cart.json', filteredCarts);
+    };
+
+    async deleteCartProduct ({ cartId, prodId }) {
+      let finded = false;
+      const cartRead = await read('cart.json');
+      const carts = JSON.parse(cartRead);
+
+      carts.forEach(cart => {
+        if (cart.id === cartId){
+          finded = true;
+          const filteredProducts = cart.products.filter(product => product.id != prodId);
+          this.cart.id = cartId;
+          this.cart.products = filteredProducts;
+          
+          carts.push(this.cart);
+        };
+      });
+
+      if (finded) {
+        await write('cart.json', carts);
+      };
+
+      //const filteredCarts = carts.filter(cart => cart.id != cartId );
+
+      //await write('cart.json', filteredCarts);
     };
 };
 
