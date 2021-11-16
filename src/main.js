@@ -1,22 +1,28 @@
 //Lo pongo momentaneamente para el desafio de webSockets
- const fs = require("fs");
- const moment = require('moment')
- const dateFormat = 'DD/MM/YYYY hh:mm:ss';
-///-----------------
+import fs from 'fs';
+import moment from 'moment';
+//---
+import http from 'http'
+import express from 'express';
+import multer from 'multer';
 
-const express = require(`express`);
-const multer = require('multer');
+import authApi from './api/auth/auth.js';
+import prodApi from './api/products/products.js';
+import cartApi from './api/cart/cart.js';
+import { Server } from 'socket.io';
+import clsProducts from './api/products/clsProducts.js';
 
+//Me traigo el pathname para reemplazar al __dirname en los ES6modules
+const {pathname: root} = new URL('../', import.meta.url)
 const app = express();
 const port = process.env.PORT || 8080;
-
+console.log('root:', root)
 //Importo la clase clsProducts para trabajar con los productos
-const clsProducts = require(__dirname + '/api/products/clsProducts');
 const itemContainer = new clsProducts();
 
 //Seteo las rutas del motor de plantillas ejs.
 app.set('view engine', 'ejs');
-app.set('views', __dirname + '/views');
+app.set('views', root + 'src/views');
 
 //Configurar multer para poder recibir archivos con distintos formatos.
 const storage = multer.diskStorage({
@@ -33,9 +39,7 @@ const storage = multer.diskStorage({
 
 const update = multer({ storage }); // Middleware
 
-const prodApi = require('./api/products/products');
-const cartApi = require('./api/cart/cart');
-const authApi = require('./api/auth/auth');
+
 
 
 //Este midleware te permite recibir el body que se envia como JSON desde POSTMAN por ej.
@@ -43,7 +47,7 @@ app.use(express.json());
 //Este midleware te permite recibir el body que se envia como POST desde un formulario HTML
 app.use(express.urlencoded({extended: false}));
 
-app.use(express.static(__dirname + '/views'))
+app.use(express.static(root + 'src/views'))
 
 //Rutas definidas
 app.use('/api/productos', prodApi);
@@ -58,11 +62,9 @@ app.use('/api/auth', authApi);
 
 
 //Server compatible para webSockets
-const http = require('http');
 const server = http.createServer(app);
 
 //Socket
-const { Server } = require('socket.io');
 const io = new Server(server);
 
 
@@ -97,14 +99,15 @@ io.on("connection", ( socket )=> {
 
     socket.on('userMessage', async(message) => {
         const date = moment()
-        const fileRead = await fs.promises.readFile(`${__dirname}/chat.txt`, `utf-8`);
+        const dateFormat = 'DD/MM/YYYY hh:mm:ss';
+        const fileRead = await fs.promises.readFile(`${root}src/chat.txt`, `utf-8`);
         const chats = JSON.parse(fileRead);
 
         message.datetime = date.format(dateFormat);
         chats.push(message)
 
          await fs.promises.writeFile(
-             `${__dirname}/chat.txt`,
+             `${root}src/chat.txt`,
              JSON.stringify(chats, null, 2) + `\n`
            );
 

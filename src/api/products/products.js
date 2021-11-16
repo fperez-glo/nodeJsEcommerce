@@ -1,6 +1,6 @@
-const express = require(`express`);
+import express from 'express';
 const { Router } = express;
-const clsProducts = require('./clsProducts');
+import clsProducts from './clsProducts.js';
 
 const itemContainer = new clsProducts();
 
@@ -70,4 +70,4 @@ async ({ params }, res) => {
     
 });
 
-module.exports = router
+export default router;

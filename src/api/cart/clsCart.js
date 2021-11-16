@@ -1,5 +1,6 @@
-const fs = require('fs');
-const moment = require('moment');
+import fs from 'fs';
+import moment from 'moment';
+
 const dateFormat = 'DD/MM/YYYY hh:mm:ss';
 
 const read = async (file) => {
@@ -14,7 +15,7 @@ const write = async (file, items) => {
   );
 };
 
-module.exports = class clsCart {
+export default class clsCart {
     constructor() {
       this.cart = {
         id: 0,

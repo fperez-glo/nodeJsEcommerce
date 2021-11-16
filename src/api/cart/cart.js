@@ -1,6 +1,5 @@
-const express = require(`express`);
-const { restart } = require('nodemon');
-const clsCart = require('./clsCart');
+import express from 'express';
+import clsCart from './clsCart.js';
 const { Router } = express
 const router = new Router();
 
@@ -60,4 +59,4 @@ router.delete('/:cartId/productos/:prodId', async( { params } , res ) => {
     }
 })
 
-module.exports = router
+export default router

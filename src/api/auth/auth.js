@@ -1,8 +1,8 @@
-const express = require(`express`);
+import express from 'express';
 const { Router } = express
 const router = new Router();
 
-const users = require('./users')
+import users from './users.js';
 
 router.get('/getUsers',(req, res) => {
     res.send({users})
@@ -18,4 +18,4 @@ router.post('/postLogin',(req, res) => {
     res.send({message: 'Usuario Logueado'})
 })
 
-module.exports = router
+export default router;
