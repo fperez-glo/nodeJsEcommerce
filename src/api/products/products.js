@@ -1,10 +1,21 @@
 import express from 'express';
 const { Router } = express;
+const app = express();
 import clsProducts from './clsProducts.js';
-
+app.use(express.json());
 const itemContainer = new clsProducts();
 
 const router = new Router();
+
+function isAdmin(req, res, next) {
+    console.log('req:', req.body)
+    if(req.body.administrador){
+        next();
+    } else {
+        res.send({message: `error: -1, ruta ${req.url} metodo ${req.method} no autorizada.`})
+    }
+}
+
 
 /** Devuelve todos los productos */
 router.get('/',
@@ -42,6 +53,9 @@ async ({ body }, res) => {
 /** Recibe y actualiza un producto */
 router.put('/:id',
 async ({ body, params }, res) => {
+    if(!body.req.administrador){
+        console.log('noes es admin.')
+    }
     try {
         const { id } = params;
         await itemContainer.updateItem(id, body);
@@ -63,5 +77,7 @@ async ({ params }, res) => {
     };
     
 });
+
+app.use(isAdmin);
 
 export default router;

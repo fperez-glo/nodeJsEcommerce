@@ -17,6 +17,9 @@ const {pathname: root} = new URL('../', import.meta.url)
 const app = express();
 const port = process.env.PORT || 8080;
 
+const isRouteExists = (req, res, next) => {
+    res.send({message: `error: -2, descripcion: ruta ${req.url} metodo: ${req.method} no implementada.`})
+}
 //Importo la clase clsProducts para trabajar con los productos
 const itemContainer = new clsProducts();
 
@@ -49,6 +52,19 @@ app.use(express.urlencoded({extended: false}));
 
 //app.use(express.static(root + 'src/views'))
 
+
+
+function isAdmin(req, res, next) {
+    if(req.body.administrador){
+        next();
+    } else {
+        res.send({message: `error: -1, ruta ${req.url} metodo ${req.method} no autorizada.`})
+    }
+}
+app.use(isAdmin);
+
+
+
 //Rutas definidas
 app.use('/api/productos', prodApi);
 app.use('/api/carrito', cartApi);
@@ -59,7 +75,7 @@ app.use('/api/auth', authApi);
 //     console.log(req.file)
 //     res.send(`Archivo guardado con exito.`)
 // });
-
+app.use(isRouteExists);
 
 //Server compatible para webSockets
 const server = http.createServer(app);
@@ -115,11 +131,6 @@ io.on("connection", ( socket )=> {
         
     });
     
-});
-
-app.use(function(err, req, res, next) {
-    console.log('asdasda')
-    res.status(500).send('Something broke!');
 });
 
 
