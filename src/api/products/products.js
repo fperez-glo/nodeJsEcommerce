@@ -10,8 +10,8 @@ const router = new Router();
 router.get('/',
 async (req, res) => {
     const products = await itemContainer.getAll();
-    res.render('index',{ products });
-    
+    //res.render('index',{ products });
+    res.send({products})
 });
 
 /** Devuelve un producto segun su id */
@@ -20,11 +20,7 @@ async ({ params }, res) => {
     try {
         const { id } = params;
         const product = await itemContainer.getById(id);
-        if (product){
-            res.send({product})
-        }else {
-            throw `Producto no encontrado`;
-        };
+        res.send({product})
     } catch (err) {
         res.send({err});
     };
@@ -34,10 +30,9 @@ async ({ params }, res) => {
 router.post('/',
 async ({ body }, res) => {
     try {
-        const { title, price, thumbnail } = body
-        const itemCreated = await itemContainer.save({ title, price, thumbnail });
-        //res.send(itemCreated)
-        res.redirect('/');
+        const itemCreated = await itemContainer.save(body);
+        res.send(itemCreated)
+        //res.redirect('/');
 
     } catch (err) {
         res.send({err})
@@ -49,12 +44,11 @@ router.put('/:id',
 async ({ body, params }, res) => {
     try {
         const { id } = params;
-        await itemContainer.updateItem(parseInt(id), body);
+        await itemContainer.updateItem(id, body);
         res.send({message: 'Producto actualizado.'})
     } catch (err) {
         res.send({err})
     }
-    
 });
 
 /** Elimina un producto segun su id */
@@ -62,7 +56,7 @@ router.delete('/:id',
 async ({ params }, res) => {
     try {
         const { id } = params;
-        await itemContainer.deleteById(parseInt(id));
+        await itemContainer.deleteById(id);
         res.send({message: 'Producto eliminado.'})
     } catch (err) {
         res.send({err})

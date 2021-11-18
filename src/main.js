@@ -16,13 +16,13 @@ import clsProducts from './api/products/clsProducts.js';
 const {pathname: root} = new URL('../', import.meta.url)
 const app = express();
 const port = process.env.PORT || 8080;
-console.log('root:', root)
+
 //Importo la clase clsProducts para trabajar con los productos
 const itemContainer = new clsProducts();
 
 //Seteo las rutas del motor de plantillas ejs.
 app.set('view engine', 'ejs');
-app.set('views', root + 'src/views');
+//app.set('views', root + 'src/views');
 
 //Configurar multer para poder recibir archivos con distintos formatos.
 const storage = multer.diskStorage({
@@ -47,7 +47,7 @@ app.use(express.json());
 //Este midleware te permite recibir el body que se envia como POST desde un formulario HTML
 app.use(express.urlencoded({extended: false}));
 
-app.use(express.static(root + 'src/views'))
+//app.use(express.static(root + 'src/views'))
 
 //Rutas definidas
 app.use('/api/productos', prodApi);
@@ -115,6 +115,11 @@ io.on("connection", ( socket )=> {
         
     });
     
+});
+
+app.use(function(err, req, res, next) {
+    console.log('asdasda')
+    res.status(500).send('Something broke!');
 });
 
 

@@ -19,17 +19,22 @@ export default class clsProducts {
 
   async save(item) {
     try {
-      
+      //const { title, description, sku, thumbnail, price, stock } = item;
       const fileRead = await read(`productos.json`);
 
       if (fileRead.length) {
         const items = JSON.parse(fileRead);
-        item.id = items.length + 1;
+
+        const findProd = items.filter(el => el.sku.toUpperCase() === item.sku.toUpperCase());
+        
+        if (findProd.length){
+          throw `El producto ${item.sku} ya existe.`
+        };
+
         items.push(item);
         this.products = items;
         await write(`productos.json`, this.products);
       } else {
-        item.id = 1;
         this.products.push(item);
         await write(`productos.json`, this.products);
       }
@@ -39,17 +44,21 @@ export default class clsProducts {
     }
   }
 
-  async getById(number) {
+  async getById(sku) {
     let element
     const fileRead = await read(`productos.json`);
 
     const items = JSON.parse(fileRead);
 
     items.forEach((item) => {
-      if (item.id === parseInt(number)) {
+      if (item.sku === sku) {
         element = item;
       }
     });
+    
+    if (!element){
+      throw `Producto no encontrado.`
+    };
 
     return element;
   }
@@ -83,17 +92,21 @@ export default class clsProducts {
 
   async updateItem(id, params) {
     let finded = false;
+    
     const fileRead = await read(`productos.json`);
     //Reviso si existe o almenos hay contenido en el archivo.
     if (fileRead.length){
+      
       //parseo a objeto y reviso que tenga o no objetos en el array
       let items = JSON.parse(fileRead);
       items.forEach((item)=>{
-        if (item.id === parseInt(id)){
-          const { title, price, thumbnail } = params;
+        
+        if (item.sku.toUpperCase() === id.toUpperCase()){
+          const { title, description, thumbnail, price, stock } = params;
           const index = items.indexOf(item);
           //Le asigno directamente params que contiene el body enviado a la api { title, price, thumbnail }.
-          items[index] =  { title, price, thumbnail, id};
+          //items[index] =  { title, price, thumbnail, id};
+          items[index] =  { title, description, sku: id, thumbnail, price, stock };
           finded = true
         };
       });
@@ -111,15 +124,13 @@ export default class clsProducts {
   };
 
   async deleteById(id) {
-    id=parseInt(id);
-    
     let finded = false;
     const fileRead = await read(`productos.json`);
-
+    console.log('id:',id)
     let items = JSON.parse(fileRead);
     
     items.forEach((item) => {
-      if (item.id === id) {
+      if (item.sku.toUpperCase() === id.toUpperCase()) {
         const index = items.indexOf(item);
         const deletedItem = items.splice(index, 1);
         finded= true;

@@ -28,11 +28,11 @@ router.post('/', async(req, res) => {
     };
 });
 
-router.post('/:cartId/productos/', async({ params }, res) => {
+router.post('/:cartId/productos/:prodId', async({ params }, res) => {
     try {
-        const { cartId } = params;
-        
-
+        const { cartId, prodId } = params;
+        await cartMethods.postAddCartProducts(parseInt(cartId), prodId);
+        res.send(`Producto agregado.`);
     } catch (err) {
         res.send(err);
     };
@@ -52,11 +52,11 @@ router.delete('/:cartId', async({ params }, res) => {
 router.delete('/:cartId/productos/:prodId', async( { params } , res ) => {
     try {
         const { cartId, prodId } = params;
-        await cartMethods.deleteCartProduct({ cartId: parseInt(cartId), prodId: parseInt(prodId) });
-        res.send('llega bien al EP')
+        await cartMethods.deleteCartProduct({ cartId: parseInt(cartId), prodId });
+        res.send('Producto Eliminado.')
     } catch (err) {
         res.send(err);
-    }
-})
+    };
+});
 
 export default router
