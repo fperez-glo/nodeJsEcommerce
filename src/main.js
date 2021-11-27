@@ -6,11 +6,12 @@ import http from 'http'
 import express from 'express';
 import multer from 'multer';
 
+
+import { Server } from 'socket.io';
+import clsProducts from './api/products/clsProducts.js';
 import authApi from './api/auth/auth.js';
 import prodApi from './api/products/products.js';
 import cartApi from './api/cart/cart.js';
-import { Server } from 'socket.io';
-import clsProducts from './api/products/clsProducts.js';
 
 //Me traigo el pathname para reemplazar al __dirname en los ES6modules
 const {pathname: root} = new URL('../', import.meta.url)
@@ -54,14 +55,7 @@ app.use(express.urlencoded({extended: false}));
 
 
 
-function isAdmin(req, res, next) {
-    if(req.body.administrador){
-        next();
-    } else {
-        res.send({message: `error: -1, ruta ${req.url} metodo ${req.method} no autorizada.`})
-    }
-}
-app.use(isAdmin);
+
 
 
 
