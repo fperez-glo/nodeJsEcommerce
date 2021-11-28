@@ -1,8 +1,8 @@
 [
   {
-    "title": "SmartPhone",
+    "sku": "SmartPhone",
     "price": 15400,
     "thumbnail": "https://cdn3.iconfinder.com/data/icons/flat-set-1/64/flat_set_1-25-256.png",
-    "id": 1
+    "description": "Nokia 1100"
   }
 ]
