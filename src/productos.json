@@ -1,50 +1,74 @@
 [
   {
     "title": "SmartPhone",
-    "price": 15400,
+    "description": "Celular 128gb",
+    "sku": "C0239A",
     "thumbnail": "https://cdn3.iconfinder.com/data/icons/flat-set-1/64/flat_set_1-25-256.png",
-    "id": 1
+    "price": 15400,
+    "stock": 3
   },
   {
-    "title": "Aceite Cañuelas",
-    "price": 363,
-    "thumbnail": "https://cdn4.iconfinder.com/data/icons/materia-flat-kitchen-vol-2/24/036_053_bottle_wine_drink_olive_oil_alcohol_food-256.png",
-    "id": 2
+    "title": "Cartera",
+    "description": "Cartera de Cuero Ecologico",
+    "sku": "APE9M2",
+    "thumbnail": "",
+    "price": 7889,
+    "stock": 3
   },
   {
-    "title": "Chocolate",
-    "price": "543",
-    "thumbnail": "https://cdn2.iconfinder.com/data/icons/bakery-kitchen-3/512/chocolate-sweet-candy-256.png",
-    "id": 3
+    "title": "Motorola One",
+    "description": "Celular Motorola One",
+    "sku": "Z3778N",
+    "thumbnail": "",
+    "price": 51512,
+    "stock": 7
   },
   {
-    "title": "Azucar",
-    "price": "9984",
-    "thumbnail": "https://cdn3.iconfinder.com/data/icons/food-set-8/100/objects-06-256.png",
-    "id": 5
+    "title": "Adidas Superstar",
+    "description": "Zapatillas Adidas SuperStar",
+    "sku": "JGHA33",
+    "thumbnail": "",
+    "price": 512,
+    "stock": 7
   },
   {
     "title": "Mouse Inalambrico",
-    "price": "6625",
-    "thumbnail": "https://cdn2.iconfinder.com/data/icons/unigrid-phantom-devices-vol-4/60/017_179_mouse_hardware-256.png",
-    "id": 6
+    "description": "Mouse inalambrico 2.4ghz",
+    "sku": "MSSJ235",
+    "thumbnail": "",
+    "price": 7347,
+    "stock": 7
   },
   {
-    "title": "Macbook",
-    "price": "999999",
+    "title": "Macbook PRO",
+    "description": "Macbook 16gb 512gb SSD",
+    "price": "551224",
+    "sku": "KL2231H",
     "thumbnail": "https://cdn2.iconfinder.com/data/icons/basic-flat-icon-set/128/macbook-256.png",
-    "id": 7
+    "stock": 4
   },
   {
-    "title": "Lentes de sol",
-    "price": "9987",
-    "thumbnail": "https://cdn4.iconfinder.com/data/icons/glyphlibrary-one/100/sunglasses-256.png",
-    "id": 9
+    "title": "Dell XPS",
+    "description": "Dell XPS i7",
+    "sku": "P882L2",
+    "thumbnail": "",
+    "price": 12699,
+    "stock": 7
   },
   {
-    "title": "Coca Zero",
-    "price": "1233",
-    "thumbnail": "https://cdn3.iconfinder.com/data/icons/food-3-11/128/food_Soda-Pepsi-Cola-Coke-Beverage-256.png",
-    "id": 10
+    "title": "Nike",
+    "description": "Zapatillas Nike",
+    "sku": "Z3785D",
+    "thumbnail": "",
+    "price": 12699,
+    "stock": 7
+  },
+  {
+    "title": "sss de muza",
+    "description": "Pizza grande de muza",
+    "sku": "kkHLGFKAS",
+    "thumbnail": "",
+    "price": 1300,
+    "stock": 4
   }
 ]

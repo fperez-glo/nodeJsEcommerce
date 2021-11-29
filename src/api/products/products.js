@@ -1,17 +1,28 @@
-const express = require(`express`);
+import express from 'express';
 const { Router } = express;
-const clsProducts = require('./clsProducts');
-
+const app = express();
+import clsProducts from './clsProducts.js';
+app.use(express.json());
 const itemContainer = new clsProducts();
 
 const router = new Router();
+
+function isAdmin(req, res, next) {
+    console.log('req:', req.body)
+    if(req.body.administrador){
+        next();
+    } else {
+        res.send({message: `error: -1, ruta ${req.url} metodo ${req.method} no autorizada.`})
+    }
+}
+
 
 /** Devuelve todos los productos */
 router.get('/',
 async (req, res) => {
     const products = await itemContainer.getAll();
-    res.render('index',{ products });
-    
+    //res.render('index',{ products });
+    res.send({products})
 });
 
 /** Devuelve un producto segun su id */
@@ -20,11 +31,7 @@ async ({ params }, res) => {
     try {
         const { id } = params;
         const product = await itemContainer.getById(id);
-        if (product){
-            res.send({product})
-        }else {
-            throw `Producto no encontrado`;
-        };
+        res.send({product})
     } catch (err) {
         res.send({err});
     };
@@ -34,10 +41,9 @@ async ({ params }, res) => {
 router.post('/',
 async ({ body }, res) => {
     try {
-        const { title, price, thumbnail } = body
-        const itemCreated = await itemContainer.save({ title, price, thumbnail });
-        //res.send(itemCreated)
-        res.redirect('/');
+        const itemCreated = await itemContainer.save(body);
+        res.send(itemCreated)
+        //res.redirect('/');
 
     } catch (err) {
         res.send({err})
@@ -47,14 +53,16 @@ async ({ body }, res) => {
 /** Recibe y actualiza un producto */
 router.put('/:id',
 async ({ body, params }, res) => {
+    if(!body.req.administrador){
+        console.log('noes es admin.')
+    }
     try {
         const { id } = params;
-        await itemContainer.updateItem(parseInt(id), body);
+        await itemContainer.updateItem(id, body);
         res.send({message: 'Producto actualizado.'})
     } catch (err) {
         res.send({err})
     }
-    
 });
 
 /** Elimina un producto segun su id */
@@ -62,7 +70,7 @@ router.delete('/:id',
 async ({ params }, res) => {
     try {
         const { id } = params;
-        await itemContainer.deleteById(parseInt(id));
+        await itemContainer.deleteById(id);
         res.send({message: 'Producto eliminado.'})
     } catch (err) {
         res.send({err})
@@ -70,4 +78,6 @@ async ({ params }, res) => {
     
 });
 
-module.exports = router
+app.use(isAdmin);
+
+export default router;

@@ -2,7 +2,7 @@
   "name": "nodeJsEcommerce",
   "version": "1.0.0",
   "description": "Proyecto de backend Ecommerce hecho con Express de nodeJs",
-  "main": "./src/main.js",
+  "main": "src/main.js",
   "dependencies": {
     "ejs": "^3.1.6",
     "express": "^4.17.1",
@@ -45,5 +45,6 @@
   "bugs": {
     "url": "https://github.com/fperez-glo/nodeJsEcommerce/issues"
   },
-  "homepage": "https://github.com/fperez-glo/nodeJsEcommerce#readme"
+  "homepage": "https://github.com/fperez-glo/nodeJsEcommerce#readme",
+  "type": "module"
 }

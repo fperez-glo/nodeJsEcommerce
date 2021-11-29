@@ -1,8 +1,14 @@
-const path = require('path');
-const nodeExternals = require('webpack-node-externals');
-const NodemonPlugin = require('nodemon-webpack-plugin');
+import path, { dirname }  from 'path';
+import { fileURLToPath } from 'url';
+import nodeExternals from 'webpack-node-externals';
+//Este plugin se utiliza para arrancar el servidor ni bien compila el productivo.
+import NodemonPlugin from 'nodemon-webpack-plugin';
 
-module.exports = {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+//console.log('rooot:',path.resolve(__dirname, 'dist'))
+export default {
     entry: './src/main.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -29,7 +35,7 @@ module.exports = {
             },
         ]
     },
-    plugins: [
-        new NodemonPlugin(),
-    ],
+    // plugins: [
+    //     new NodemonPlugin(),
+    // ],
 };
