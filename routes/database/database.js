@@ -2,13 +2,15 @@ const connection = require('./connection.js')
 const knex = require ('knex')(connection);
 
 
-const createTableUsers = async () => {
-    await knex.schema.createTable('users', table => {
-        table.primary('userId'),
-        table.string('name'),
-        table.string('password')
+(async () => {
+    await knex.schema.createTableIfNotExists('users', table => {
+        table.string('userId',30),
+        table.string('name',30),
+        table.string('password',30),
+
+        table.primary('userId')
+
     })
-};
+})();
 
 
-createTableUsers();
