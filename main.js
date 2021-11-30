@@ -1,18 +1,22 @@
 //Lo pongo momentaneamente para el desafio de webSockets
 const fs = require("fs");
 const moment = require('moment')
-const dateFormat = 'DD/MM/YYYY hh:mm:ss';
+const dateFormat = 'YYYY/MM/DD hh:mm:ss';
 ///-----------------
-
+//SQL CONNECTIONS
+const connections = require('./routes/database/connection')
+const mysqlKnex = require ('knex')(connections.mysql);
+const sqlite3Knex = require('knex')(connections.sqlite3)
+///-----------------
 const express = require(`express`);
 const multer = require('multer');
 
 const app = express();
 const port = process.env.PORT || 8080;
 
-//Importo la clase contenedor para trabajar con los productos
-const Contenedor = require('./Contenedor');
-const itemContainer = new Contenedor();
+//Importo la clase clsProducts para trabajar con los productos
+const clsProducts = require('./routes/products/clsProducts');
+const itemContainer = new clsProducts(mysqlKnex);
 
 //Seteo las rutas del motor de plantillas ejs.
 app.set('view engine', 'ejs');
@@ -73,13 +77,13 @@ io.on("connection", ( socket )=> {
 
     socket.on("clietProdSend", async(prod)=>{
         //Guardo el producto en mi array/database local.
-        const { title, price, thumbnail } = prod
-        const itemCreated = await itemContainer.save({ title, price, thumbnail });
+        const { sku, description, price, thumbnail } = prod
+        const itemCreated = await itemContainer.save({ sku, description,price, thumbnail });
         
         //Obtengo todos los productos actualizados
         //Tuve que hacerlo de esta forma ya que el metodo save es el que me genera el identificador al producto ingresado.
         const products = await itemContainer.getAll();
-        
+        console.log('productos de getall:',products)
         //Envio los productos a los clientes.
         io.sockets.emit('serverProductsResponse',products)
         
@@ -87,29 +91,42 @@ io.on("connection", ( socket )=> {
 
     socket.on('clientDeleteItem', async(prodId) => {
         try {
-            console.log('producto id: ', prodId)
-            console.log('paso 1')
             const filteredProducts = await itemContainer.deleteById(prodId);
             io.sockets.emit('serverProductsResponse',filteredProducts)
-            console.log('paso 2')    
+            
         } catch (error) {
-            console.log('Salio por el catch de clientDeleteItem. Error: ',error)
+            res.send({error})
         }
         
     })
 
     socket.on('userMessage', async(message) => {
-        const date = moment()
-        const fileRead = await fs.promises.readFile(`./chat.txt`, `utf-8`);
-        const chats = JSON.parse(fileRead);
-
+        const date = moment();
         message.datetime = date.format(dateFormat);
-        chats.push(message)
+        await sqlite3Knex('mensajes').insert(message);
+        
+        //Luego de guardar levanto los mensajes para devolverlos por websocket.
+        const chats = await sqlite3Knex.from('mensajes');
 
-        await fs.promises.writeFile(
-            `./chat.txt`,
-            JSON.stringify(chats, null, 2) + `\n`
-          );
+        io.sockets.emit('serverChatResponse',chats);
+        
+    });
+
+    socket.on('clientEmptyChat',async() => {
+        
+        await sqlite3Knex('mensajes').del();
+        
+        //Luego de guardar levanto los mensajes para devolverlos por websocket.
+        const chats = await sqlite3Knex.from('mensajes');
+
+        io.sockets.emit('serverChatResponse',chats);
+        
+    });
+
+    socket.on('clientAuth',async() => {
+        
+        //Cuando se autentica un usuario le envio los mensajes.
+        const chats = await sqlite3Knex.from('mensajes');
 
         io.sockets.emit('serverChatResponse',chats);
         

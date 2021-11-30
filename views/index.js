@@ -15,15 +15,15 @@ const renderProds = (products) => {
         //Se arma el bulk para insertar al DOM html
         return `
         <tr>
-            <th scope="row" id="prodId"> ${prod.id} </th>
-            <td> ${prod.title} </td>
+            <th scope="row" id="prodId"> ${prod.sku} </th>
+            <td> ${prod.description} </td>
             <td>$ ${prod.price}</td>
             <td>
             <img src="${prod.thumbnail}" alt="" height="50" width="50" />
             </td>
             <td>
-                <button value="${prod.id}" class='btn' onclick="deleteItem(event)">
-                    <img value="${prod.id}" src="https://cdn1.iconfinder.com/data/icons/color-bold-style/21/56-256.png" alt="" height="20" width="20">
+                <button value="${prod.sku}" class='btn' onclick="deleteItem(event)">
+                    <img value="${prod.sku}" src="https://cdn1.iconfinder.com/data/icons/color-bold-style/21/56-256.png" alt="" height="20" width="20">
                 </button>
             </td>
         </tr>      
@@ -56,8 +56,9 @@ const renderChat = (chats) => {
 const sendInfo = () => {
     
     const item = {
-        title: document.querySelector("#tt").value,
+        sku: document.querySelector("#tt").value,
         price: document.querySelector("#pr").value,
+        description: document.querySelector("#td").value,
         thumbnail: document.querySelector("#tb").value,
     };
     
@@ -71,21 +72,19 @@ const sendInfo = () => {
     return false;
 };
 
-const openChatBox = () => { 
-    console.log('Abro el chat')
+const emptyChatBox = () => { 
     
-    if (chatOpened) {
-        console.log('Cierro el chat')
-    };
 
+    socket.emit('clientEmptyChat');
     //No me anduvo esto.. queria que incruste este codigo y renderize el chat.
-    const html =  `<%- include('templates/chat')  %>`
-    document.querySelector("#chatBox").innerHTML = html;
-    chatOpened = true;
-
+    
+    //document.querySelector("#chatBox") = '';
+    chatEmpty = true;
+    
 };
 
 const deleteItem = (event) => {
+    console.log(event.target)
     const prodId = event.target['value'] || event.target.parentNode['value'];
     socket.emit('clientDeleteItem', prodId);
 };
@@ -119,6 +118,8 @@ const confirmUser = () => {
             </div>`;
 
     document.querySelector('#textChatBox').innerHTML = html;
+
+    socket.emit('clientAuth');
     
 };
 
