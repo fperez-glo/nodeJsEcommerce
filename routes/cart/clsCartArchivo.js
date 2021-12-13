@@ -1,6 +1,6 @@
-import fs from 'fs';
-import moment from 'moment';
-import clsProducts from '../products/clsProducts.js';
+const fs = require('fs');
+const moment  = require('moment');
+const clsProducts  = require('../products/clsProductsArchivo.js');
 
 const dateFormat = 'DD/MM/YYYY hh:mm:ss';
 const productMethods = new clsProducts();
@@ -17,7 +17,7 @@ const write = async (file, items) => {
   );
 };
 
-export default class clsCart {
+module.exports = class clsCart {
     constructor() {
       this.cart = {
         id: 0,

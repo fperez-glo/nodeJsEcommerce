@@ -1,5 +1,5 @@
-import express from 'express';
-import clsCart from './clsCart.js';
+const express = require('express');
+const clsCart = require('./clsCartArchivo');
 const { Router } = express
 const router = new Router();
 
@@ -59,4 +59,4 @@ router.delete('/:cartId/productos/:prodId', async( { params } , res ) => {
     };
 });
 
-export default router
+module.exports = router

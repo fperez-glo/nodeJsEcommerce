@@ -1,4 +1,4 @@
-import fs from 'fs';
+const fs = require('fs');
 
 const read = async (file) => {
   const read = await fs.promises.readFile(`./src/${file}`, `utf-8`);
@@ -12,7 +12,7 @@ const write = async (file, items) => {
   );
 };
 
-export default class clsProducts {
+module.exports = class clsProducts {
   constructor() {
     this.products = [];
   }

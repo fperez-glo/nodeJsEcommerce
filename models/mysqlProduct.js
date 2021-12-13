@@ -24,7 +24,7 @@ const Product = mysqlSequelize.define(
       type: DataTypes.STRING(200),
     },
     stock: {
-      type: DataTypes.D,
+      type: DataTypes.INTEGER,
     },
   },
   { timestamps: false }
