@@ -1,0 +1,74 @@
+[
+    {
+      "title": "SmartPhone",
+      "description": "Celular 128gb",
+      "sku": "C0239A",
+      "thumbnail": "https://cdn3.iconfinder.com/data/icons/flat-set-1/64/flat_set_1-25-256.png",
+      "price": 15400,
+      "stock": 3
+    },
+    {
+      "title": "Cartera",
+      "description": "Cartera de Cuero Ecologico",
+      "sku": "APE9M2",
+      "thumbnail": "",
+      "price": 7889,
+      "stock": 3
+    },
+    {
+      "title": "Motorola One",
+      "description": "Celular Motorola One",
+      "sku": "Z3778N",
+      "thumbnail": "",
+      "price": 51512,
+      "stock": 7
+    },
+    {
+      "title": "Adidas Superstar",
+      "description": "Zapatillas Adidas SuperStar",
+      "sku": "JGHA33",
+      "thumbnail": "",
+      "price": 512,
+      "stock": 7
+    },
+    {
+      "title": "Mouse Inalambrico",
+      "description": "Mouse inalambrico 2.4ghz",
+      "sku": "MSSJ235",
+      "thumbnail": "",
+      "price": 7347,
+      "stock": 7
+    },
+    {
+      "title": "Macbook PRO",
+      "description": "Macbook 16gb 512gb SSD",
+      "price": "551224",
+      "sku": "KL2231H",
+      "thumbnail": "https://cdn2.iconfinder.com/data/icons/basic-flat-icon-set/128/macbook-256.png",
+      "stock": 4
+    },
+    {
+      "title": "Dell XPS",
+      "description": "Dell XPS i7",
+      "sku": "P882L2",
+      "thumbnail": "",
+      "price": 12699,
+      "stock": 7
+    },
+    {
+      "title": "Nike",
+      "description": "Zapatillas Nike",
+      "sku": "Z3785D",
+      "thumbnail": "",
+      "price": 12699,
+      "stock": 7
+    },
+    {
+      "title": "sss de muza",
+      "description": "Pizza grande de muza",
+      "sku": "kkHLGFKAS",
+      "thumbnail": "",
+      "price": 1300,
+      "stock": 4
+    }
+  ]

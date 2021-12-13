@@ -10,6 +10,9 @@ const Product = mysqlSequelize.define(
       require: true,
       primaryKey: true,
     },
+    title: {
+      type: DataTypes.STRING(50),
+    },
     description: {
       type: DataTypes.STRING(200),
     },
@@ -19,6 +22,9 @@ const Product = mysqlSequelize.define(
     },
     thumbnail: {
       type: DataTypes.STRING(200),
+    },
+    stock: {
+      type: DataTypes.D,
     },
   },
   { timestamps: false }
