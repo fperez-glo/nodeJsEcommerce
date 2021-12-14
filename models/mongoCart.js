@@ -1,4 +1,5 @@
-const mongoose ,{ Schema, model, now } = require('mongoose');
+const { Schema, model, now } = require('mongoose');
+const  mongoose = require('mongoose');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const cartSchema = new Schema({
@@ -13,6 +14,7 @@ const cartSchema = new Schema({
     },
     products: {
         type: Object,
+        default: [],
         sku: {
             type: String,
             required:true,

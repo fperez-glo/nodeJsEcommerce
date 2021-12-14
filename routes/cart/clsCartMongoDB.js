@@ -1,161 +1,165 @@
-const fs = require('fs');
-const moment  = require('moment');
-const clsProducts  = require('../products/clsProductsArchivo.js');
-
-const dateFormat = 'DD/MM/YYYY hh:mm:ss';
-const productMethods = new clsProducts();
-
-const read = async (file) => {
-  const read = await fs.promises.readFile(`./src/${file}`, `utf-8`);
-  return read;
-};
-
-const write = async (file, items) => {
-  await fs.promises.writeFile(
-    `./src/${file}`,
-    JSON.stringify(items, null, 2) + `\n`
-  );
-};
+const Cart = require("../../models/mongoCart");
+const Product = require("../../models/mongoProduct");
 
 module.exports = class clsCart {
-    constructor() {
-      this.cart = {
-        id: 0,
-        products: []
-      };
+  constructor() {
+    this.cart = {
+      // id: 0,
+      products: [],
     };
+  }
 
+  // FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:
+  // FIXME: TODO ESTO ESTA EN IDIOMA SEQUELIZE.. TENGO QUE PASARLO A MONGOOSE 
+  // FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:FIXME:
 
-    async postCart () {
-      const cartRead = await read('cart.json');
-      const carts = JSON.parse(cartRead);
-      
-      this.cart.id = carts.length + 1;
-      
-      carts.forEach(cart => {
-        while (cart.id === this.cart.id){
-          this.cart.id += 1;
-        };
+  async postCart() {
+    
+    const cart = new Cart()
+    await cart.save()
+
+    
+
+    //return cartId;
+  }
+
+  async getCartProducts({ cartId }) {
+    const carts = await Cart.count({
+      where: {
+        cartId,
+      },
+    });
+
+    if (carts) {
+      const cartProducts = await Cart.findAll({
+        where: {
+          cartId,
+        },
+        attributes: ["products"],
       });
 
-      carts.push(this.cart);
+      if (!cartProducts.length) {
+        throw `No se encontraron productos en el carrito.`;
+      }
 
-      await write('cart.json', carts);
-      return this.cart.id;
-    };
+      return JSON.parse(cartProducts[0].products);
+    } else {
+      throw `No se encontro el carrito con id: ${cartId}.`;
+    }
+  }
 
-    async getCartProducts ( { cartId } ) {
-      let cartProducts, findedCart = false;
-      const cartRead = await read('cart.json');
-      const carts = JSON.parse(cartRead);
-      
-      if (carts.length) {
-        carts.forEach(cart => {
-          if (cart.id === cartId) {
-            findedCart = true;
-            cartProducts = cart.products;
-          };
-        });
+  async postAddCartProducts(cartId, prodId) {
+    let product;
+    let prodsToUpdate = [];
 
-        if (!findedCart) {
-          throw `No se encontro el carrito con id: ${cartId}.`
-        };
+    const cart = await Cart.findAll({
+      where: {
+        cartId,
+      },
+    });
 
-        if (!cartProducts.length){
-          throw `No se encontraron productos en el carrito.`
-        };
+    if (!cart.length) {
+      throw `No se encontro el carrito con id ${cartId}`;
+    }
 
-        return cartProducts;
+    const prod = await Product.findAll({
+      where: {
+        sku: prodId,
+      },
+      attributes: ["sku", "title"],
+    });
 
-      } else {
-        throw `No existen carritos disponibles.`
-      };
-    };
+    if (!prod.length) {
+      throw `El producto ${prodId} no existe.`;
+    }
 
-    async postAddCartProducts (cartId, prodId) {
-      let findedCart= false;
-      let cartsToReinsert = []
+    // Me creo un objeto para guardar el producto enviado
+    product = prod[0].dataValues;
+    // TODO: Levanto una cantidad (esta deberia llegar tambien por parametro a la api al ingresar el producto al carrito.)
+    product.qty = 1;
 
-      const cartRead = await read('cart.json');
-      
-      //Tuve que leer los productos afuera sino me causaba problemas 
-      //al declarar el callback del forEach como asincrono
-      const prodRead = await read('productos.json');
+    //Si existen, me guardo los productos que ya tiene el carrito.
+    if (cart[0].dataValues?.products) {
+      prodsToUpdate = JSON.parse(cart[0].dataValues.products);
 
-      const carts = JSON.parse(cartRead);
-
-      carts.forEach( cart => {
-        if (cart.id === cartId){
-          findedCart= true;
-          
-          const products = JSON.parse(prodRead);
-          const filterProd = products.filter(prod => prod.sku === prodId)
-          
-          if (!filterProd.length){
-            throw `El producto ${prodId} no existe.`
-          };
-
-          //Hago esto para filtrar el carrito donde agrego el producto (eliminarlo y volverlo a meter)
-          cartsToReinsert = carts.filter (cart => cart.id != cartId)
-          
-          //Esto es para agregarle a la cola de productos que ya tiene el carrito.
-          cart.products.push(filterProd[0]);
-
-          //Asigno al carrito de mi constructor..
-          this.cart.id = cartId;
-          this.cart.products = cart.products;
-          
-          //pusheo el carro construido al bulk de carros
-          cartsToReinsert.push(this.cart);
-          
-        };
+      prodsToUpdate.forEach((prod) => {
+        //Si encuentra quiere decir que el producto que envio ya esta en el carrito.
+        if (prod.sku === prodId) {
+          console.log("encontrado!!");
+          product = prod;
+          product.qty += 1;
+        }
       });
+      //filtro el producto y lo vuelvo a insertar con la nueva cantidad. Esto ahorarria mucho espacio fisico en la DB.
+      prodsToUpdate = prodsToUpdate.filter((prod) => prod.sku != prodId);
+    }
 
-      if (!findedCart) {
-        throw `No se encontro el carrito con id ${cartId}`;
-      };
+    prodsToUpdate.push(product);
+    console.log("prodsToUpdate:", prodsToUpdate);
 
-      await write('cart.json', cartsToReinsert);
-      
-    };
+    //Updateo el registro en la DB.
+    Cart.update(
+      {
+        products: JSON.stringify(prodsToUpdate),
+      },
+      {
+        where: {
+          cartId,
+        },
+      }
+    );
+  }
 
-    async deleteCart ({ cartId }) {
-      const cartRead = await read('cart.json');
-      const carts = JSON.parse(cartRead); 
-      
-      const filteredCarts = carts.filter(cart => cart.id != cartId );
+  async deleteCart({ cartId }) {
+    await Cart.destroy({
+      where: {
+        cartId,
+      },
+    });
+  }
 
-      await write('cart.json', filteredCarts);
-    };
+  async deleteCartProduct({ cartId, prodId }) {
+    let finded = false;
+    let productsToReinsert = [];
 
-    async deleteCartProduct ({ cartId, prodId }) {
-      let finded = false;
-      let cartsToReinsert = []
+    const cart = await Cart.findAll({
+      where: {
+        cartId,
+      },
+    });
 
-      const cartRead = await read('cart.json');
-      const carts = JSON.parse(cartRead);
+    if (!cart.length) {
+      throw `No se encontro el carrito con id ${cartId}`;
+    }
 
-      carts.forEach(cart => {
-        if (cart.id === cartId){
-          finded = true;
+    let { products } = cart[0];
 
-          //No valido existencia del producto porque se supone ya que existe.
-          const filteredProducts = cart.products.filter(product => product.sku != prodId);
+    products = JSON.parse(products);
 
-          //Hago esto para filtrar el carrito donde agrego el producto (eliminarlo y volverlo a meter)
-          cartsToReinsert = carts.filter (cart => cart.id != cartId)
+    //Tengo que buscarlo de esta forma ya que desde la DB estoy manejando un array de objetos pasado string.
+    products.forEach((prod) => {
+      if (prod.sku === prodId) {
+        finded = true;
+        productsToReinsert = JSON.stringify(
+          products.filter((prod) => prod.sku != prodId)
+        );
+      }
+    });
 
-          this.cart.id = cartId;
-          this.cart.products = filteredProducts;
-          
-          cartsToReinsert.push(this.cart);
-        };
-      });
+    if (!finded) {
+      throw `No se encontro el producto '${prodId}' en el carrito '${cartId}'`;
+    }
 
-      if (!finded) {
-        throw `No se encontro el carrito.`
-      };
-
-      await write('cart.json', cartsToReinsert);
-    };
+    //Updateo el carrito con los productos filtrados.
+    await Cart.update(
+      {
+        products: productsToReinsert,
+      },
+      {
+        where: {
+          cartId,
+        },
+      }
+    );
+  }
 };

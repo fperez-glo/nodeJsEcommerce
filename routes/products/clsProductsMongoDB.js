@@ -1,17 +1,5 @@
-const fs = require("fs");
 const Product = require("../../models/mongoProduct");
 
-const read = async (file) => {
-  const read = await fs.promises.readFile(`./${file}`, `utf-8`);
-  return read;
-};
-
-const write = async (file, items) => {
-  await fs.promises.writeFile(
-    `./${file}`,
-    JSON.stringify(items, null, 2) + `\n`
-  );
-};
 
 module.exports = class clsProductsMongoDB {
   
