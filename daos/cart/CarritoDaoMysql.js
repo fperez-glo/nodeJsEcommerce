@@ -1,8 +1,8 @@
-const clsCartMysql = require('../../routes/products/clsCartMysql.js');
+const clsCartMysql = require('../../routes/cart/clsCartMysql.js');
 
 module.exports = class CarritoDaoMysql extends clsCartMysql {
 
     constructor() {
-        super('productos')
+        super()
     };
 };

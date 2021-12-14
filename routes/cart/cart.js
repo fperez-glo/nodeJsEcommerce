@@ -1,15 +1,16 @@
 const express = require('express');
-const clsCart = require('./clsCartArchivo');
+//const clsCart = require('./clsCartArchivo');
 const { Router } = express
 const router = new Router();
 
-const cartMethods = new clsCart();
+//const cartMethods = new clsCart();
+const { carritosDao } = require('../../daos/index.js')
 
 router.get('/:cartId/productos',async ({ params }, res) => {
     try {
         //Capturo el id del carrito.
         const { cartId } = params;
-        const cartProducts = await cartMethods.getCartProducts({cartId: parseInt(cartId)});
+        const cartProducts = await carritosDao.getCartProducts({cartId: parseInt(cartId)});
         //console.log('cartProducts: ',cartProducts);
 
         res.send({ cartProducts });
@@ -20,7 +21,7 @@ router.get('/:cartId/productos',async ({ params }, res) => {
 
 router.post('/', async(req, res) => {
     try {
-        const genCartId = await cartMethods.postCart();
+        const genCartId = await carritosDao.postCart();
 
         res.send(`Se genero el carrito con id: ${genCartId}.`)
     } catch (err) {
@@ -31,7 +32,7 @@ router.post('/', async(req, res) => {
 router.post('/:cartId/productos/:prodId', async({ params }, res) => {
     try {
         const { cartId, prodId } = params;
-        await cartMethods.postAddCartProducts(parseInt(cartId), prodId);
+        await carritosDao.postAddCartProducts(parseInt(cartId), prodId);
         res.send(`Producto agregado.`);
     } catch (err) {
         res.send(err);
@@ -41,7 +42,7 @@ router.post('/:cartId/productos/:prodId', async({ params }, res) => {
 router.delete('/:cartId', async({ params }, res) => {
     try {
         const { cartId } = params;
-        await cartMethods.deleteCart({ cartId: parseInt(cartId) });
+        await carritosDao.deleteCart({ cartId: parseInt(cartId) });
 
         res.send(`Se elimino el carrito con id: ${cartId}.`);
     } catch (err) {
@@ -52,7 +53,7 @@ router.delete('/:cartId', async({ params }, res) => {
 router.delete('/:cartId/productos/:prodId', async( { params } , res ) => {
     try {
         const { cartId, prodId } = params;
-        await cartMethods.deleteCartProduct({ cartId: parseInt(cartId), prodId });
+        await carritosDao.deleteCartProduct({ cartId: parseInt(cartId), prodId });
         res.send('Producto Eliminado.')
     } catch (err) {
         res.send(err);

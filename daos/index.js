@@ -3,13 +3,14 @@ let productosDao
 let carritosDao
 
 switch (process.env.DATASERVER) {
-    // case 'ARCHIVO':
-    //     const { default: ProductosDaoArchivo } = require('./productos/ProductosDaoArchivo.js')
-    //     const { default: CarritosDaoArchivo } = require('./carritos/CarritosDaoArchivo.js')
+    case 'ARCHIVO':
+        console.log('entra por ARCHIVO')
+        const ProductosDaoArchivo = require('./products/ProductosDaoArchivo.js')
+        const CarritosDaoArchivo = require('./cart/CarritoDaoArchivo.js')
 
-    //     productosDao = new ProductosDaoArchivo()
-    //     carritosDao = new CarritosDaoArchivo()
-    //     break
+        productosDao = new ProductosDaoArchivo()
+        carritosDao = new CarritosDaoArchivo()
+        break
     // case 'FIREBASE':
     //     const { default: ProductosDaoFirebase } = require('./productos/ProductosDaoFirebase.js')
     //     const { default: CarritosDaoFirebase } = require('./carritos/CarritosDaoFirebase.js')
@@ -19,20 +20,20 @@ switch (process.env.DATASERVER) {
     //     break
     case 'MONGODB':
         console.log('entra por MONGODB')
-        const  ProductosDaoMongoDB  = require('./products/ProductosDaoMongoDB')
-        // const { default: CarritosDaoMongoDb } = require('./carritos/CarritosDaoMongoDb.js')
+        const  ProductosDaoMongoDB  = require('./products/ProductosDaoMongoDB');
+        const  CarritosDaoMongoDb  = require('./cart/CarritoDaoMongoDB.js');
 
         productosDao = new ProductosDaoMongoDB()
-        // carritosDao = new CarritosDaoMongoDb()
+        carritosDao = new CarritosDaoMongoDb()
         break
     case 'MYSQL':
         console.log('entra por MYSQL')
         const  ProductosDaoMysql  = require('./products/ProductosDaoMysql.js')
-        //const { default: CarritosDaoMariaDb } = require('./carritos/CarritosDaoMariaDb.js')
+        const  CarritosDaoMariaDb  = require('./cart/CarritoDaoMysql.js')
 
         productosDao = new ProductosDaoMysql()
-    //     carritosDao = new CarritosDaoMariaDb()
-    //     break
+        carritosDao = new CarritosDaoMariaDb()
+        break
     // case 'SQLITE3':
     //     const { default: ProductosDaoSQLite3 } = require('./productos/ProductosDaoSQLite3.js')
     //     const { default: CarritosDaoSQLite3 } = require('./carritos/CarritosDaoSQLite3.js')

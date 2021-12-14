@@ -1,8 +1,6 @@
-const clsCartArchivo = require('../../routes/products/clsCartArchivo.js');
+const clsCartArchivo = require('../../routes/cart/clsCartArchivo.js');
 
 module.exports = class CarritoDaoArchivo extends clsCartArchivo {
 
-    constructor() {
-        super('productos')
-    };
+    constructor() {super()};
 };

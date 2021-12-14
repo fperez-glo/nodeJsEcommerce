@@ -1,8 +1,8 @@
-const clsCartMongoDB = require('../../routes/products/clsCartMongoDB.js');
+const clsCartMongoDB = require('../../routes/cart/clsCartMongoDB.js');
 
 module.exports = class CarritoDaoMongoDB extends clsCartMongoDB {
 
     constructor() {
-        super('productos')
+        super()
     };
 };
