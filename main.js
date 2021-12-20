@@ -1,6 +1,5 @@
 //Lo pongo momentaneamente para el desafio de webSockets
-const fs = require("fs");
-const moment = require('moment')
+const { now } = require('moment');
 const dateFormat = 'YYYY/MM/DD hh:mm:ss';
 ///-----------------
 //SQL CONNECTIONS
@@ -23,24 +22,25 @@ app.set('view engine', 'ejs');
 app.set('views', './views');
 
 //Configurar multer para poder recibir archivos con distintos formatos.
-const storage = multer.diskStorage({
+// const storage = multer.diskStorage({
 
-    destination: (req, file, cb)=> {
-        //recibe el nombre de la carpeta donde se va a guardar la informacion.
-        cb(null, './multer/update');
-    },
-    filename: (req, file, cb)=> {
-        //recibe el nombre con el cual se va a guardar el archivo.
-        cb(null, `file_${file.originalname}`);
-    },
-});
+//     destination: (req, file, cb)=> {
+//         //recibe el nombre de la carpeta donde se va a guardar la informacion.
+//         cb(null, './multer/update');
+//     },
+//     filename: (req, file, cb)=> {
+//         //recibe el nombre con el cual se va a guardar el archivo.
+//         cb(null, `file_${file.originalname}`);
+//     },
+// });
 
-const update = multer({ storage }); // Middleware
+// const update = multer({ storage }); // Middleware
 
 const prodRoutes = require('./routes/products/products');
 const cartRoutes = require('./routes/cart/cart');
 const authRoutes = require('./routes/auth/auth');
-
+const prodMockTest = require('./routes/products/fakerMockProducts')
+const chatNormalizr = require('./routes/chat/chat')
 
 //Este midleware te permite recibir el body que se envia como JSON desde POSTMAN por ej.
 app.use(express.json());
@@ -50,9 +50,13 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.static(__dirname+'/views'))
 
 //Rutas definidas
-app.use('/', prodRoutes);
+// app.use('/', prodRoutes);
+app.use('/',chatNormalizr);
 app.use('/cart', cartRoutes);
 app.use('/auth', authRoutes);
+app.use('/api/productos-test', prodMockTest)
+
+
 
 //Lo comento momentaneamente para que no utilice esta ruta post a "/"
 // app.post('/', update.single('fileUpload'), (req, res) => {
@@ -69,7 +73,7 @@ const server = http.createServer(app);
 const { Server } = require('socket.io');
 const io = new Server(server);
 
-
+const { chatDao } = require('./daos/index')
 //Conexion con el Socket para el cliente.
 io.on("connection", ( socket )=> {
     
@@ -101,12 +105,11 @@ io.on("connection", ( socket )=> {
     })
 
     socket.on('userMessage', async(message) => {
-        const date = moment();
-        message.datetime = date.format(dateFormat);
-        await sqlite3Knex('mensajes').insert(message);
-        
+        message.timeStamp = now();
+   
+        await chatDao.guardar(message)
         //Luego de guardar levanto los mensajes para devolverlos por websocket.
-        const chats = await sqlite3Knex.from('mensajes');
+        const chats = await chatDao.listarAll();
 
         io.sockets.emit('serverChatResponse',chats);
         
@@ -114,10 +117,10 @@ io.on("connection", ( socket )=> {
 
     socket.on('clientEmptyChat',async() => {
         
-        await sqlite3Knex('mensajes').del();
+        await chatDao.borrarAll()
         
         //Luego de guardar levanto los mensajes para devolverlos por websocket.
-        const chats = await sqlite3Knex.from('mensajes');
+        const chats = await chatDao.listarAll();
 
         io.sockets.emit('serverChatResponse',chats);
         
@@ -126,7 +129,7 @@ io.on("connection", ( socket )=> {
     socket.on('clientAuth',async() => {
         
         //Cuando se autentica un usuario le envio los mensajes.
-        const chats = await sqlite3Knex.from('mensajes');
+        const chats = await chatDao.listarAll();
 
         io.sockets.emit('serverChatResponse',chats);
         

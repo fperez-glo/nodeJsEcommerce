@@ -1,14 +1,16 @@
 module.exports = connections = {
   mysql: {
-    client: "mysql",
+    client: "mysql2",
     connection: {
-      host: "192.168.0.135",
+      host: "192.168.0.11",
+      port: 3307,
       user: "developer",
       password: "developer",
-      database: "nodejsecommerce",
+      database: "ecommerce",
       multipleStatements: true,
     },
     pool: { min: 2, max: 8 },
+    
   },
 
   sqlite3: {

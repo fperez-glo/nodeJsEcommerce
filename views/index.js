@@ -2,7 +2,7 @@ const socket = io();
 
 let chatOpened = false
 //Tuve que declarar esta variable global porque sino perdia el dato.
-let user
+let alias, email, nombre, apellido, anios, avatarUrl
 //-----
 
 socket.on("serverProductsResponse", (products)=>{
@@ -41,9 +41,9 @@ const renderChat = (chats) => {
     const html = chats.map((chat)=> {
         return `
                 <div id='msgLabel'>
-                    <p id='userEmail'>${chat.email}</p>
-                    <p id='msgDate'>${chat.datetime} --> </p>
-                    <p id='msg'>${chat.msg}</p>
+                    <p id='userEmail'>${chat.author.alias}</p>
+                    <p id='msgDate'>${chat.timeStamp} --> </p>
+                    <p id='msg'>${chat.text}</p>
                 </div>
             
         `;
@@ -84,19 +84,26 @@ const emptyChatBox = () => {
 };
 
 const deleteItem = (event) => {
-    console.log(event.target)
+
     const prodId = event.target['value'] || event.target.parentNode['value'];
     socket.emit('clientDeleteItem', prodId);
 };
 
 const sendMsg = () => {
-    console.log('mensaje:',document.getElementById("msgInput").value)
-    
+
     const message = {
-        email: user,
-        msg: document.getElementById("msgInput").value,
+        author: {
+            id: email,
+            nombre,
+            apellido,
+            edad: anios,
+            alias,
+            avatarUrl,
+        },
+        text: document.getElementById("msgInput").value,
     };
 
+ 
     
     socket.emit('userMessage',message);
 
@@ -106,9 +113,14 @@ const sendMsg = () => {
 
 const confirmUser = () => {
     //console.log('confirmo el usuario.', event.target.parentNode.parentNode)
-    user = document.getElementById('user').value
-
-    let html = `<div><b>Usuario Registrado: </b>${user}</div>`
+    email = document.getElementById('email').value;
+    nombre = document.getElementById('nombre').value;
+    apellido = document.getElementById('apellido').value;
+    anios = document.getElementById('edad').value;
+    alias = document.getElementById('usuario').value;
+    avatarUrl = document.getElementById('avatar').value;
+ 
+    let html = `<div><b>Usuario Registrado: </b>${alias}</div>`
 
     document.querySelector('#userInput').innerHTML = html;
     
