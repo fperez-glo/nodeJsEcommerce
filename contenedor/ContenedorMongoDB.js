@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { mongodb } = require('../connections');
 
-mongoose.connect(mongodb.cnxStr, mongodb.options)
+mongoose.connect(mongodb.connectionString);
 
 
 class ContenedorMongoDB {
@@ -10,7 +10,7 @@ class ContenedorMongoDB {
         this.coleccion = mongoose.model(nombreColeccion, esquema)
     }
 
-    async listar(id) {
+    async get(id) {
         try {
             const docs = await this.coleccion.find({ '_id': id }, { __v: 0 })
             
@@ -19,7 +19,7 @@ class ContenedorMongoDB {
         }
     }
 
-    async listarAll() {
+    async getAll() {
         try {
             let docs = await this.coleccion.find({}, { __v: 0 }).lean()
           
@@ -29,7 +29,7 @@ class ContenedorMongoDB {
         }
     }
 
-    async guardar(nuevoElem) {
+    async save(nuevoElem) {
         try {  
             await this.coleccion.create(nuevoElem);
             //return doc
@@ -38,7 +38,7 @@ class ContenedorMongoDB {
         }
     }
 
-    async actualizar(nuevoElem) {
+    async put(nuevoElem) {
         try {
             
             const { n, nModified } = await this.coleccion.replaceOne({ '_id': nuevoElem._id }, nuevoElem)
@@ -53,7 +53,7 @@ class ContenedorMongoDB {
         }
     }
 
-    async borrar(id) {
+    async delete(id) {
         try {
             const { n, nDeleted } = await this.coleccion.deleteOne({ '_id': id })
             if (n == 0 || nDeleted == 0) {
@@ -64,7 +64,7 @@ class ContenedorMongoDB {
         }
     }
 
-    async borrarAll() {
+    async deleteAll() {
         try {
             await this.coleccion.deleteMany({})
         } catch (error) {

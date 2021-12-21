@@ -1,0 +1,38 @@
+{
+    "normalizrId": "mensajes",
+    "mensajes": [
+      {
+        "author": {
+          "id": "facundoperez6@gmail.com",
+          "nombre": "Facundo Nahuel",
+          "apellido": "Pandolfo",
+          "edad": "24",
+          "alias": "F@AS",
+          "avatarUrl": "avatar"
+        },
+        "text": "Hola buenas noches"
+      },
+      {
+        "author": {
+          "id": "facundoperez6@gmail.com",
+          "nombre": "Facundo Nahuel",
+          "apellido": "Pandolfo",
+          "edad": "24",
+          "alias": "F@AS",
+          "avatarUrl": "avatar"
+        },
+        "text": "Todo bien?"
+      },
+      {
+        "author": {
+          "id": "cristianperezp94@gmail.com",
+          "nombre": "Cristian",
+          "apellido": "Fernandez",
+          "edad": "43",
+          "alias": "C@ST",
+          "avatarUrl": "AVATAR "
+        },
+        "text": "Todo en orden."
+      }
+    ]
+  }

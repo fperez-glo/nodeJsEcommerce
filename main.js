@@ -1,44 +1,22 @@
+const { normalize, schema } = require('normalizr')
+const util = require('util')
+const dataToNorm = require('./db/mensajes.json')
 //Lo pongo momentaneamente para el desafio de webSockets
-const { now } = require('moment');
-const dateFormat = 'YYYY/MM/DD hh:mm:ss';
-///-----------------
-//SQL CONNECTIONS
-const connections = require('./routes/database/connection')
-const mysqlKnex = require ('knex')(connections.mysql);
-const sqlite3Knex = require('knex')(connections.sqlite3)
-///-----------------
+const moment = require('moment');
+
 const express = require(`express`);
-const multer = require('multer');
+
 
 const app = express();
 const port = process.env.PORT || 8080;
 
-//Importo la clase clsProducts para trabajar con los productos
-const clsProducts = require('./routes/products/clsProducts');
-const itemContainer = new clsProducts(mysqlKnex);
+
 
 //Seteo las rutas del motor de plantillas ejs.
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
-//Configurar multer para poder recibir archivos con distintos formatos.
-// const storage = multer.diskStorage({
 
-//     destination: (req, file, cb)=> {
-//         //recibe el nombre de la carpeta donde se va a guardar la informacion.
-//         cb(null, './multer/update');
-//     },
-//     filename: (req, file, cb)=> {
-//         //recibe el nombre con el cual se va a guardar el archivo.
-//         cb(null, `file_${file.originalname}`);
-//     },
-// });
-
-// const update = multer({ storage }); // Middleware
-
-const prodRoutes = require('./routes/products/products');
-const cartRoutes = require('./routes/cart/cart');
-const authRoutes = require('./routes/auth/auth');
 const prodMockTest = require('./routes/products/fakerMockProducts')
 const chatNormalizr = require('./routes/chat/chat')
 
@@ -50,19 +28,8 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.static(__dirname+'/views'))
 
 //Rutas definidas
-// app.use('/', prodRoutes);
 app.use('/',chatNormalizr);
-app.use('/cart', cartRoutes);
-app.use('/auth', authRoutes);
 app.use('/api/productos-test', prodMockTest)
-
-
-
-//Lo comento momentaneamente para que no utilice esta ruta post a "/"
-// app.post('/', update.single('fileUpload'), (req, res) => {
-//     console.log(req.file)
-//     res.send(`Archivo guardado con exito.`)
-// });
 
 
 //Server compatible para webSockets
@@ -77,65 +44,71 @@ const { chatDao } = require('./daos/index')
 //Conexion con el Socket para el cliente.
 io.on("connection", ( socket )=> {
     
-    console.log('Se ha conectado un cliente')
+    console.log('Se ha conectado un cliente al Chat')
 
-    socket.on("clietProdSend", async(prod)=>{
-        //Guardo el producto en mi array/database local.
-        const { sku, description, price, thumbnail } = prod
-        const itemCreated = await itemContainer.save({ sku, description,price, thumbnail });
-        
-        //Obtengo todos los productos actualizados
-        //Tuve que hacerlo de esta forma ya que el metodo save es el que me genera el identificador al producto ingresado.
-        const products = await itemContainer.getAll();
-        console.log('productos de getall:',products)
-        //Envio los productos a los clientes.
-        io.sockets.emit('serverProductsResponse',products)
-        
-    })
-
-    socket.on('clientDeleteItem', async(prodId) => {
-        try {
-            const filteredProducts = await itemContainer.deleteById(prodId);
-            io.sockets.emit('serverProductsResponse',filteredProducts)
-            
-        } catch (error) {
-            res.send({error})
-        }
-        
-    })
-
+    //ACA RECIBO EL MENSAJE DESDE LA RUTA "/" DONDE SE ENCUENTRA EL CHAT
     socket.on('userMessage', async(message) => {
-        message.timeStamp = now();
-   
-        await chatDao.guardar(message)
+        message.timeStamp = moment();
+        await chatDao.save(message)
         //Luego de guardar levanto los mensajes para devolverlos por websocket.
-        const chats = await chatDao.listarAll();
+        const chats = await chatDao.getAll();
 
         io.sockets.emit('serverChatResponse',chats);
         
     });
 
+    //LE ENVIO LA ACCION PARA VACIAR EL CHAT.
     socket.on('clientEmptyChat',async() => {
         
-        await chatDao.borrarAll()
+        await chatDao.deleteAll()
         
         //Luego de guardar levanto los mensajes para devolverlos por websocket.
-        const chats = await chatDao.listarAll();
+        const chats = await chatDao.getAll();
 
         io.sockets.emit('serverChatResponse',chats);
         
     });
 
+
+    //ENVIO LOS MENSAJES GUARDADOS EN LA BASE DE DATOS NI BIEN SE AUTENTICA.
     socket.on('clientAuth',async() => {
+        let mensajes = {}
+        //Cuando se autentica un usuario le envio los mensajes para pintarlos en pantalla sin tener que enviar un mensaje antes.
+        const chats = await chatDao.getAll();
+
+        //FIXME: NO SE SI ESTO ESTA BIEN.. PERO LO ARME PARA USARLO CON NORMALIZR CON EL FORMATO QUE ENTENDI QUE IBA...
+        mensajes = {mensajes: chats, id: 'mensajes'}
         
-        //Cuando se autentica un usuario le envio los mensajes.
-        const chats = await chatDao.listarAll();
+
+        //FIXME: NO ENTIENDO COMO relacionar los datos.. Y NO ME QUEDA MAS TIEMPO PARA EL DESAFIO.... (LLORAR)
+        const authorSchema = new schema.Entity('author');
+        const messagesSchema = new schema.Entity('text');
+        // const messagesSchema = new schema.Entity('text',{
+        //     mensajes: authorSchema
+        // })
+
+        const chatSchema = new schema.Entity('chat',{
+            author: authorSchema,
+            mensajes: messagesSchema
+        })
+        
+        // const messageSchema = new schema.Entity('text',{
+        //     author: userSchema,
+           
+        // })
+        // console.log('mensajes:',mensajes)
+        const messageNormalize = normalize(dataToNorm, chatSchema)
+        print(messageNormalize);
 
         io.sockets.emit('serverChatResponse',chats);
         
     });
     
 });
+
+const print = (objeto) => {
+    console.log(util.inspect(objeto, false, 12, true))
+}
 
 
 server.listen(port, ()=>{

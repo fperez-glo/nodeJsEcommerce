@@ -1,5 +1,3 @@
-
-
 const ContenedorMongoDB = require('../../contenedor/ContenedorMongoDB')
 
 class ChatDaoMongoDB extends ContenedorMongoDB {
