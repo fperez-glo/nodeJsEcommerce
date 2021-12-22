@@ -41,6 +41,12 @@ const { Server } = require('socket.io');
 const io = new Server(server);
 
 const { chatDao } = require('./daos/index')
+
+//Definicion de las entidades para normalizar la data del chat
+const authorSchema = new schema.Entity('author', {}, { idAttribute: 'email' })
+const mensajeSchema = new schema.Entity('post', { author: authorSchema }, { idAttribute: 'id' })
+const mensajesSchema = new schema.Entity('posts', { mensajes: [mensajeSchema] }, { idAttribute: 'mensajes' })
+
 //Conexion con el Socket para el cliente.
 io.on("connection", ( socket )=> {
     
@@ -81,23 +87,23 @@ io.on("connection", ( socket )=> {
         
 
         //FIXME: NO ENTIENDO COMO relacionar los datos.. Y NO ME QUEDA MAS TIEMPO PARA EL DESAFIO.... (LLORAR)
-        const authorSchema = new schema.Entity('author');
-        const messagesSchema = new schema.Entity('text');
+        // const authorSchema = new schema.Entity('author');
+        // const messagesSchema = new schema.Entity('text');
         // const messagesSchema = new schema.Entity('text',{
         //     mensajes: authorSchema
         // })
 
-        const chatSchema = new schema.Entity('chat',{
-            author: authorSchema,
-            mensajes: messagesSchema
-        })
+        // const chatSchema = new schema.Entity('chat',{
+        //     author: authorSchema,
+        //     mensajes: messagesSchema
+        // })
         
         // const messageSchema = new schema.Entity('text',{
         //     author: userSchema,
            
         // })
         // console.log('mensajes:',mensajes)
-        const messageNormalize = normalize(dataToNorm, chatSchema)
+        const messageNormalize = normalize(mensajes, mensajesSchema)
         print(messageNormalize);
 
         io.sockets.emit('serverChatResponse',chats);
@@ -107,7 +113,8 @@ io.on("connection", ( socket )=> {
 });
 
 const print = (objeto) => {
-    console.log(util.inspect(objeto, false, 12, true))
+    const msg = util.inspect(objeto, false, 12, true)
+    console.log('msgg:',msg)
 }
 
 

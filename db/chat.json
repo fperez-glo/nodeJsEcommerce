@@ -1,7 +1,7 @@
 [
   {
     "author": {
-      "id": "facundoperez6@gmail.com",
+      "email": "facundoperez6@gmail.com",
       "nombre": "Facundo Nahuel",
       "apellido": "Pandolfo",
       "edad": "24",
@@ -14,7 +14,7 @@
   },
   {
     "author": {
-      "id": "facundoperez6@gmail.com",
+      "email": "facundoperez6@gmail.com",
       "nombre": "Facundo Nahuel",
       "apellido": "Pandolfo",
       "edad": "24",
@@ -27,7 +27,7 @@
   },
   {
     "author": {
-      "id": "cristianperezp94@gmail.com",
+      "email": "cristianperezp94@gmail.com",
       "nombre": "Cristian",
       "apellido": "Fernandez",
       "edad": "43",
