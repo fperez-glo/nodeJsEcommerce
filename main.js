@@ -82,27 +82,10 @@ io.on("connection", ( socket )=> {
         //Cuando se autentica un usuario le envio los mensajes para pintarlos en pantalla sin tener que enviar un mensaje antes.
         const chats = await chatDao.getAll();
 
-        //FIXME: NO SE SI ESTO ESTA BIEN.. PERO LO ARME PARA USARLO CON NORMALIZR CON EL FORMATO QUE ENTENDI QUE IBA...
-        mensajes = {mensajes: chats, id: 'mensajes'}
-        
+        mensajes = {mensajes: chats, id: 'msg'}
+       // console.log('Largo sin normalizar:',JSON.stringify(mensajes).length)
 
-        //FIXME: NO ENTIENDO COMO relacionar los datos.. Y NO ME QUEDA MAS TIEMPO PARA EL DESAFIO.... (LLORAR)
-        // const authorSchema = new schema.Entity('author');
-        // const messagesSchema = new schema.Entity('text');
-        // const messagesSchema = new schema.Entity('text',{
-        //     mensajes: authorSchema
-        // })
-
-        // const chatSchema = new schema.Entity('chat',{
-        //     author: authorSchema,
-        //     mensajes: messagesSchema
-        // })
-        
-        // const messageSchema = new schema.Entity('text',{
-        //     author: userSchema,
-           
-        // })
-        // console.log('mensajes:',mensajes)
+        //console.log(mensajes)
         const messageNormalize = normalize(mensajes, mensajesSchema)
         print(messageNormalize);
 
