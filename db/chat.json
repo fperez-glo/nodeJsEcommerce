@@ -6,10 +6,11 @@
       "apellido": "Pandolfo",
       "edad": "24",
       "alias": "F@AS",
-      "avatarUrl": "avatar"
+      "avatarUrl": "avatar",
+      "authorId": 1
     },
     "text": "Hola buenas noches",
-    "id": 1
+    "msgId": 1
   },
   {
     "author": {
@@ -18,10 +19,11 @@
       "apellido": "Pandolfo",
       "edad": "24",
       "alias": "F@AS",
-      "avatarUrl": "avatar"
+      "avatarUrl": "avatar",
+      "authorId": 1
     },
     "text": "Todo bien?",
-    "id": 2
+    "msgId": 2
   },
   {
     "author": {
@@ -30,9 +32,46 @@
       "apellido": "Fernandez",
       "edad": "43",
       "alias": "C@ST",
-      "avatarUrl": "AVATAR "
+      "avatarUrl": "AVATAR ",
+      "authorId": 2
     },
     "text": "Todo en orden.",
-    "id": 3
+    "msgId": 3
+  },{
+    "author": {
+      "email": "cristianperezp94@gmail.com",
+      "nombre": "Cristian",
+      "apellido": "Fernandez",
+      "edad": "43",
+      "alias": "C@ST",
+      "avatarUrl": "AVATAR ",
+      "authorId": 2
+    },
+    "text": "Laburando..",
+    "msgId": 4
+  },{
+    "author": {
+      "email": "cristianperezp94@gmail.com",
+      "nombre": "Cristian",
+      "apellido": "Fernandez",
+      "edad": "43",
+      "alias": "C@ST",
+      "avatarUrl": "AVATAR ",
+      "authorId": 2
+    },
+    "text": "Vos todo bien?",
+    "msgId": 5
+  },{
+    "author": {
+      "email": "facundoperez6@gmail.com",
+      "nombre": "Facundo Nahuel",
+      "apellido": "Pandolfo",
+      "edad": "24",
+      "alias": "F@AS",
+      "avatarUrl": "avatar",
+      "authorId": 1
+    },
+    "text": "Si, aca en casa al pedo",
+    "msgId": 6
   }
 ]

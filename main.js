@@ -1,4 +1,4 @@
-const { normalize, schema } = require('normalizr')
+const { denormalize, normalize, schema } = require('normalizr')
 const util = require('util')
 const dataToNorm = require('./db/mensajes.json')
 //Lo pongo momentaneamente para el desafio de webSockets
@@ -42,10 +42,10 @@ const io = new Server(server);
 
 const { chatDao } = require('./daos/index')
 
-//Definicion de las entidades para normalizar la data del chat
-const authorSchema = new schema.Entity('author', {}, { idAttribute: 'email' })
-const mensajeSchema = new schema.Entity('post', { author: authorSchema }, { idAttribute: 'id' })
-const mensajesSchema = new schema.Entity('posts', { mensajes: [mensajeSchema] }, { idAttribute: 'mensajes' })
+//Definiciones de las entidades para normalizar la data del chat
+const authorSchema = new schema.Entity('author', {}, { idAttribute: 'authorId' })
+const mensajeSchema = new schema.Entity('post', { author: authorSchema }, { idAttribute: 'msgId' })
+const mensajesSchema = new schema.Entity('posts', { mensajes: [mensajeSchema] }, { idAttribute: 'chatId' })
 
 //Conexion con el Socket para el cliente.
 io.on("connection", ( socket )=> {
@@ -78,19 +78,19 @@ io.on("connection", ( socket )=> {
 
     //ENVIO LOS MENSAJES GUARDADOS EN LA BASE DE DATOS NI BIEN SE AUTENTICA.
     socket.on('clientAuth',async() => {
-        let mensajes = {}
+        let chat = {}
         //Cuando se autentica un usuario le envio los mensajes para pintarlos en pantalla sin tener que enviar un mensaje antes.
         const chats = await chatDao.getAll();
 
-        mensajes = {mensajes: chats, id: 'msg'}
-       // console.log('Largo sin normalizar:',JSON.stringify(mensajes).length)
+        //Armo el objeto para normalizar la informacion.
+        chat = {mensajes: chats, chatId: 'mensajes'}
+       
+        //Normalizo la informacion para un envio de datos mas optimo.
+        const messageNormalized = normalize(chat, mensajesSchema)
 
-        //console.log(mensajes)
-        const messageNormalize = normalize(mensajes, mensajesSchema)
-        print(messageNormalize);
+        //Envio la informacion normalizada.
+        io.sockets.emit('serverChatResponse',{messageNormalized});
 
-        io.sockets.emit('serverChatResponse',chats);
-        
     });
     
 });

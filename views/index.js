@@ -3,7 +3,11 @@ const socket = io();
 let chatOpened = false
 //Tuve que declarar esta variable global porque sino perdia el dato.
 let alias, email, nombre, apellido, anios, avatarUrl
-//-----
+
+//Definiciones de las entidades para normalizar la data del chat
+const authorSchema = new normalizr.schema.Entity('author', {}, { idAttribute: 'authorId' })
+const mensajeSchema = new normalizr.schema.Entity('post', { author: authorSchema }, { idAttribute: 'msgId' })
+const mensajesSchema = new normalizr.schema.Entity('posts', { mensajes: [mensajeSchema] }, { idAttribute: 'chatId' })
 
 socket.on("serverProductsResponse", (products)=>{
     
@@ -33,8 +37,35 @@ const renderProds = (products) => {
     document.querySelector("#tbody").innerHTML = html;
 };
 
+const desnormalizr = (messageNormalized) => {
+    //Desnormalizo la informacion en memoria para poder pintarla nuevamente en el front. 
+    return (normalizr.denormalize(messageNormalized.result, mensajesSchema, messageNormalized.entities).mensajes);
+}
+
 socket.on('serverChatResponse', (chats)=>{
-    renderChat(chats);
+    let chatCompresion
+    let chatToRender = chats;
+    if (chats?.messageNormalized){
+        const {messageNormalized} = chats;
+        console.log(messageNormalized)
+        chatToRender = desnormalizr(messageNormalized);
+
+        console.log('JSON.stringify(messageNormalized).length:',JSON.stringify(messageNormalized).length)
+        console.log('JSON.stringify(chatToRender).length:',JSON.stringify(chatToRender).length)
+        //Calculo la compresion obtenida.
+        chatCompresion = ((JSON.stringify(messageNormalized).length / JSON.stringify(chatToRender).length)*100).toString().substring(0,5);
+        console.log('chatCompresion:',chatCompresion)
+        console.log('denormalizedChat:',chatToRender)
+    };
+    
+    //renderizo.
+    if(chatCompresion) {
+        renderCompresion(chatCompresion);
+    };
+
+    renderChat(chatToRender);
+    
+    
 });
 
 const renderChat = (chats) => {
@@ -51,6 +82,20 @@ const renderChat = (chats) => {
 
     document.querySelector('#chatArea').innerHTML = html;
 };
+
+const renderCompresion = (compresion) =>{
+    const html =  `
+                <div id='compresionLbl'>
+                    <p id='compresion'>Compresion del Chat: </p>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: ${compresion}%;" aria-valuenow=${compresion} aria-valuemin="0" aria-valuemax="100">${compresion}</div>
+                    </div>
+                </div>
+            
+        `;
+
+    document.querySelector('#chatCompresion').innerHTML = html;
+}
 
 
 const sendInfo = () => {
