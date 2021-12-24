@@ -10,6 +10,7 @@
       "authorId": 1
     },
     "text": "Hola buenas noches",
+    "timeStamp": "2021-12-24T16:08:03.628Z",
     "msgId": 1
   },
   {
@@ -23,6 +24,7 @@
       "authorId": 1
     },
     "text": "Todo bien?",
+    "timeStamp": "2021-12-24T16:08:03.628Z",
     "msgId": 2
   },
   {
@@ -36,8 +38,10 @@
       "authorId": 2
     },
     "text": "Todo en orden.",
+    "timeStamp": "2021-12-24T16:08:03.628Z",
     "msgId": 3
-  },{
+  },
+  {
     "author": {
       "email": "cristianperezp94@gmail.com",
       "nombre": "Cristian",
@@ -48,8 +52,10 @@
       "authorId": 2
     },
     "text": "Laburando..",
+    "timeStamp": "2021-12-24T16:08:03.628Z",
     "msgId": 4
-  },{
+  },
+  {
     "author": {
       "email": "cristianperezp94@gmail.com",
       "nombre": "Cristian",
@@ -60,8 +66,10 @@
       "authorId": 2
     },
     "text": "Vos todo bien?",
+    "timeStamp": "2021-12-24T16:08:03.628Z",
     "msgId": 5
-  },{
+  },
+  {
     "author": {
       "email": "facundoperez6@gmail.com",
       "nombre": "Facundo Nahuel",
@@ -72,6 +80,21 @@
       "authorId": 1
     },
     "text": "Si, aca en casa al pedo",
+    "timeStamp": "2021-12-24T16:08:03.628Z",
     "msgId": 6
+  },
+  {
+    "author": {
+      "id": "facupepa12@gmail.com",
+      "nombre": "Juan Carlos",
+      "apellido": "",
+      "edad": "23",
+      "alias": "J@CA",
+      "avatarUrl": "JuanCa",
+      "authorId": 3
+    },
+    "text": "Buenas",
+    "timeStamp": "2021-12-24T16:08:03.628Z",
+    "msgId": 7
   }
 ]
