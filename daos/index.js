@@ -1,5 +1,5 @@
 const dotenv = require('dotenv').config();
-let chatDao
+let chatDao, userDao, productDao
 
 switch (process.env.DATASERVER) {
     case 'ARCHIVO':
@@ -17,8 +17,12 @@ switch (process.env.DATASERVER) {
     case 'MONGODB':
         console.log('entro por MONGODB');
         const ChatDaoMongoDB = require('./chat/ChatDaoMongoDB');
+        const ProductDaoMongoDB = require('./product/ProductDaoMongoDB')
+        const UserDaoMongoDB = require('./user/UserDaoMongoDB');
 
         chatDao = new ChatDaoMongoDB();
+        productDao = new ProductDaoMongoDB();
+        userDao = new UserDaoMongoDB();
         break;
     default:
         // const ProductosDaoMem = require('./productos/ProductosDaoMem.js')
@@ -27,4 +31,4 @@ switch (process.env.DATASERVER) {
         break
 }
 
-module.exports = { chatDao }
+module.exports = { chatDao, productDao, userDao }

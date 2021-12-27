@@ -5,6 +5,28 @@ let chatOpened = false
 let alias, email, nombre, apellido, anios, avatarUrl
 //-----
 
+const sendAuthInfo = async () => {
+    console.log('Mando datos de authenticacion');
+
+    const user = document.querySelector("#userParam").value;
+    const password = document.querySelector("#pswParam").value;
+
+    //no me funka esto.. lo mando directo del form html y fue..
+    const myRequest = new Request('http://localhost:8080/auth/authLogIn', {method: 'POST', body: 'ASDASDASDS' });
+    console.log('myRequest!!!:', myRequest)
+    //await fetch(myRequest);
+    
+    return false;
+}
+
+const logOutUser = () => {
+    console.log('desloguear!!!')
+}
+
+
+
+
+
 socket.on("serverProductsResponse", (products)=>{
     
     renderProds(products);

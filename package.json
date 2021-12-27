@@ -4,10 +4,12 @@
   "description": "Proyecto de backend Ecommerce hecho con Express de nodeJs",
   "main": "main.js",
   "dependencies": {
+    "connect-mongo": "^4.6.0",
     "cookie-parser": "^1.4.6",
     "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
-    "express": "^4.17.1",
+    "express": "^4.17.2",
+    "express-session": "^1.17.2",
     "faker": "^5.5.3",
     "firebase-admin": "^10.0.1",
     "knex": "^0.95.14",

@@ -1,19 +1,24 @@
 const express = require(`express`);
 const { Router } = express;
-const connections = require('../database/connection')
-const mysqlKnex = require ('knex')(connections.mysql);
-const clsProducts = require('./clsProducts');
 
-const itemContainer = new clsProducts(mysqlKnex);
+const { productDao } = require('../../daos/index')
 
 const router = new Router();
 
 /** Devuelve todos los productos */
 router.get('/',
 async (req, res) => {
-    const products = await itemContainer.getAll();
-    res.render('index',{ products });
-    
+    let user
+    if(req.session.authorized){
+        if(req.session.user) {
+            user = req.session.user;
+        }
+        const products = await productDao.getAll();
+        console.log(products)
+        res.render('index',{ products, authorized:req.session.authorized, user });
+    } else {
+        res.redirect('/');
+    }
 });
 
 /** Devuelve un producto segun su id */
@@ -21,7 +26,7 @@ router.get('/:id',
 async ({ params }, res) => {
     try {
         const { id } = params;
-        const product = await itemContainer.getById(id);
+        const product = await productDao.getById(id);
         
         res.send({product})
     } catch (err) {
@@ -33,7 +38,7 @@ async ({ params }, res) => {
 router.post('/',
 async ({ body }, res) => {
     try {
-        const itemCreated = await itemContainer.save(body);
+        const itemCreated = await productDao.save(body);
         res.send(itemCreated)
         res.redirect('/');
     } catch (err) {
@@ -47,7 +52,7 @@ async ({ body, params }, res) => {
     try {
         const { id } = params;
         console.log('id:',id)
-        await itemContainer.updateItem(id, body);
+        await productDao.updateItem(id, body);
         res.send({message: 'Producto actualizado.'})
     } catch (err) {
         res.send({err})
@@ -60,7 +65,7 @@ router.delete('/:id',
 async ({ params }, res) => {
     try {
         const { id } = params;
-        await itemContainer.deleteById(id);
+        await productDao.deleteById(id);
         res.send({message: 'Producto eliminado.'})
     } catch (err) {
         res.send({err})
@@ -71,7 +76,7 @@ async ({ params }, res) => {
 router.delete('/',
 async (req, res) => {
     try {
-        await itemContainer.deleteAll();
+        await productDao.deleteAll();
         res.send({message: 'Se eliminaron todos los productos'});
     } catch (error) {
         res.send({error})
