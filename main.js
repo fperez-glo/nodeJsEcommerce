@@ -6,6 +6,8 @@ const moment = require("moment");
 
 const express = require(`express`);
 const session = require("express-session");
+const passport = require("passport");
+
 const MongoStore = require("connect-mongo");
 
 const app = express();
@@ -35,12 +37,20 @@ app.use(
     }
   })
 );
+
+//Inicializo passport
+app.use(passport.initialize());
+app.use(passport.session())
+
+
 //Este midleware te permite recibir el body que se envia como JSON desde POSTMAN por ej.
 app.use(express.json());
 //Este midleware te permite recibir el body que se envia como POST desde un formulario HTML
 app.use(express.urlencoded({ extended: false }));
 
 app.use(express.static(__dirname + "/views"));
+
+
 
 //Rutas definidas
 app.use("/", authForm);

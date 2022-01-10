@@ -14,7 +14,7 @@ async (req, res) => {
             user = req.session.user;
         }
         const products = await productDao.getAll();
-        console.log(products)
+        
         res.render('index',{ products, authorized:req.session.authorized, user });
     } else {
         res.redirect('/');

@@ -3,7 +3,11 @@
     <%- include('templates/head') %>
 <body>
     <% if(!authorized){ %>
-        <%- include('templates/logInForm') %>
+        <% if(!signUp){ %>
+            <%- include('templates/logInForm') %>
+        <% } else {%>
+            <%- include('templates/signUpForm') %>
+        <% } %>
     <% }else { %>
 
         <% if(authorized){ %>
