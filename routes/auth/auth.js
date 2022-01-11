@@ -71,7 +71,8 @@ router.post('/authSignUp', passport.authenticate('local-signup', {
     failureRedirect: '/authSignUp',
 }))
 
-router.post('/passport', passport.authenticate('local-login', {
+//RUTA para probar el login con passport
+router.post('/passportLogin', passport.authenticate('local-login', {
     successRedirect: '/home',
     failureRedirect: '/authSignUp'
 }))
