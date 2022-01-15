@@ -83,7 +83,7 @@ router.post('/authLogIn', async (req,res)=> {
     } else {
         
         const registeredUser = await userDao.findUser(req.body);
-        console.log('registeredUser:', {id: registeredUser[0]._id, user: registeredUser[0].user})
+        console.log('registeredUser:', {id: registeredUser[0]?._id, user: registeredUser[0]?.user})
         if (registeredUser.length) {
             req.session.user = registeredUser[0].fieldName;
             req.session.authorized = true;

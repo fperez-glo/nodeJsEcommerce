@@ -1,3 +1,4 @@
+const dotenv = require('dotenv').config();
 const { normalize, schema } = require("normalizr");
 const util = require("util");
 const dataToNorm = require("./db/mensajes.json");
@@ -11,7 +12,7 @@ const passport = require("passport");
 const MongoStore = require("connect-mongo");
 
 const app = express();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8081;
 
 //Seteo las rutas del motor de plantillas ejs.
 app.set("view engine", "ejs");
@@ -19,6 +20,8 @@ app.set("views", "./views");
 
 const products = require("./routes/products/products");
 const authForm = require("./routes/auth/auth");
+const info = require('./routes/info/info');
+const randoms = require('./routes/randoms/randoms')
 //const chatNormalizr = require('./routes/chat/chat')
 
 //Este midleware inicia una session.
@@ -26,9 +29,9 @@ app.use(
   session({
     store: MongoStore.create({
       mongoUrl:
-        "mongodb+srv://developer:developer@ecommerceatlas.js6ut.mongodb.net/ecommerce?retryWrites=true&w=majority",
+        process.env.MONGOCONNECTSTRING,
     }),
-    secret: "facuSecret",
+    secret: process.env.SECRET,
     resave: true,
     saveUninitialized: true,
     //Esto no funciona muy bien ya que el servidor toma la hora local que no es la de Argentina.
@@ -55,6 +58,8 @@ app.use(express.static(__dirname + "/views"));
 //Rutas definidas
 app.use("/", authForm);
 app.use("/home", products);
+app.use('/info', info);
+app.use('/api/randoms', randoms)
 
 //Server compatible para webSockets
 const http = require("http");

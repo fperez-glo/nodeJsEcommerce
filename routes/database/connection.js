@@ -1,12 +1,14 @@
+const dotenv = require('dotenv').config();
+
 module.exports = connections = {
   mysql: {
     client: "mysql2",
     connection: {
-      host: "192.168.0.11",
-      port: 3307,
-      user: "developer",
-      password: "developer",
-      database: "ecommerce",
+      host: process.env.MYSQLCONN_HOST,
+      port: process.env.MYSQLCONN_PORT,
+      user: process.env.MYSQLCONN_USER,
+      password: process.env.MYSQLCONN_PASSWORD,
+      database: process.env.MYSQLCONN_DATABASE,
       multipleStatements: true,
     },
     pool: { min: 2, max: 8 },
