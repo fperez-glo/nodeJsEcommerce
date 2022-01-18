@@ -13,6 +13,7 @@
     "faker": "^5.5.3",
     "firebase-admin": "^10.0.1",
     "knex": "^0.95.14",
+    "minimist": "^1.2.5",
     "moment": "^2.29.1",
     "mongodb": "^4.2.1",
     "mongoose": "^6.1.2",

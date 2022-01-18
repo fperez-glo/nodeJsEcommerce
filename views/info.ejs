@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('templates/head') %>
+<body>
+    
+    <% info.map((infoItem)=>{ %>
+        <ul>
+            <li>Argumentos de entrada: <%= Object.entries(infoItem.entryArgs).join(' || ') %> </li>
+            <li>SO: <%= infoItem.SO %></li>
+            <li>Node Version: <%= infoItem.nodeVersion %></li>
+            <li>Memoria Rss: <%= infoItem.memoryRss %></li>
+            <li>Path de ejecucion: <%= infoItem.executePath %></li>
+            <li>Process Id: <%= infoItem.processId %></li>
+            <li>Carpeta del proyecto: <%= infoItem.proyectFolder %></li>
+          </ul>
+    <% }) %>
+</body>
+</html>

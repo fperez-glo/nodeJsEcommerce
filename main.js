@@ -1,4 +1,5 @@
 const dotenv = require('dotenv').config();
+const argsParser = require('minimist')
 const { normalize, schema } = require("normalizr");
 const util = require("util");
 const dataToNorm = require("./db/mensajes.json");
@@ -12,7 +13,7 @@ const passport = require("passport");
 const MongoStore = require("connect-mongo");
 
 const app = express();
-const port = process.env.PORT || 8081;
+const port = argsParser(process.argv.slice(2)).port || process.env.PORT || 8081;
 
 //Seteo las rutas del motor de plantillas ejs.
 app.set("view engine", "ejs");
