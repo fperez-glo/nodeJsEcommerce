@@ -19,7 +19,9 @@
   },
   "homepage": "https://github.com/fperez-glo/nodeJsEcommerce#readme",
   "dependencies": {
-    "express": "^4.17.2",
-    "nodemon": "^2.0.15"
+    "compression": "1.7.4",
+    "dotenv": "14.2.0",
+    "express": "4.17.2",
+    "nodemon": "2.0.15"
   }
 }
