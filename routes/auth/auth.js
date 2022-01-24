@@ -60,16 +60,9 @@ router.get('/signUpError', (req, res) => {
 
 router.post('/authLogOut', (req,res)=> {
     if(req.session.authorized){
-        // req.session.destroy((err) =>{
-        //     if(err){
-        //         console.log(err)
-        //     }
-        //     res.redirect('/')
-        // })
-
         req.logOut();
         res.redirect('/');
-        
+
     } else {
         res.redirect('/');
     };
