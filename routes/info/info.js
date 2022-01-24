@@ -3,7 +3,7 @@ const { Router } = express
 const argsParser = require('minimist')
 
 const router = new Router();
-
+const cpuQty = require('os').cpus().length;
 
 
 router.get('/',(req, res) => {
@@ -12,7 +12,7 @@ router.get('/',(req, res) => {
     const args = argsParser(process.argv.slice(2));
 
     // args.foreach(arg => console.log('argumento:', arg))
-
+    
     const infoObjet = {
         entryArgs: args,
         SO: process.platform,
@@ -21,6 +21,7 @@ router.get('/',(req, res) => {
         executePath: __dirname,
         processId: process.pid,
         proyectFolder: process.cwd(),
+        cpuQty,
     };
 
     info.push(infoObjet)

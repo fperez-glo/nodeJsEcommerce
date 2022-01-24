@@ -54,8 +54,6 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(express.static(__dirname + "/views"));
 
-
-
 //Rutas definidas
 app.use("/", authForm);
 app.use("/home", products);
