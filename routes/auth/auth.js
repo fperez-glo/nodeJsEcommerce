@@ -24,14 +24,21 @@ router.get('/authSignUp', (req, res) => {
 
 router.post('/authSignUp', passport.authenticate('local-signup', {
     successRedirect: '/',
-    failureRedirect: '/authSignUp',
+    failureRedirect: '/signUpError',
 }))
 
-//RUTA para probar el login con passport
 router.post('/passportLogin', passport.authenticate('local-login', {
     successRedirect: '/home',
-    failureRedirect: '/authSignUp',
+    failureRedirect: '/loginError',
 }))
+
+router.get('/loginError', (req, res) => {
+    res.render('./error_views/authError', { loginError: true });
+})
+
+router.get('/signUpError', (req, res) => {
+    res.render('./error_views/authError', { loginError: false });
+})
 
 // router.post('/authLogIn', async (req,res)=> {
 //     if(req.session.authorized){
@@ -53,16 +60,15 @@ router.post('/passportLogin', passport.authenticate('local-login', {
 
 router.post('/authLogOut', (req,res)=> {
     if(req.session.authorized){
-        console.log('ENTRA AL LOGOUT')
-        // req.session.authorized = false;
-        // delete req.session.user;
-        // delete req.session.authorized;
-        req.session.destroy((err) =>{
-            if(err){
-                console.log(err)
-            }
-            res.redirect('/')
-        })
+        // req.session.destroy((err) =>{
+        //     if(err){
+        //         console.log(err)
+        //     }
+        //     res.redirect('/')
+        // })
+
+        req.logOut();
+        res.redirect('/');
         
     } else {
         res.redirect('/');
