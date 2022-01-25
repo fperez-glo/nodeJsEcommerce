@@ -30,8 +30,7 @@ if (cluster.isPrimary && mode === 'CLUSTER') {
 
 } else {
   const app = express();
-  const port = argsParser(process.argv.slice(2)).port || process.env.PORT || 8081;
-
+  const port = argsParser(process.argv.slice(2)).port || process.env.PORT || 8082;
 
   //Seteo las rutas del motor de plantillas ejs.
   app.set("view engine", "ejs");
