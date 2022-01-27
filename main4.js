@@ -11,8 +11,7 @@ const cluster = require("cluster");
 const cpuQty = require('os').cpus().length;
 const { mode } = argsParser(process.argv.slice(2));
 
-const argumentos = process.argv
-console.log("ARGUMENTOS!!!:",argumentos)
+
 // console.log('NODE ENVIORMENT:',nodeEnviorment)
 // console.log('cluster.isPrimary:',cluster.isPrimary)
 
@@ -31,8 +30,7 @@ if (cluster.isPrimary && mode === 'CLUSTER') {
 
 } else {
   const app = express();
-  const port = argsParser(process.argv.slice(2)).port || process.env.PORT || 8081;
-
+  const port = argsParser(process.argv.slice(2)).port || process.env.PORT || 8082;
 
   //Seteo las rutas del motor de plantillas ejs.
   app.set("view engine", "ejs");
