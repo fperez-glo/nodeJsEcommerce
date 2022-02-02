@@ -1,24 +1,39 @@
 require('dotenv').config();
-const argsParser = require('minimist')
-//Lo pongo momentaneamente para el desafio de webSockets
-
+const argsParser = require('minimist');
+const compression = require('compression');
+const { getLogger, configure } = require('log4js');
 const express = require(`express`);
-
-
+const port = argsParser(process.argv.slice(2)).port || process.env.PORT || 8081;
 
 //CLUSTER MODULE
 const cluster = require("cluster");
 const cpuQty = require('os').cpus().length;
 const { mode } = argsParser(process.argv.slice(2));
 
-const argumentos = process.argv
-console.log("ARGUMENTOS!!!:",argumentos)
+//CONFIGURO LOGGER LOG4JS
+configure({
+  appenders: {
+      //Appender para generar logs en consola.
+      ConsoleLogguer:   { type: 'console' },
+      //Appenders para generar logs en archivos.
+      WarningFile:      { type: 'file', filename: 'warning.log' },
+      ErrorFile:     { type:'file', filename: 'error.log' },
+  },
+  //Las categorias que defino y en el nivel que van a trabajar los logs
+  categories: {
+      default: { appenders: ['ConsoleLogguer'], level: 'trace' },
+      console: { appenders: ['ConsoleLogguer'], level: 'debug' },
+      fileWarning:    { appenders: ['WarningFile'], level: 'warn' },
+      fileError:   { appenders: ['ErrorFile'], level: 'error' },
+  }
+});
+const cInfo = getLogger('consoleInfo');
+const fileWarn = getLogger('fileWarning');
+const fileErr = getLogger('fileError');
 // console.log('NODE ENVIORMENT:',nodeEnviorment)
 // console.log('cluster.isPrimary:',cluster.isPrimary)
 
 if (cluster.isPrimary && mode === 'CLUSTER') {
-  console.log(`Proceso Master ejecutandose en pId: ${process.pid}`)
-
   //Worker generator
   for (let i = 0; i < cpuQty; i++) {
     cluster.fork();
@@ -31,9 +46,17 @@ if (cluster.isPrimary && mode === 'CLUSTER') {
 
 } else {
   const app = express();
-  const port = argsParser(process.argv.slice(2)).port || process.env.PORT || 8081;
 
+  //Middleware logger
+  app.use(function ({method, originalUrl}, { statusCode }, next) {
+    const logInfo = `Req: [${method}] ${originalUrl}`;
 
+    console.log('statusCode:',statusCode)
+    
+    cInfo.info(logInfo)
+    next();
+  });
+  //app.use(compression());
   //Seteo las rutas del motor de plantillas ejs.
   app.set("view engine", "ejs");
   app.set("views", "./views");
@@ -51,6 +74,26 @@ if (cluster.isPrimary && mode === 'CLUSTER') {
   app.use('/info', info);
   app.use('/api/randoms', randoms)
 
+  app.post('/productos', (req, res)=> {
+    const err = 'No se pudieron agregar los productos a la base de datos';
+    cInfo.error(err);
+    fileErr.error(err);
+    res.send({err});
+  })
+
+  app.post('/mensajes', (req, res)=> {
+    const err = 'No se pudo enviar el mensaje';
+    cInfo.error(err);
+    fileErr.error(err);
+    res.send({err});
+  })
+
+  app.get('/*',function ({method,originalUrl}, { statusCode }, next) {
+    const logInfo = `Res: [${method}] ${originalUrl} statusCode: ${statusCode}}`;
+    cInfo.warn(`[ERROR][RUTA INEXISTENTE] ${logInfo}`)
+    fileWarn.warn(`[ERROR][RUTA INEXISTENTE] ${logInfo}`)
+    next();
+  })
   
   app.listen(port, ()=> {
     if (!cluster.isPrimary) {

@@ -1,0 +1,6 @@
+Hice las pruebas de compressio sobre la ruta api/randoms ya que renderizaba bastante informacion
+
+Sin compression: 26.7kb 
+Con compression:  4.2kb
+
+Una ganancia aprox. de un %535.8 en volumen de datos.
