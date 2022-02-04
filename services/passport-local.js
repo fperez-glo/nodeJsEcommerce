@@ -27,9 +27,8 @@ passport.use('local-signup', new LocalStrategy({
 }, async (req ,user, password, done) => {
     const registeredUser = await userDao.findUser({user, password});
     if (registeredUser.length) {
-        console.log('El usuario ya existe')
         return done(null, false)
-    }
+    };
 
     await userDao.save({user, password});
     

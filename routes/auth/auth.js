@@ -7,6 +7,7 @@ require('../../services/passport-local')
 
 
 router.get('/', (req, res) => {
+    console.log('req.session.authorized:',req.session.authorized)
     if (req.session.authorized){
         res.redirect('/home');
     } else {
@@ -61,6 +62,7 @@ router.get('/signUpError', (req, res) => {
 router.post('/authLogOut', (req,res)=> {
     if(req.session.authorized){
         req.logOut();
+        delete req.session.authorized
         res.redirect('/');
 
     } else {
