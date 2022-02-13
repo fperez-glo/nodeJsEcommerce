@@ -1,9 +1,10 @@
 import express from 'express';
+import { productDao } from '../../daos/index.js';
+
 const { Router } = express;
 const app = express();
-import clsProducts from './clsProducts.js';
-app.use(express.json());
-const itemContainer = new clsProducts();
+
+
 
 const router = new Router();
 
@@ -20,31 +21,26 @@ function isAdmin(req, res, next) {
 /** Devuelve todos los productos */
 router.get('/',
 async (req, res) => {
-    const products = await itemContainer.getAll();
-    //res.render('index',{ products });
-    res.send({products})
-});
-
-/** Devuelve un producto segun su id */
-router.get('/:id',
-async ({ params }, res) => {
-    try {
-        const { id } = params;
-        const product = await itemContainer.getById(id);
-        res.send({product})
-    } catch (err) {
-        res.send({err});
-    };
+    let user
+    if(req.session.authorized){
+        if(req.session.user) {
+            user = req.session.user;
+        }
+        const products = await productDao.getAll();
+        
+        res.render('index',{ products, authorized:req.session.authorized, user });
+    } else {
+        res.redirect('/');
+    }
 });
 
 /** Recibe y agrega un producto */
 router.post('/',
 async ({ body }, res) => {
     try {
-        const itemCreated = await itemContainer.save(body);
+        const itemCreated = await productDao.save(body);
         res.send(itemCreated)
-        //res.redirect('/');
-
+        res.redirect('/');
     } catch (err) {
         res.send({err})
     };
@@ -53,16 +49,15 @@ async ({ body }, res) => {
 /** Recibe y actualiza un producto */
 router.put('/:id',
 async ({ body, params }, res) => {
-    if(!body.req.administrador){
-        console.log('noes es admin.')
-    }
     try {
         const { id } = params;
-        await itemContainer.updateItem(id, body);
+        console.log('id:',id)
+        await productDao.updateItem(id, body);
         res.send({message: 'Producto actualizado.'})
     } catch (err) {
         res.send({err})
     }
+    
 });
 
 /** Elimina un producto segun su id */
@@ -70,12 +65,24 @@ router.delete('/:id',
 async ({ params }, res) => {
     try {
         const { id } = params;
-        await itemContainer.deleteById(id);
+        await productDao.deleteById(id);
         res.send({message: 'Producto eliminado.'})
     } catch (err) {
         res.send({err})
     };
     
+});
+
+/** Elimina todos los productos */
+router.delete('/',
+async (req, res) => {
+    try {
+        await productDao.deleteAll();
+        res.send({message: 'Se eliminaron todos los productos'});
+    } catch (error) {
+        res.send({error})
+    }
+   
 });
 
 app.use(isAdmin);

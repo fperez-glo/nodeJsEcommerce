@@ -1,11 +1,32 @@
 const socket = io();
-console.log('hola desde index js')
+
+let chatOpened = false
 //Tuve que declarar esta variable global porque sino perdia el dato.
-let user
+let alias, email, nombre, apellido, anios, avatarUrl
 //-----
 
+const sendAuthInfo = async () => {
+    console.log('Mando datos de authenticacion');
 
-//PRODUCTOS
+    const user = document.querySelector("#userParam").value;
+    const password = document.querySelector("#pswParam").value;
+
+    //no me funka esto.. lo mando directo del form html y fue..
+    const myRequest = new Request('http://localhost:8080/auth/authLogIn', {method: 'POST', body: 'ASDASDASDS' });
+    console.log('myRequest!!!:', myRequest)
+    //await fetch(myRequest);
+    
+    return false;
+}
+
+const logOutUser = () => {
+    console.log('desloguear!!!')
+}
+
+
+
+
+
 socket.on("serverProductsResponse", (products)=>{
     
     renderProds(products);
@@ -16,15 +37,15 @@ const renderProds = (products) => {
         //Se arma el bulk para insertar al DOM html
         return `
         <tr>
-            <th scope="row" id="prodId"> ${prod.id} </th>
-            <td> ${prod.title} </td>
+            <th scope="row" id="prodId"> ${prod.sku} </th>
+            <td> ${prod.description} </td>
             <td>$ ${prod.price}</td>
             <td>
             <img src="${prod.thumbnail}" alt="" height="50" width="50" />
             </td>
             <td>
-                <button value="${prod.id}" class='btn' onclick="deleteItem(event)">
-                    <img value="${prod.id}" src="https://cdn1.iconfinder.com/data/icons/color-bold-style/21/56-256.png" alt="" height="20" width="20">
+                <button value="${prod.sku}" class='btn' onclick="deleteItem(event)">
+                    <img value="${prod.sku}" src="https://cdn1.iconfinder.com/data/icons/color-bold-style/21/56-256.png" alt="" height="20" width="20">
                 </button>
             </td>
         </tr>      
@@ -34,8 +55,6 @@ const renderProds = (products) => {
     document.querySelector("#tbody").innerHTML = html;
 };
 
-
-//CHAT
 socket.on('serverChatResponse', (chats)=>{
     renderChat(chats);
 });
@@ -44,9 +63,9 @@ const renderChat = (chats) => {
     const html = chats.map((chat)=> {
         return `
                 <div id='msgLabel'>
-                    <p id='userEmail'>${chat.email}</p>
-                    <p id='msgDate'>${chat.datetime} --> </p>
-                    <p id='msg'>${chat.msg}</p>
+                    <p id='userEmail'>${chat.author.alias}</p>
+                    <p id='msgDate'>${chat.timeStamp} --> </p>
+                    <p id='msg'>${chat.text}</p>
                 </div>
             
         `;
@@ -59,8 +78,9 @@ const renderChat = (chats) => {
 const sendInfo = () => {
     
     const item = {
-        title: document.querySelector("#tt").value,
+        sku: document.querySelector("#tt").value,
         price: document.querySelector("#pr").value,
+        description: document.querySelector("#td").value,
         thumbnail: document.querySelector("#tb").value,
     };
     
@@ -74,43 +94,55 @@ const sendInfo = () => {
     return false;
 };
 
-//Abro el chat box
-const openChatBox = () => { 
-    console.log('Abro el chat')
+const emptyChatBox = () => { 
     
-    if (chatOpened) {
-        console.log('Cierro el chat')
-    };
 
+    socket.emit('clientEmptyChat');
     //No me anduvo esto.. queria que incruste este codigo y renderize el chat.
-    const html =  `<%- include('templates/chat')  %>`
-    document.querySelector("#chatBox").innerHTML = html;
-    chatOpened = true;
-
+    
+    //document.querySelector("#chatBox") = '';
+    chatEmpty = true;
+    
 };
 
 const deleteItem = (event) => {
+
     const prodId = event.target['value'] || event.target.parentNode['value'];
-    
     socket.emit('clientDeleteItem', prodId);
 };
 
 const sendMsg = () => {
+
     const message = {
-        email: user,
-        msg: document.getElementById("msgInput").value,
+        author: {
+            id: email,
+            nombre,
+            apellido,
+            edad: anios,
+            alias,
+            avatarUrl,
+        },
+        text: document.getElementById("msgInput").value,
     };
+
+ 
     
     socket.emit('userMessage',message);
 
     document.getElementById("msgInput").value = '';
+    
 };
 
 const confirmUser = () => {
     //console.log('confirmo el usuario.', event.target.parentNode.parentNode)
-    user = document.getElementById('user').value
-
-    let html = `<div><b>Usuario Registrado: </b>${user}</div>`
+    email = document.getElementById('email').value;
+    nombre = document.getElementById('nombre').value;
+    apellido = document.getElementById('apellido').value;
+    anios = document.getElementById('edad').value;
+    alias = document.getElementById('usuario').value;
+    avatarUrl = document.getElementById('avatar').value;
+ 
+    let html = `<div><b>Usuario Registrado: </b>${alias}</div>`
 
     document.querySelector('#userInput').innerHTML = html;
     
@@ -120,9 +152,17 @@ const confirmUser = () => {
             </div>`;
 
     document.querySelector('#textChatBox').innerHTML = html;
+
+    socket.emit('clientAuth');
     
 };
 
 const onChangeText = (value) => {
     console.log('value:', value)
+};
+
+if (chatOpened) {
+    const textChatBox = document.querySelector('#msg')
+    console.log('textChatBox:',textChatBox)
+    textChatBox.addEventListener('change',onChangeText(value))
 };

@@ -2,21 +2,34 @@
 <html lang="en">
     <%- include('templates/head') %>
 <body>
-    <%- include('templates/prodForm') %>
-    <%- include('templates/productos') %>
-    <hr>
+    <% if(!authorized){ %>
+        <% if(!signUp){ %>
+            <%- include('templates/logInForm') %>
+        <% } else {%>
+            <%- include('templates/signUpForm') %>
+        <% } %>
+    <% }else { %>
 
-    <div class="container">
-        <button class='btn btn-success' onclick={openChatBox()}>CHAT</button>
-    </div>
+        <% if(authorized){ %>
+            <%- include('templates/logOutButton') %>
+        <% } %>
 
-    <hr>
-   
-    <div id='chatBox' class='container'>
-        <%- include('templates/chat')  %>
-    </div>
+        <%- include('templates/prodForm') %>
+        <%- include('templates/productos') %>
+        <hr>
 
-    <script src='/socket.io/socket.io.js'></script>
+        <div class="container">
+            <button class='btn btn-warning' onclick={emptyChatBox()}>Vaciar Chat</button>
+        </div>
+
+        <hr>
+    
+        <div id='chatBox' class='container'>
+            <%- include('templates/chat')  %>
+        </div>
+        <% } %>
+
+    <script src='socket.io/socket.io.js'></script>
     <script src="./index.js"></script>
 </body>
 </html>

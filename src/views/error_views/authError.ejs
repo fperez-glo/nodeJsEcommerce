@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('../templates/head') %>
+<body>
+    <% if(loginError){ %>
+        
+        <br>
+        <div id='navigateBack' class='container'>
+            <h1>Error en el login: El usuario no esta registrado.</h1>
+            <form action="/" method="get" novalidate">
+                <div id="logOutContainter" class="alert alert-success " role="alert">
+                    <button class='btn btn-danger' type="submit" ><-- Volver</button>
+                </div>
+                
+                
+            </form>
+            <hr>
+        </div>
+    <% }else { %>
+        
+        <br>
+        <div id='navigateBack' class='container'>
+            <h1>Error en el Registros: El usuario ya existe.</h1>
+            <form action="/authSignUp" method="get" novalidate">
+                <div id="logOutContainter" class="alert alert-success " role="alert">
+                    <button class='btn btn-danger' type="submit" ><-- Volver</button>
+                    </div>
+                
+                
+            </form>
+            <hr>
+        </div>
+    <% } %>
+
+    
+</body>
+</html>

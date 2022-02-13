@@ -9,7 +9,7 @@ const __dirname = dirname(__filename);
 
 //console.log('rooot:',path.resolve(__dirname, 'dist'))
 export default {
-    entry: './src/main.js',
+    entry: './main.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'main.js'
