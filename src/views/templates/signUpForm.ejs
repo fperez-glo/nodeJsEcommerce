@@ -1,7 +1,17 @@
 <div id='signupFormContainer' class='container'>
 
     <h2>Formulario de Registro</h2>
-    <!--  -->
+    
+    <% if (signUpError) { %>
+      <br>
+
+      <div class="alert alert-danger">
+        El usuario ya existe
+      </div>
+
+      <br>
+    <% } %>
+
     <form class="col g-3 needs-validation" action="/authSignUp"   method="post" novalidate">
         <div class="col-md-4">
           <label for="validationCustom01" class="form-label">Email</label>
@@ -73,4 +83,5 @@
       <form action="/" method="get" novalidate">  
         <button class='btn btn-primary' type="submit" > <-- Volver al Login</button> 
     </form>
+
 </div>

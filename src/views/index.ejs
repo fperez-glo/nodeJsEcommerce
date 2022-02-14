@@ -9,11 +9,13 @@
             <%- include('templates/signUpForm') %>
         <% } %>
     <% }else { %>
+        <%- include('templates/navBar') %>
 
-        <% if(authorized){ %>
+        <!-- <% if(authorized){ %>
             <%- include('templates/logOutButton') %>
-        <% } %>
-
+        <% } %> -->
+        
+        
         <%- include('templates/prodForm') %>
         <%- include('templates/productos') %>
         <hr>

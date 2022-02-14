@@ -1,8 +1,8 @@
 import { Strategy as LocalStrategy } from 'passport-local';
 import passport from 'passport';
 import { userDao } from '../daos/index.js'
-import Crypto from './crypto.js';
-const crypto = new Crypto();
+import { encrypt, compare } from './crypto.js';
+
 
 
    
@@ -19,12 +19,10 @@ passport.use('local-login', new LocalStrategy({
     passwordField: 'password',
     passReqToCallback: true
 } ,async (req,user, password, done) => {
-    
-    password = crypto.encrypt(password);
+    //Encripto el password ingresado con el secreto para saber si coincide con el de la base de datos 
+    password = encrypt(password);
 
-    
     const registeredUser = await userDao.findUser({user, password});
-    console.log('registeredUser:',registeredUser)
     if (registeredUser.length) {
         req.session.authorized = true;
         req.session.user = registeredUser[0].fieldName;
@@ -39,7 +37,7 @@ passport.use('local-signup', new LocalStrategy({
     passwordField: 'password',
     passReqToCallback: true,
 }, async ({ body } ,user, password, done) => {
-    password = crypto.encrypt(password);
+    password = encrypt(password);
 
     const registeredUser = await userDao.findUser({user, password});
     if (registeredUser.length) {
