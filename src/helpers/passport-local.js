@@ -3,16 +3,6 @@ import passport from 'passport';
 import { userDao } from '../daos/index.js'
 import { encrypt, compare } from './crypto.js';
 
-
-
-   
-   // const dataEncrypted = crypto.encrypt('HOLA BUENOS AIRES ARGENTINA..!')
-
-    //const dataDecrypted = crypto.decrypt(dataEncrypted)
-
-                    
-
-
 //PASSPORT LOCAL
 passport.use('local-login', new LocalStrategy({
     usernameField: 'user',

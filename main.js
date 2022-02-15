@@ -7,19 +7,22 @@ import express from 'express';
 import session from 'express-session';
 import passport from 'passport';
 import MongoStore from 'connect-mongo';
-
+import { console as cLog } from './src/helpers/logger.js'
 
 //CLUSTER MODULE
 import cluster from 'cluster';
 import {cpus as cpuQty } from 'os';
 
 import { Server } from 'socket.io';
-import clsProducts from './src/api/products/clsProducts.js';
+import { chatDao } from "./src/daos/index.js";
 import authApi from './src/api/auth/auth.js';
 import prodApi from './src/api/products/products.js';
 import cartApi from './src/api/cart/cart.js';
 
+import { normalize, schema } from 'normalizr';
+
 const { MODE, PORT } = process.env;
+
 
 if (cluster.isPrimary && MODE === 'CLUSTER') {
     console.log(`Proceso Master ejecutandose en pId: ${process.pid}`)
@@ -36,10 +39,35 @@ if (cluster.isPrimary && MODE === 'CLUSTER') {
   
   } else {
 
+    //Definicion de las entidades para normalizar la data del chat
+    const authorSchema = new schema.Entity("author", {}, { idAttribute: "email" });
+    const mensajeSchema = new schema.Entity(
+    "post",
+    { author: authorSchema },
+    { idAttribute: "id" }
+    );
+    const mensajesSchema = new schema.Entity(
+    "posts",
+    { mensajes: [mensajeSchema] },
+    { idAttribute: "mensajes" }
+    );
+
     //Me traigo el pathname para reemplazar al __dirname en los ES6modules
     const {pathname: root} = new URL('../', import.meta.url)
     const app = express();
     const port = PORT || 8080;
+
+    const infoLogger = ({method, originalUrl}, {statusCode}, next) => {
+        const logInfo = `Request: [${method}] ${originalUrl}`;
+
+        console.log('statusCode:',statusCode)
+        
+        cLog.info(logInfo)
+        next();
+    };
+
+    //Middleware logger
+    app.use(infoLogger);
 
     //Este midleware inicia una session.
     app.use(
@@ -63,10 +91,10 @@ if (cluster.isPrimary && MODE === 'CLUSTER') {
     app.use(passport.session())
 
     const ifRouteNotExists = (req, res, next) => {
-        res.send({message: `error: -2, descripcion: ruta ${req.url} metodo: ${req.method} no implementada.`})
-    }
-    //Importo la clase clsProducts para trabajar con los productos
-    const itemContainer = new clsProducts();
+        const message = `error: -2, descripcion: ruta "${req.url}" no implementada, metodo: ${req.method}.`
+        res.render('./error_views/404notFound', {message})
+       // res.send({message: `error: -2, descripcion: ruta ${req.url} metodo: ${req.method} no implementada.`})
+    };
 
     //Seteo las rutas del motor de plantillas ejs.
     app.set('view engine', 'ejs');
@@ -83,7 +111,7 @@ if (cluster.isPrimary && MODE === 'CLUSTER') {
 
     //Rutas definidas
     app.use('/home', prodApi);
-    app.use('/api/carrito', cartApi);
+    app.use('/cart', cartApi);
     app.use('/', authApi);
 
     app.use(ifRouteNotExists);
@@ -95,53 +123,50 @@ if (cluster.isPrimary && MODE === 'CLUSTER') {
     const io = new Server(server);
 
     //Conexion con el Socket para el cliente.
-    io.on("connection", ( socket )=> {
-        
-        console.log('Se ha conectado un cliente')
-
-        socket.on("clietProdSend", async(prod)=>{
-            //Guardo el producto en mi array/database local.
-            const { title, price, thumbnail } = prod
-            const itemCreated = await itemContainer.save({ title, price, thumbnail });
-            
-            //Obtengo todos los productos actualizados
-            //Tuve que hacerlo de esta forma ya que el metodo save es el que me genera el identificador al producto ingresado.
-            const products = await itemContainer.getAll();
-            
-            //Envio los productos a los clientes.
-            io.sockets.emit('serverProductsResponse',products)
-            
-        })
-
-        socket.on('clientDeleteItem', async(prodId) => {
-            try {
-                const filteredProducts = await itemContainer.deleteById(prodId);
-                io.sockets.emit('serverProductsResponse',filteredProducts)
-            } catch (error) {
-                console.log('Salio por el catch de clientDeleteItem. Error: ',error)
-            }
-            
-        })
-
-        socket.on('userMessage', async(message) => {
-            const date = moment()
-            const dateFormat = 'DD/MM/YYYY hh:mm:ss';
-            const fileRead = await fs.promises.readFile(`${root}src/chat.txt`, `utf-8`);
-            const chats = JSON.parse(fileRead);
-
-            message.datetime = date.format(dateFormat);
-            chats.push(message)
-
-            await fs.promises.writeFile(
-                `${root}src/chat.txt`,
-                JSON.stringify(chats, null, 2) + `\n`
-            );
-
-            io.sockets.emit('serverChatResponse',chats);
-            
-        });
-        
+io.on("connection", (socket) => {
+    console.log("Se ha conectado un cliente al Chat");
+  
+    //ACA RECIBO EL MENSAJE DESDE LA RUTA "/" DONDE SE ENCUENTRA EL CHAT
+    socket.on("userMessage", async (message) => {
+      message.timeStamp = moment();
+      await chatDao.save(message);
+      //Luego de guardar levanto los mensajes para devolverlos por websocket.
+      const chats = await chatDao.getAll();
+  
+      io.sockets.emit("serverChatResponse", chats);
     });
+  
+    //LE ENVIO LA ACCION PARA VACIAR EL CHAT.
+    socket.on("clientEmptyChat", async () => {
+      await chatDao.deleteAll();
+  
+      //Luego de guardar levanto los mensajes para devolverlos por websocket.
+      const chats = await chatDao.getAll();
+  
+      io.sockets.emit("serverChatResponse", chats);
+    });
+  
+    //ENVIO LOS MENSAJES GUARDADOS EN LA BASE DE DATOS NI BIEN SE AUTENTICA.
+    socket.on("clientAuth", async () => {
+      let mensajes = {};
+      //Cuando se autentica un usuario le envio los mensajes para pintarlos en pantalla sin tener que enviar un mensaje antes.
+      const chats = await chatDao.getAll();
+  
+      mensajes = { mensajes: chats, id: "msg" };
+      // console.log('Largo sin normalizar:',JSON.stringify(mensajes).length)
+  
+      //console.log(mensajes)
+      const messageNormalize = normalize(mensajes, mensajesSchema);
+      print(messageNormalize);
+  
+      io.sockets.emit("serverChatResponse", chats);
+    });
+  });
+  
+  const print = (objeto) => {
+    const msg = util.inspect(objeto, false, 12, true);
+    console.log("msgg:", msg);
+  };
 
 
     app.listen(port, ()=> {

@@ -1,10 +1,9 @@
 import express from 'express';
 import { productDao } from '../../daos/index.js';
+import { console as cLog } from '../../helpers/logger.js';
 
 const { Router } = express;
 const app = express();
-
-
 
 const router = new Router();
 
@@ -39,10 +38,11 @@ router.post('/',
 async ({ body }, res) => {
     try {
         const itemCreated = await productDao.save(body);
-        res.send(itemCreated)
+        res.send(itemCreated);
         res.redirect('/');
     } catch (err) {
-        res.send({err})
+        cLog.error(`[ERROR]: ${err}`);
+        res.send({err});
     };
 });
 
@@ -50,39 +50,44 @@ async ({ body }, res) => {
 router.put('/:id',
 async ({ body, params }, res) => {
     try {
+        const message = 'Producto actualizado.';
         const { id } = params;
-        console.log('id:',id)
         await productDao.updateItem(id, body);
-        res.send({message: 'Producto actualizado.'})
+        cLog.info(message);
+        res.send({message});
     } catch (err) {
-        res.send({err})
-    }
-    
+        cLog.error(`[ERROR]: ${err}`);
+        res.send({err});
+    };
 });
 
 /** Elimina un producto segun su id */
 router.delete('/:id',
 async ({ params }, res) => {
     try {
+        const message = 'Producto eliminado.';
         const { id } = params;
-        await productDao.deleteById(id);
-        res.send({message: 'Producto eliminado.'})
+        await productDao.delete({sku: id});
+        cLog.info(message);
+        res.send({message});
     } catch (err) {
-        res.send({err})
+        cLog.error(`[ERROR]: ${err}`);
+        res.send({err});
     };
-    
 });
 
 /** Elimina todos los productos */
 router.delete('/',
 async (req, res) => {
     try {
+        const message = 'Se eliminaron todos los productos';
         await productDao.deleteAll();
-        res.send({message: 'Se eliminaron todos los productos'});
+        cLog.info(message);
+        res.send({message});
     } catch (error) {
-        res.send({error})
-    }
-   
+        cLog.error(`[ERROR]: ${err}`);
+        res.send({error});
+    };
 });
 
 app.use(isAdmin);

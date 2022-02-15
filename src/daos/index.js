@@ -2,7 +2,8 @@ import 'dotenv/config';
 import ChatDaoMongoDB from './chat/ChatDaoMongoDB.js';
 import ProductDaoMongoDB from './product/ProductDaoMongoDB.js'
 import UserDaoMongoDB from './user/UserDaoMongoDB.js';
-let chatDao, userDao, productDao
+import CartDaoMongoDB from './cart/CartDaoMongoDB.js';
+let chatDao, userDao, productDao, cartDao
 
 switch (process.env.DATASERVER) {
     // case 'ARCHIVO':
@@ -21,6 +22,7 @@ switch (process.env.DATASERVER) {
         chatDao = new ChatDaoMongoDB();
         productDao = new ProductDaoMongoDB();
         userDao = new UserDaoMongoDB();
+        cartDao = new CartDaoMongoDB();
         break;
     default:
         // const ProductosDaoMem = require('./productos/ProductosDaoMem.js')
@@ -29,4 +31,4 @@ switch (process.env.DATASERVER) {
         break
 }
 
-export { chatDao, productDao, userDao }
+export { chatDao, productDao, userDao, cartDao }

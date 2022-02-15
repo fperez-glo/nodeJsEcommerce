@@ -1,9 +1,9 @@
 import fs from 'fs';
 import moment from 'moment';
-import clsProducts from '../products/clsProducts.js';
+//import clsProducts from '../products/clsProducts.js';
 
 const dateFormat = 'DD/MM/YYYY hh:mm:ss';
-const productMethods = new clsProducts();
+// const productMethods = new clsProducts();
 
 const read = async (file) => {
   const read = await fs.promises.readFile(`./src/${file}`, `utf-8`);

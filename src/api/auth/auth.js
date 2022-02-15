@@ -1,7 +1,7 @@
 import express from "express";
 import passport from "passport";
-import "../../utils/passport-local.js";
-import { upload } from "../../utils/multer.js";
+import "../../helpers/passport-local.js";
+import { upload } from "../../helpers/multer.js";
 
 const { Router } = express;
 const router = new Router();
