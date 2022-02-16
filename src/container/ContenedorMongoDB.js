@@ -36,36 +36,27 @@ export default class ContenedorMongoDB {
             await this.coleccion.create(nuevoElem);
             //return doc
         } catch (error) {
-            cLog.error(`Error al guardar: ${error}`);
-            throw new Error(`Error al guardar: ${error}`);
+            throw `Error al guardar: ${error}`;
         };
     };
 
     async put(nuevoElem) {
         try {
-            const { n, nModified } = await this.coleccion.replaceOne({ '_id': nuevoElem._id }, nuevoElem);
-            if (n == 0 || nModified == 0) {
-                cLog.error(`Error al actualizar: no encontrado`);
-                throw new Error('Error al actualizar: no encontrado');
-            } else {
-                return nuevoElem;
-            };
+            await this.coleccion.replaceOne({ '_id': nuevoElem._id }, nuevoElem);
+            return nuevoElem;
         } catch (error) {
-            cLog.error(`Error al actualizar: ${error}`);
-            throw new Error(`Error al actualizar: ${error}`);
+            throw `Error al actualizar: ${error}`;
         };
     };
 
     async delete(element) {
         try {
-            const { n, nDeleted } = await this.coleccion.deleteOne(element);
-            if (n == 0 || nDeleted == 0) {
-                cLog.error(`Error al borrar: no encontrado`);
-                throw new Error('Error al borrar: no encontrado');
+            const { deletedCount } = await this.coleccion.deleteOne(element);
+            if (!deletedCount) {
+                throw 'Registro no encontrado';
             }
         } catch (error) {
-            cLog.error(`Error al borrar: ${error}`);
-            throw new Error(`Error al borrar: ${error}`);
+            throw error;
         };
     };
 
@@ -73,8 +64,7 @@ export default class ContenedorMongoDB {
         try {
             await this.coleccion.deleteMany({});
         } catch (error) {
-            cLog.error(`Error al borrar: ${error}`);
-            throw new Error(`Error al borrar: ${error}`);
+            throw `Error al borrar: ${error}`;
         };
     };
 
@@ -82,8 +72,7 @@ export default class ContenedorMongoDB {
         try {
             await this.coleccion.insertOne(nuevoElem);
         } catch (error) {
-            cLog.error(`Error al guardar: ${error}`);
-            throw new Error(`Error al guardar: ${error}`);
+            throw `Error al guardar: ${error}`;
         };
     };
 };

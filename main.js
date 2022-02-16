@@ -1,5 +1,4 @@
-//Lo pongo momentaneamente para el desafio de webSockets
-import fs from 'fs';
+
 import moment from 'moment';
 //---
 import http from 'http'
@@ -21,7 +20,7 @@ import cartApi from './src/api/cart/cart.js';
 
 import { normalize, schema } from 'normalizr';
 
-const { MODE, PORT } = process.env;
+const { MODE, PORT, MONGOCONNECTSTRING, SECRET } = process.env;
 
 
 if (cluster.isPrimary && MODE === 'CLUSTER') {
@@ -74,9 +73,9 @@ if (cluster.isPrimary && MODE === 'CLUSTER') {
         session({
             store: MongoStore.create({
             mongoUrl:
-                "mongodb+srv://developer:developer@ecommerceatlas.js6ut.mongodb.net/ecommerce?retryWrites=true&w=majority",
+              MONGOCONNECTSTRING,
             }),
-            secret: "facuSecret",
+            secret: SECRET,
             resave: true,
             saveUninitialized: true,
             //Esto no funciona muy bien ya que el servidor toma la hora local que no es la de Argentina.

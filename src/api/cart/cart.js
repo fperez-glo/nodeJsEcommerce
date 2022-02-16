@@ -13,54 +13,61 @@ router.get('/:cartId/productos',async ({ params }, res) => {
         const { cartId } = params;
         
         const cartProducts = await cartDao.getCartProducts({cartId: parseInt(cartId)});
+        cLog.debug({ cartProducts });
         res.send({ cartProducts });
     } catch (err) {
-        cLog.warn(`[ERROR]: ${err}`)
-        res.send(err);
+        cLog.warn(`[ERROR]: ${err}`);
+        res.send({message: err});
     };
 });
 
 router.post('/', async(req, res) => {
     try {
         await cartDao.save();
-        res.send(`El carrito se genero exitosamente.`)
+        res.send(`El carrito se genero exitosamente.`);
     } catch (err) {
-        cLog.warn(`[ERROR]: ${err}`)
-        res.send(err);
+        cLog.warn(`[ERROR]: ${err}`);
+        res.send({message: err});
     };
 });
 
-router.post('/:cartId/productos/:prodId', async({ params }, res) => {
+router.put('/:cartId/productos/:prodId', async({ params }, res) => {
     try {
+        const message = 'Producto agregado.';
         const { cartId, prodId } = params;
-        await cartDao.postAddCartProducts(parseInt(cartId), prodId);
-        res.send(`Producto agregado.`);
+        await cartDao.putAddCartProducts(parseInt(cartId), prodId);
+        cLog.info({message});
+        res.send({message});
     } catch (err) {
-        cLog.warn(`[ERROR]: ${err}`)
-        res.send(err);
+        cLog.warn(`[ERROR]: ${err}`);
+        res.send({message: err});
     };
 });
 
 router.delete('/:cartId', async({ params }, res) => {
     try {
         const { cartId } = params;
-        await cartMethods.deleteCart({ cartId: parseInt(cartId) });
-
-        res.send(`Se elimino el carrito con id: ${cartId}.`);
+        await cartDao.delete({cartId});
+        const message = `Se elimino el carrito con id: ${cartId}.`;
+        cLog.info({message});
+        res.send({message});
     } catch (err) {
-        cLog.warn(`[ERROR]: ${err}`)
-        res.send(err);
+        cLog.warn(`[ERROR]: ${err}`);
+        res.send({message: err});
     };
 });
 
 router.delete('/:cartId/productos/:prodId', async( { params } , res ) => {
     try {
         const { cartId, prodId } = params;
-        await cartMethods.deleteCartProduct({ cartId: parseInt(cartId), prodId });
-        res.send('Producto Eliminado.')
+        //await cartMethods.deleteCartProduct({ cartId: parseInt(cartId), prodId });
+        await cartDao.deleteCartProduct({ cartId: parseInt(cartId), prodId });
+        const message = 'Producto Eliminado';
+        cLog.info({message});
+        res.send({message});
     } catch (err) {
-        cLog.warn(`[ERROR]: ${err}`)
-        res.send(err);
+        cLog.warn(`[ERROR]: ${err}`);
+        res.send({message: err});
     };
 });
 

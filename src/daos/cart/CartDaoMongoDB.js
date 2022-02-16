@@ -63,13 +63,10 @@ export default class CartDaoMongoDB extends ContenedorMongoDB {
     }
   }
 
-  async postAddCartProducts (cartId, prodId) {
-    let cartsToReinsert = []
+  async putAddCartProducts (cartId, prodId) {
     const cart = await super.getAll({ cartId });
     
-
     if (cart.length) { 
-      
       const products = await productDao.getAll();
       const filterProd = products.filter(prod => prod.sku === prodId);
 
@@ -85,6 +82,25 @@ export default class CartDaoMongoDB extends ContenedorMongoDB {
 
     await cartDao.put(cart[0]);
   };
+
+  async deleteCartProduct ({ cartId, prodId }) {
+    let cartsToReinsert = []
+
+    const cart = await super.getAll({ cartId });
+
+    if (cart.length) { 
+      
+      //No valido existencia del producto porque se supone ya que existe.
+      const filteredProducts = cart[0].products.filter(product => product.sku != prodId);
+      
+      cart[0].products = filteredProducts;
+    } else {
+      throw `No se encontro el carrito con id ${cartId}`;
+    };
+    
+    await cartDao.put(cart[0]);
+  };
+
 };
 
 schema.plugin(autoIncrementId, { inc_field: "cartId" });
