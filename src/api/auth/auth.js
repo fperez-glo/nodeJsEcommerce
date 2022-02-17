@@ -2,6 +2,8 @@ import express from "express";
 import passport from "passport";
 import "../../helpers/passport-local.js";
 import { upload } from "../../helpers/multer.js";
+import { userDao } from "../../daos/index.js";
+import { sendSMS } from '../../helpers/twilio.js';
 
 const { Router } = express;
 const router = new Router();
@@ -30,7 +32,7 @@ router.get("/authSignUp", (req, res) => {
 router.post(
   "/authSignUp",
   passport.authenticate("local-signup", {
-    successRedirect: "/",
+    successRedirect: "/signUpAditionalData",
     failureRedirect: "/signUpError",
   })
 );
@@ -71,10 +73,35 @@ router.put("/putUserUpdate/:username", (req, res) => {
   res.send({ users });
 });
 
-router.post("/profilePic", upload.single("avatar"), (req, res) => {
-  console.log("file!!!!", req.file);
-  res.send(`Archivo guardado con exito.`);
-  //res.redirect('/');
+router.get("/signUpAditionalData", ({session}, res) => {
+  if(session?.passport?.user) {
+    const { user } = session.passport;
+    res.render('signUpAditionalData', { user });
+  } else {
+    res.redirect('/');
+  };
+});
+
+router.post("/signUpAditionalData", upload.single("avatar"), ({body, session}, res) => {
+  if(session?.passport?.user) {
+    const { user } = session.passport;
+    const { fieldName, adress, age, phone, avatar } = body;
+
+    const userInfo = {
+      _id: user, fieldName, adress, age, phone, avatar
+    };
+
+    userDao.putUpdate(userInfo);
+
+    res.redirect('/');
+  } else {
+    res.redirect('/');
+  };
+});
+
+router.post('/sendSMS',(req,res) => {
+  sendSMS('Hola desde twilio SMS');
+  res.send('SMS enviado!')
 });
 
 export default router;

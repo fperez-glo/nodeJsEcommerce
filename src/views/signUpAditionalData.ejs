@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('templates/head') %>
+<body class="container">
+
+    <br>
+    <h2>Informacion adicional del Perfil</h2>
+    <br>
+  
+    <form class="col g-3 needs-validation" action="/signUpAditionalData"   method="post" novalidate">
+        
+        <div class="col-md-4">
+          <label for="validationCustom01" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="nameParam" name='fieldName'>
+          <div class="valid-feedback">
+            Parece bien!
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label for="validationCustom01" class="form-label">Direccion</label>
+          <input type="text" class="form-control" id="adressParam" name='adress'>
+          <div class="valid-feedback">
+            Parece bien!
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label for="validationCustom01" class="form-label">Edad</label>
+          <input type="text" class="form-control" id="ageParam" name='age'>
+          <div class="valid-feedback">
+            Parece bien!
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label for="validationCustom01" class="form-label">Telefono</label>
+          <input type="text" class="form-control" id="phoneParam" name='phone'>
+          <div class="valid-feedback">
+            Parece bien!
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label for="validationCustom01" class="form-label">Foto de Perfil</label>
+          <input type="file" class="form-control" id="avatarParam" name='avatar'>
+          <div class="valid-feedback">
+            Parece bien!
+          </div>
+        </div>
+
+        <hr>
+        
+        <div class="col-12">
+          <button class="btn btn-primary" type="submit" >Confirmar</button>
+
+          <form action="/" method="get" novalidate">
+            <button class="btn btn-primary" type="submit">Omitir</button>
+          </form>
+
+        </div>
+        
+      </form>
+    
+</body>
+</html>

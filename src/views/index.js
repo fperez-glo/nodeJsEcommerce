@@ -6,22 +6,20 @@ let alias, email, nombre, apellido, anios, avatarUrl
 //-----
 
 const sendAuthInfo = async () => {
-    console.log('Mando datos de authenticacion');
 
     const user = document.querySelector("#userParam").value;
     const password = document.querySelector("#pswParam").value;
 
     //no me funka esto.. lo mando directo del form html y fue..
     const myRequest = new Request('http://localhost:8080/auth/authLogIn', {method: 'POST', body: 'ASDASDASDS' });
-    console.log('myRequest!!!:', myRequest)
     //await fetch(myRequest);
     
     return false;
 }
 
-const logOutUser = () => {
-    console.log('desloguear!!!')
-}
+// const logOutUser = () => {
+//     console.log('desloguear!!!')
+// }
 
 
 
@@ -134,7 +132,6 @@ const sendMsg = () => {
 };
 
 const confirmUser = () => {
-    //console.log('confirmo el usuario.', event.target.parentNode.parentNode)
     email = document.getElementById('email').value;
     nombre = document.getElementById('nombre').value;
     apellido = document.getElementById('apellido').value;
@@ -157,12 +154,11 @@ const confirmUser = () => {
     
 };
 
-const onChangeText = (value) => {
-    console.log('value:', value)
-};
+// const onChangeText = (value) => {
+//     )
+// };
 
 if (chatOpened) {
     const textChatBox = document.querySelector('#msg')
-    console.log('textChatBox:',textChatBox)
     textChatBox.addEventListener('change',onChangeText(value))
 };

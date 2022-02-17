@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import connection from '../database/connections.js';
-import { console as cLog } from '../helpers/logger.js';
+import { console as cLog, fileErr as fLog } from '../helpers/logger.js';
 
 mongoose.connect(connection.mongodb.connectionString);
 
@@ -15,7 +15,8 @@ export default class ContenedorMongoDB {
             const docs = await this.coleccion.find({ '_id': id }, { __v: 0 });
             
         } catch (error) {
-            cLog.error(`Error al listar por id: ${error}`);
+            cLog.error(`Error al listar por id: ${error}, Metodo get`);
+            fLog.error(`Error al listar por id: ${error}, Metodo get`);
             throw new Error(`Error al listar por id: ${error}`);
         };
     };
@@ -26,7 +27,8 @@ export default class ContenedorMongoDB {
             return docs;
             
         } catch (error) {
-            cLog.error(`Error al listar todo: ${error}`);
+            cLog.error(`Error al listar todo: ${error}, Metodo getAll`);
+            fLog.error(`Error al listar todo: ${error}, Metodo getAll`);
             throw new Error(`Error al listar todo: ${error}`);
         };
     };
@@ -36,6 +38,8 @@ export default class ContenedorMongoDB {
             await this.coleccion.create(nuevoElem);
             //return doc
         } catch (error) {
+            cLog.error(`Error al guardar: ${error}, Metodo save`);
+            fLog.error(`Error al guardar: ${error}, Metodo save`);
             throw `Error al guardar: ${error}`;
         };
     };
@@ -45,6 +49,19 @@ export default class ContenedorMongoDB {
             await this.coleccion.replaceOne({ '_id': nuevoElem._id }, nuevoElem);
             return nuevoElem;
         } catch (error) {
+            cLog.error(`Error al reemplazar: ${error}, Metodo put`);
+            fLog.error(`Error al reemplazar: ${error}, Metodo put`);
+            throw `Error al reemplazar: ${error}`;
+        };
+    };
+
+    async putUpdate(nuevoElem) {
+        try {
+            await this.coleccion.updateOne({ '_id': nuevoElem._id }, nuevoElem);
+            return nuevoElem;
+        } catch (error) {
+            cLog.error(`Error al actualizar: ${error}, Metodo putUpdate`);
+            fLog.error(`Error al actualizar: ${error}, Metodo putUpdate`);
             throw `Error al actualizar: ${error}`;
         };
     };
@@ -53,6 +70,8 @@ export default class ContenedorMongoDB {
         try {
             const { deletedCount } = await this.coleccion.deleteOne(element);
             if (!deletedCount) {
+                cLog.error(`Registro no encontrado, Metodo delete`);
+                fLog.error(`Registro no encontrado, Metodo delete`);
                 throw 'Registro no encontrado';
             }
         } catch (error) {
@@ -64,6 +83,8 @@ export default class ContenedorMongoDB {
         try {
             await this.coleccion.deleteMany({});
         } catch (error) {
+            cLog.error(`Error al borrar: ${error}, Metodo deleteAll`);
+            fLog.error(`Error al borrar: ${error}, Metodo deleteAll`);
             throw `Error al borrar: ${error}`;
         };
     };
@@ -72,6 +93,8 @@ export default class ContenedorMongoDB {
         try {
             await this.coleccion.insertOne(nuevoElem);
         } catch (error) {
+            cLog.error(`Error al guardar: ${error}, Metodo insertOne`);
+            fLog.error(`Error al guardar: ${error}, Metodo insertOne`);
             throw `Error al guardar: ${error}`;
         };
     };

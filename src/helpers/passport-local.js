@@ -2,7 +2,7 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import passport from 'passport';
 import { userDao } from '../daos/index.js'
 import { encrypt, compare } from './crypto.js';
-
+import { sendEmail } from './nodeMailer.js';
 //PASSPORT LOCAL
 passport.use('local-login', new LocalStrategy({
     usernameField: 'user',
@@ -15,7 +15,7 @@ passport.use('local-login', new LocalStrategy({
     const registeredUser = await userDao.findUser({user, password});
     if (registeredUser.length) {
         req.session.authorized = true;
-        req.session.user = registeredUser[0].fieldName;
+        req.session.fieldName = registeredUser[0].fieldName;
         return done(null, registeredUser);
     };
 
@@ -26,7 +26,7 @@ passport.use('local-signup', new LocalStrategy({
     usernameField: 'user',
     passwordField: 'password',
     passReqToCallback: true,
-}, async ({ body } ,user, password, done) => {
+}, async (req ,user, password, done) => {
     password = encrypt(password);
 
     const registeredUser = await userDao.findUser({user, password});
@@ -34,22 +34,22 @@ passport.use('local-signup', new LocalStrategy({
         return done(null, false)
     };
 
-    const { fieldName, adress, age, phone, avatar } = body;
-
-    if (avatar){
-        console.log('LLEGO CON FOTO!!');
-
-    }
-
-    await userDao.save({user, password, fieldName, adress, age, phone, avatar});
+    await userDao.save({user, password});
     
     const createdUser = await userDao.findUser({user, password});
+    await sendEmail({
+        subject:'Nuevo Registro.',
+        html:`<b>Un usuario se ha registrado:</b>
+              <hr>
+              <p>Usuario:${user}</p>`,
+    });
     done(null, createdUser);
     
 }));
 
 passport.serializeUser((user, done) =>{
     done(null, user[0]._id)
+    //done(null, user[0].user)
 });
 
 passport.deserializeUser(async (id, done) => {

@@ -1,11 +1,19 @@
 import express from 'express';
-import clsCart from './clsCart.js';
 const { Router } = express
 const router = new Router();
 import { cartDao } from '../../daos/index.js'; 
 import { console as cLog } from '../../helpers/logger.js';
 
-const cartMethods = new clsCart();
+
+router.get('/',async ({ params }, res) => {
+    try {
+
+        res.render('carrito');
+    } catch (err) {
+        cLog.warn(`[ERROR]: ${err}`);
+        res.send({message: err});
+    };
+});
 
 router.get('/:cartId/productos',async ({ params }, res) => {
     try {
@@ -60,7 +68,7 @@ router.delete('/:cartId', async({ params }, res) => {
 router.delete('/:cartId/productos/:prodId', async( { params } , res ) => {
     try {
         const { cartId, prodId } = params;
-        //await cartMethods.deleteCartProduct({ cartId: parseInt(cartId), prodId });
+      
         await cartDao.deleteCartProduct({ cartId: parseInt(cartId), prodId });
         const message = 'Producto Eliminado';
         cLog.info({message});

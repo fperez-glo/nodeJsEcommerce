@@ -20,14 +20,14 @@ function isAdmin(req, res, next) {
 /** Devuelve todos los productos */
 router.get('/',
 async (req, res) => {
-    let user
+    let fieldName
     if(req.session.authorized){
-        if(req.session.user) {
-            user = req.session.user;
+        if(req.session.fieldName) {
+            fieldName = req.session.fieldName;
         }
         const products = await productDao.getAll();
         
-        res.render('index',{ products, authorized:req.session.authorized, user });
+        res.render('index',{ products, authorized:req.session.authorized, fieldName });
     } else {
         res.redirect('/');
     }
