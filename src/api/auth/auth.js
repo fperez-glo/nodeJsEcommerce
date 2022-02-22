@@ -5,6 +5,7 @@ import { upload } from "../../helpers/multer.js";
 import { userDao } from "../../daos/index.js";
 import { sendSMS } from '../../helpers/twilio.js';
 
+
 const { Router } = express;
 const router = new Router();
 
@@ -82,7 +83,8 @@ router.get("/signUpAditionalData", ({session}, res) => {
   };
 });
 
-router.post("/signUpAditionalData", upload.single("avatar"), ({body, session}, res) => {
+router.post("/signUpAditionalData", upload.single("avatar"), ({body, session, file}, res) => {
+    console.log('req.file?:',file)
   if(session?.passport?.user) {
     const { user } = session.passport;
     const { fieldName, adress, age, phone, avatar } = body;

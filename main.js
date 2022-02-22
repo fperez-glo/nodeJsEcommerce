@@ -7,6 +7,8 @@ import session from 'express-session';
 import passport from 'passport';
 import MongoStore from 'connect-mongo';
 import { console as cLog } from './src/helpers/logger.js'
+import { upload } from './src/helpers/multer.js';
+
 
 //CLUSTER MODULE
 import cluster from 'cluster';
@@ -105,8 +107,14 @@ if (cluster.isPrimary && MODE === 'CLUSTER') {
     app.use(express.urlencoded({extended: false}));
 
     //app.use(express.static(root + 'src/views'))
-
-
+    // for parsing multipart/form-data
+    app.use(upload.array()); 
+    app.use(express.static('public'));
+    
+    app.post('/multer/file',upload.single("avatar"),(req, res)=> {
+      console.log('req.file?:', req.file)
+      res.send({message: 'operation success!'})
+    })
 
     //Rutas definidas
     app.use('/home', prodApi);
