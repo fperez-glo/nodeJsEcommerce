@@ -14,9 +14,9 @@ import {cpus as cpuQty } from 'os';
 
 import { Server } from 'socket.io';
 import { chatDao } from "./src/daos/index.js";
-import authApi from './src/api/auth/auth.js';
-import prodApi from './src/api/products/products.js';
-import cartApi from './src/api/cart/cart.js';
+import authApi from './src/api/routes/auth.routes.js';
+import prodApi from './src/api/routes/products.routes.js';
+import cartApi from './src/api/routes/cart.routes.js';
 
 import { normalize, schema } from 'normalizr';
 

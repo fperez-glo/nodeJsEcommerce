@@ -12,6 +12,7 @@ export default class UserDaoMongoDB extends ContenedorMongoDB {
             age:{type: Number, require: true},
             phone:{type: String, require: true},
             avatar:{type: String, require: true},
+            role:{type: String, default: 'costumer'},
             createDate: {type: Date, default: moment()},
         })
     }

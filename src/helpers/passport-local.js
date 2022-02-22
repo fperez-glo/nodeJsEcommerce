@@ -3,17 +3,23 @@ import passport from 'passport';
 import { userDao } from '../daos/index.js'
 import { encrypt, compare } from './crypto.js';
 import { sendEmail } from './nodeMailer.js';
+
 //PASSPORT LOCAL
 passport.use('local-login', new LocalStrategy({
     usernameField: 'user',
     passwordField: 'password',
     passReqToCallback: true
 } ,async (req,user, password, done) => {
+    console.log('ENTRA ACA????')
     //Encripto el password ingresado con el secreto para saber si coincide con el de la base de datos 
     password = encrypt(password);
 
     const registeredUser = await userDao.findUser({user, password});
     if (registeredUser.length) {
+        if(registeredUser[0].role==='admin'){
+            console.log('ES ADMINISTRADOR!!!')
+            req.session.administrador=true
+        };
         req.session.authorized = true;
         req.session.fieldName = registeredUser[0].fieldName;
         return done(null, registeredUser);
@@ -34,7 +40,7 @@ passport.use('local-signup', new LocalStrategy({
         return done(null, false)
     };
 
-    await userDao.save({user, password});
+    await userDao.save({ user, password });
     
     const createdUser = await userDao.findUser({user, password});
     await sendEmail({
