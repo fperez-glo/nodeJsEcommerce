@@ -10,8 +10,9 @@ const cartController = new CartController();
 router.get('/', cartController.getCartHome);
 router.get('/:cartId/productos', cartController.getCartProducts);
 router.post('/', cartController.postGenerateCart);
-router.put('/:cartId/productos/:prodId', cartController.putCartProducts);
+router.post('/addProduct', cartController.addCartProduct)
 router.delete('/:cartId', cartController.deleteCart);
-router.delete('/:cartId/productos/:prodId', cartController.deleteCartProduct);
+router.post('/:cartId/productos/:prodId', cartController.deleteCartProduct);
+router.post('/confirmPurchase', cartController.confirmPurchase);
 
 export default router;

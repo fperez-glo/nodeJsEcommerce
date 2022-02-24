@@ -1,38 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-    <%- include('templates/head') %>
-<body class="container">
-    <% if(!authorized){ %>
-        <% if(!signUp){ %>
-            <%- include('templates/logInForm') %>
-        <% } else {%>
-            <%- include('templates/signUpForm') %>
-        <% } %>
-    <% }else { %>
-        
-        <%- include('templates/navBar') %>
+  <%- include('templates/head') %>
+  <body class="container">
+    <% if(!authorized){ %> <% if(!signUp){ %> <%- include('templates/logInForm')
+    %> <% } else {%> <%- include('templates/signUpForm') %> <% } %> <% }else {
+    %> <%- include('templates/navBar') %>
 
-        <!-- <% if(authorized){ %>
+    <!-- <% if(authorized){ %>
             <%- include('templates/logOutButton') %>
         <% } %> -->
-        
-        
-        <%- include('templates/prodForm') %>
-        <%- include('templates/productos') %>
-        <hr>
 
-        <div class="container">
-            <button class='btn btn-warning' onclick={emptyChatBox()}>Vaciar Chat</button>
-        </div>
+    <%- include('templates/prodForm') %> <%- include('templates/productos') %>
+    <hr />
 
-        <hr>
-    
-        <div id='chatBox' class='container'>
-            <%- include('templates/chat')  %>
-        </div>
-        <% } %>
+    <div class="container">
+      <button class="btn btn-warning" onclick="{emptyChatBox()}">
+        Vaciar Chat
+      </button>
+    </div>
 
-    <script src='socket.io/socket.io.js'></script>
-    <script src="./index.js"></script>
-</body>
+    <hr />
+
+    <div id="chatBox" class="container"><%- include('templates/chat') %></div>
+    <% } %>
+
+    <!-- <script src="socket.io/socket.io.js"></script> -->
+    <script src="index.js"></script>
+  </body>
 </html>

@@ -3,7 +3,7 @@ const socket = io();
 let chatOpened = false
 //Tuve que declarar esta variable global porque sino perdia el dato.
 let alias, email, nombre, apellido, anios, avatarUrl
-//-----
+
 
 const sendAuthInfo = async () => {
 
@@ -103,8 +103,14 @@ const emptyChatBox = () => {
     
 };
 
+const deleteButton = document.getElementById("deleteButton");
+console.log('deleteButton:',deleteButton)
+if (deleteButton){
+    
+    deleteButton.addEventListener('click', deleteItem)
+}
 const deleteItem = (event) => {
-
+    console.log('event.target:', event.target)
     const prodId = event.target['value'] || event.target.parentNode['value'];
     socket.emit('clientDeleteItem', prodId);
 };
@@ -154,9 +160,6 @@ const confirmUser = () => {
     
 };
 
-// const onChangeText = (value) => {
-//     )
-// };
 
 if (chatOpened) {
     const textChatBox = document.querySelector('#msg')

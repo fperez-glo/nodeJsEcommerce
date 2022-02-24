@@ -31,6 +31,10 @@ const schema = new Schema({
       default: 1,
     },
   },
+  userId: {
+    type: String,
+    required: true,
+  },
   timeStamp: {
     type: Date,
     default: now(),
@@ -42,7 +46,8 @@ export default class CartDaoMongoDB extends ContenedorMongoDB {
     super("carritos", schema);
   }
 
-  async save(carrito = { productos: [] }) {
+  async save(userId ,carrito = { productos: [] }) {
+    carrito.userId = userId;
     return super.save(carrito);
   }
 

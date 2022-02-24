@@ -6,9 +6,15 @@ export class CartController extends CartService {
     super();
   }
   
-  async getCartHome({ params }, res) {
+  async getCartHome({ session }, res) {
     try {
-      res.render("carrito");
+      if(session.authorized){
+      const userId = session.passport.user;
+      const userCart = await super.getUserCart({ userId });
+      res.render("carrito", {userCart});
+      } else {
+          res.redirect('/');
+      }
     } catch (err) {
       cLog.warn(`[ERROR]: ${err}`);
       res.send({ message: err });
@@ -39,20 +45,6 @@ export class CartController extends CartService {
     }
   }
 
-  async putCartProducts({ params }, res) {
-    try {
-      const { cartId, prodId } = params;
-      await super.putCartProducts(cartId, prodId);
-
-      const message = "Producto agregado.";
-      cLog.info({ message });
-      res.send({ message });
-    } catch (err) {
-      cLog.warn(`[ERROR]: ${err}`);
-      res.send({ message: err });
-    }
-  }
-
   async deleteCart({ params }, res) {
     try {
       const { cartId } = params;
@@ -73,8 +65,37 @@ export class CartController extends CartService {
       await super.deleteCartProduct(cartId, prodId);
 
       const message = "Producto Eliminado";
-      cLog.info({ message });
-      res.send({ message });
+      cLog.info({ message: message, data: {cartId, prodId} });
+      res.redirect('/cart')
+    } catch (err) {
+      cLog.warn(`[ERROR]: ${err}`);
+      res.send({ message: err });
+    }
+  }
+
+  async addCartProduct ({ body, session }, res) {
+    try {
+      const { prodId } = body;
+      const userId = session.passport.user;
+
+      const userCart = await super.addCartProduct(prodId, userId)
+      
+      //console.log('userCart:',userCart[0].cartId)
+      res.render('carrito', {userCart})
+    } catch (err) {
+      cLog.warn(`[ERROR]: ${err}`);
+      res.send({ message: err });
+    }
+  }
+
+  async confirmPurchase ({ session }, res) {
+    try {
+      const userId = session.passport.user;
+
+      await super.confirmPurchase(userId);
+
+      res.redirect('/cart')
+
     } catch (err) {
       cLog.warn(`[ERROR]: ${err}`);
       res.send({ message: err });
