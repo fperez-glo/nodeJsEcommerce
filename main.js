@@ -80,17 +80,6 @@ if (cluster.isPrimary && MODE === 'CLUSTER') {
     //Este midleware te permite recibir el body que se envia como POST desde un formulario HTML
     app.use(express.urlencoded({extended: false}));
 
-    //app.use(express.static(root + 'src/views'))
-    
-    // for parsing multipart/form-data
-    app.use(upload.array()); 
-    app.use(express.static('public'));
-
-    app.post('/multer/file',upload.single("avatar"),(req, res)=> {
-      console.log('req.file?:', req.file)
-      res.send({message: 'operation success!'})
-    })
-
     //Rutas definidas
     app.use('/home', prodApi);
     app.use('/cart', cartApi);

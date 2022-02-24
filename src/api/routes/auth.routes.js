@@ -25,7 +25,7 @@ router.post(
 
 // router.post("/authSignUp", authController.postPassportSignUp);
 // router.post("/passportLogin", authController.postPassportLogin);
-router.post("/authSignUp", passport.authenticate("local-signup", {
+router.post("/authSignUp",upload.single("avatar"),passport.authenticate("local-signup", {
   successRedirect: "/signUpAditionalData",
   failureRedirect: "/signUpError",
 }));

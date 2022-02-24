@@ -7,9 +7,11 @@ const storage = multer.diskStorage({
         //recibe el nombre de la carpeta donde se va a guardar la informacion.
         cb(null, './src/public/resources');
     },
-    filename: (req, file, cb)=> {
+    filename: ({session}, file, cb)=> {
         //recibe el nombre con el cual se va a guardar el archivo.
-        cb(null, `file_${file.originalname}`);
+        const { user } = session.passport;
+        const fileExtension = file.originalname.slice(file.originalname.length - 3, file.originalname.length);
+        cb(null, `${user}.avatar.${fileExtension}`);
     },
 });
 
