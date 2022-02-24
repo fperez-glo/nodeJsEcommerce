@@ -60,7 +60,8 @@ export class CartService {
                 ${JSON.stringify(userCart[0]?.products, 2, null)}`,
           });
 
-          await sendWhatsapp(`Detalle del pedido:
+          await sendWhatsapp(`Nuevo Pedido de ${fieldName}, email: ${user}.
+            Detalle del pedido:
             Productos:
             ${JSON.stringify(userCart[0]?.products, 2, null)}`);
 
