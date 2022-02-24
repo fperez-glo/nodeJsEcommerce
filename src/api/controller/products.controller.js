@@ -6,7 +6,7 @@ export class ProductController extends ProductService {
     super();
   }
 
-  async getAllProduct (req, res) {
+  async getToHome (req, res) {
     let fieldName
     if(req.session.authorized){
         if(req.session.fieldName) {
@@ -17,6 +17,18 @@ export class ProductController extends ProductService {
         res.render('index',{ products, authorized:req.session.authorized, fieldName });
     } else {
         res.redirect('/');
+    }
+}
+
+async getAllProduct (req, res) {
+    try {
+        
+        const products = await super.getAllProduct();
+    
+        res.json({products});
+    } catch (err) {
+        cLog.error(`[ERROR]: ${err}`);
+        res.send({err});
     }
 }
 

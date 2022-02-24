@@ -7,8 +7,10 @@ const router = new Router();
 
 const productController = new ProductController();
 
+/** Devuelve a la Home page del ecommerse */
+router.get('/', productController.getToHome);
 /** Devuelve todos los productos */
-router.get('/', productController.getAllProduct);
+router.get('/getAllProduct', productController.getAllProduct);
 /** Recibe y agrega un producto */
 router.post('/', isAdmin, productController.postProduct);
 /** Recibe y actualiza un producto */

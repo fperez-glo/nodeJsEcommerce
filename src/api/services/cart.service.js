@@ -1,6 +1,6 @@
 import { cartDao, userDao } from "../../daos/index.js";
 import { sendEmail } from "../../helpers/nodeMailer.js";
-import { sendSMS } from "../../helpers/twilio.js";
+import { sendSMS, sendWhatsapp } from "../../helpers/twilio.js";
 
 export class CartService {
   async getCartProducts(cartId) {
@@ -59,6 +59,10 @@ export class CartService {
                 <p>Productos:</p> <br>
                 ${JSON.stringify(userCart[0]?.products, 2, null)}`,
           });
+
+          await sendWhatsapp(`Detalle del pedido:
+            Productos:
+            ${JSON.stringify(userCart[0]?.products, 2, null)}`);
 
           await sendSMS(`Su pedido ha sido recibido y se encuentra en proceso.
                       Portal de ventas Fperez.`);
