@@ -25,7 +25,6 @@ export default class ContenedorMongoDB {
         try {
             let docs = await this.coleccion.find(searchFilter, { __v: 0 }).lean();
             return docs;
-            
         } catch (error) {
             cLog.error(`Error al listar todo: ${error}, Metodo getAll`);
             fLog.error(`Error al listar todo: ${error}, Metodo getAll`);
