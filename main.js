@@ -10,7 +10,6 @@ import { socketConnect } from './src/helpers/webSocket.js';
 import cluster from 'cluster';
 import {cpus as cpuQty } from 'os';
 
-import { Server } from 'socket.io';
 import authApi from './src/api/routes/auth.routes.js';
 import prodApi from './src/api/routes/products.routes.js';
 import cartApi from './src/api/routes/cart.routes.js';
@@ -36,11 +35,8 @@ if (cluster.isPrimary && MODE === 'CLUSTER') {
     });
   
   } else {
-
-  
-
     //Me traigo el pathname para reemplazar al __dirname en los ES6modules
-    const {pathname: root} = new URL('../', import.meta.url)
+    //const {pathname: root} = new URL('../', import.meta.url)
     const app = express();
     const port = PORT || 8080;
 
