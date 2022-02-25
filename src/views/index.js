@@ -5,17 +5,17 @@ let chatOpened = false
 let alias, email, nombre, apellido, anios, avatarUrl
 
 
-const sendAuthInfo = async () => {
+// const sendAuthInfo = async () => {
 
-    const user = document.querySelector("#userParam").value;
-    const password = document.querySelector("#pswParam").value;
+//     const user = document.querySelector("#userParam").value;
+//     const password = document.querySelector("#pswParam").value;
 
-    //no me funka esto.. lo mando directo del form html y fue..
-    const myRequest = new Request('http://localhost:8080/auth/authLogIn', {method: 'POST', body: 'ASDASDASDS' });
-    //await fetch(myRequest);
+//     //no me funka esto.. lo mando directo del form html y fue..
+//     //const myRequest = new Request('http://localhost:8080/auth/authLogIn', {method: 'POST', body: 'ASDASDASDS' });
+//     //await fetch(myRequest);
     
-    return false;
-}
+//     return false;
+// }
 
 // const logOutUser = () => {
 //     console.log('desloguear!!!')
@@ -104,13 +104,12 @@ const emptyChatBox = () => {
 };
 
 const deleteButton = document.getElementById("deleteButton");
-console.log('deleteButton:',deleteButton)
+
 if (deleteButton){
     
     deleteButton.addEventListener('click', deleteItem)
 }
 const deleteItem = (event) => {
-    console.log('event.target:', event.target)
     const prodId = event.target['value'] || event.target.parentNode['value'];
     socket.emit('clientDeleteItem', prodId);
 };

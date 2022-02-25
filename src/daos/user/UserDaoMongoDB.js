@@ -22,7 +22,13 @@ export default class UserDaoMongoDB extends ContenedorMongoDB {
     // }
 
     async findUser ({user,password}) {
-        const searchFilter = { user, password }
+        let searchFilter
+        if (password) {
+            searchFilter = { user, password }
+        } else {
+            searchFilter = { user }
+        }   
+        
         return super.getAll(searchFilter)
     }
 };

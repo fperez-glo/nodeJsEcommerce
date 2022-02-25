@@ -80,7 +80,6 @@ export class CartController extends CartService {
 
       const userCart = await super.addCartProduct(prodId, userId)
       
-      //console.log('userCart:',userCart[0].cartId)
       res.render('carrito', {userCart})
     } catch (err) {
       cLog.warn(`[ERROR]: ${err}`);

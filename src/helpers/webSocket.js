@@ -47,9 +47,7 @@ export const socketConnect = (socket) => {
     const chats = await chatDao.getAll();
 
     mensajes = { mensajes: chats, id: "msg" };
-    // console.log('Largo sin normalizar:',JSON.stringify(mensajes).length)
 
-    //console.log(mensajes)
     const messageNormalize = normalize(mensajes, mensajesSchema);
     print(messageNormalize);
 

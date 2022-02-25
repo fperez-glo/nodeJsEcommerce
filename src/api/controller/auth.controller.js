@@ -40,7 +40,7 @@ export class AuthController extends AuthService {
   }
 
   async postPassportLogin(req, res) {
-    console.log('EJECUTA postPassportLogin??')
+
     passport.authenticate("local-login", {
       successRedirect: "/home",
       failureRedirect: "/loginError",
@@ -48,7 +48,6 @@ export class AuthController extends AuthService {
   }
 
   getLoginError(req, res) {
-    console.log('EJECUTA LOGIN ERROR???')
     //res.render("./error_views/authError", { loginError: true });
     res.render("index", { authorized: false, signUp: false, loginError: true });
   }

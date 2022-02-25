@@ -7,13 +7,11 @@ let chatDao, userDao, productDao, cartDao
 
 switch (process.env.DATASERVER) {
     // case 'ARCHIVO':
-    //     console.log('entro por ARCHIVO');
     //     import ChatDaoArchivo from './chat/ChatDaoArchivo.js';
 
     //     chatDao = new ChatDaoArchivo();
     //     break;
     // case 'FIREBASE':
-    //     console.log('entro por FIREBASE');
     //     import  ChatDaoFirebase from './chat/ChatDaoFirebase';
 
     //     chatDao = new ChatDaoFirebase();

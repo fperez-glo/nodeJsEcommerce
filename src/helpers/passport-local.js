@@ -3,6 +3,7 @@ import passport from 'passport';
 import { userDao } from '../daos/index.js'
 import { encrypt, compare } from './crypto.js';
 import { sendEmail } from './nodeMailer.js';
+import { console as cLog } from './logger.js'
 
 //PASSPORT LOCAL
 passport.use('local-login', new LocalStrategy({
@@ -10,19 +11,22 @@ passport.use('local-login', new LocalStrategy({
     passwordField: 'password',
     passReqToCallback: true
 } ,async (req,user, password, done) => {
-    console.log('ENTRA ACA????')
-    //Encripto el password ingresado con el secreto para saber si coincide con el de la base de datos 
-    password = encrypt(password);
 
-    const registeredUser = await userDao.findUser({user, password});
-    if (registeredUser.length) {
-        if(registeredUser[0].role==='admin'){
-            console.log('ES ADMINISTRADOR!!!')
-            req.session.administrador=true
+    const searchUser = await userDao.findUser({user});
+
+    if (searchUser.length) {
+        //Comparo el password ingresado sin encriptar con el de la base de datos encriptado. 
+        const provideAccess = compare(password, searchUser[0].password);
+       
+        if (provideAccess) {
+            if(searchUser[0].role==='admin'){
+                cLog.info(`Se ha logueado el usuario Administrador: ${searchUser[0].user}`)
+                req.session.administrador=true
+            };
+            req.session.authorized = true;
+            req.session.fieldName = searchUser[0].fieldName;
+            return done(null, searchUser);
         };
-        req.session.authorized = true;
-        req.session.fieldName = registeredUser[0].fieldName;
-        return done(null, registeredUser);
     };
 
     done(null, false);
