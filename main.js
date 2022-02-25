@@ -6,6 +6,8 @@ import passport from 'passport';
 import MongoStore from 'connect-mongo';
 import { ifRouteNotExists, infoLogger } from './src/midleware/midleware.js';
 import { socketConnect } from './src/helpers/webSocket.js';
+//Socket
+import { Server } from 'socket.io';
 //CLUSTER MODULE
 import cluster from 'cluster';
 import {cpus as cpuQty } from 'os';
