@@ -20,8 +20,8 @@ export const sendWhatsapp = async(text, addressee = MY_PHONE_NUMBER) => {
     try {
         client.messages.create({
             body: text,
-            from: "whatsapp:"+TWILIO_PHONE_WP_NUMBER,
-            to: "whatsapp:"+addressee,
+            from: `whatsapp:${TWILIO_PHONE_WP_NUMBER}`,
+            to: `whatsapp:${addressee}`,
         });
     } catch (error) {
         throw error;
