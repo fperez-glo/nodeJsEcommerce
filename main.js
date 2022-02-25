@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import http from 'http'
 import express from 'express';
 import session from 'express-session';
@@ -107,7 +108,7 @@ if (cluster.isPrimary && MODE === 'CLUSTER') {
     //Conexion con el Socket para el cliente.
     io.on("connection", (socket)=> {socketConnect(socket)});
 
-    app.listen(port, ()=> {
+    app.listen(process.env.PORT || port, ()=> {
         if (!cluster.isPrimary) {
           console.log(`Worker process start ${process.pid}, port: ${port}`)
         } else {
