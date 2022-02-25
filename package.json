@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Proyecto de backend Ecommerce hecho con Express de nodeJs",
   "main": "main.js",
+  "engines": {
+    "node": "16.x"
+  },
   "dependencies": {
     "connect-mongo": "^4.6.0",
     "dotenv": "^16.0.0",
