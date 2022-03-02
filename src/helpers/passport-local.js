@@ -1,7 +1,7 @@
 import { Strategy as LocalStrategy } from 'passport-local';
 import passport from 'passport';
 import { userDao } from '../daos/index.js'
-import { encrypt, compare } from './crypto.js';
+//import { encrypt, compare } from './crypto.js';
 import { sendEmail } from './nodeMailer.js';
 import { console as cLog } from './logger.js'
 
