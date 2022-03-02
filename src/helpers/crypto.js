@@ -1,5 +1,5 @@
-//const { createDecipheriv, createCipheriv, scryptSync } = await import('crypto');
-import { createDecipheriv, createCipheriv, scryptSync } from 'crypto';
+const { createDecipheriv, createCipheriv, scryptSync } = await import('crypto');
+//import { createDecipheriv, createCipheriv, scryptSync } from 'crypto';
 import 'dotenv/config';
 const { CRYPTO_SECRET } = process.env;
 
