@@ -1,4 +1,4 @@
-import { userDao } from "../../daos/index.js";
+import { userDao } from "../../models/daos/index.js";
 
 export class AuthService {
 

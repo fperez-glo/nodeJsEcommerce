@@ -1,5 +1,5 @@
 import { print } from "./utils.js";
-import { chatDao } from "../daos/index.js";
+import { chatDao } from "../models/daos/index.js";
 import { normalize, schema } from "normalizr";
 import moment from "moment";
 import { console as cLog } from "./logger.js";

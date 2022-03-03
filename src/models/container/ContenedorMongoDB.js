@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import connection from '../database/connections.js';
-import { console as cLog, fileErr as fLog } from '../helpers/logger.js';
+import connection from '../config/config.js';
+import { console as cLog, fileErr as fLog } from '../../helpers/logger.js';
 
 mongoose.connect(connection.mongodb.connectionString);
 

@@ -1,7 +1,7 @@
 import { Strategy as LocalStrategy } from 'passport-local';
 import passport from 'passport';
-import { userDao } from '../daos/index.js'
-//import { encrypt, compare } from './crypto.js';
+import { userDao } from '../models/daos/index.js'
+import { encrypt, compare } from './crypto.js';
 import { sendEmail } from './nodeMailer.js';
 import { console as cLog } from './logger.js'
 
@@ -16,7 +16,7 @@ passport.use('local-login', new LocalStrategy({
 
     if (searchUser.length) {
         //Comparo el password ingresado sin encriptar con el de la base de datos encriptado. 
-        const provideAccess = true//compare(password, searchUser[0].password);
+        const provideAccess = compare(password, searchUser[0].password);
        
         if (provideAccess) {
             if(searchUser[0].role==='admin'){
@@ -37,7 +37,7 @@ passport.use('local-signup', new LocalStrategy({
     passwordField: 'password',
     passReqToCallback: true,
 }, async (req ,user, password, done) => {
-    //password = encrypt(password);
+    password = encrypt(password);
 
     const registeredUser = await userDao.findUser({user, password});
     if (registeredUser.length) {

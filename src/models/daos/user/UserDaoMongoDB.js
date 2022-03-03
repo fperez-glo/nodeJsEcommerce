@@ -17,17 +17,13 @@ export default class UserDaoMongoDB extends ContenedorMongoDB {
         })
     }
 
-    // async guardar(carrito = { productos: [] }) {
-    //     return super.guardar(carrito)
-    // }
-
     async findUser ({user,password}) {
         let searchFilter
         if (password) {
             searchFilter = { user, password }
         } else {
             searchFilter = { user }
-        }   
+        }
         
         return super.getAll(searchFilter)
     }

@@ -1,4 +1,4 @@
-import { cartDao, userDao } from "../../daos/index.js";
+import { cartDao, userDao } from "../../models/daos/index.js";
 import { sendEmail } from "../../helpers/nodeMailer.js";
 import { sendSMS, sendWhatsapp } from "../../helpers/twilio.js";
 
