@@ -20,7 +20,7 @@ import {sendWhatsapp} from './src/helpers/twilio.js'
 
 
 
-const { MODE, PORT, MONGOCONNECTSTRING, SECRET } = process.env;
+const { MODE, LOCAL_PORT, MONGOCONNECTSTRING, SECRET } = process.env;
 
 
 if (cluster.isPrimary && MODE === 'CLUSTER') {
@@ -40,7 +40,7 @@ if (cluster.isPrimary && MODE === 'CLUSTER') {
     //Me traigo el pathname para reemplazar al __dirname en los ES6modules
     //const {pathname: root} = new URL('../', import.meta.url)
     const app = express();
-    const port = PORT || 8080;
+    const port = process.env.PORT || LOCAL_PORT || 8080;
 
     
 
