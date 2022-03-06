@@ -1,6 +1,9 @@
 import { console as cLog } from "../helpers/logger.js";
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
+import 'dotenv/config';
+
+const { MONGOCONNECTSTRING, SECRET } = process.env;
 
 /** Valida si el usuario es administrador para acceder a determinadas rutas. */
 export const isAdmin = (req, res, next) => {
@@ -27,6 +30,8 @@ export const infoLogger = ({ method, originalUrl }, { statusCode }, next) => {
   cLog.info(logInfo);
   next();
 };
+
+console.log('MONGOCONNECTSTRING!!!!! : ', MONGOCONNECTSTRING)
 
 /** Midleware para levantar la session en Mongo Atlas */
 export const createMongoSession = () => {

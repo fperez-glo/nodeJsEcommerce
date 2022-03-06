@@ -1,10 +1,8 @@
 import 'dotenv/config';
 import http from 'http'
 import express from 'express';
-import session from 'express-session';
 import passport from 'passport';
-import MongoStore from 'connect-mongo';
-import { ifRouteNotExists, infoLogger } from './src/midleware/midleware.js';
+import { ifRouteNotExists, infoLogger, createMongoSession } from './src/midleware/midleware.js';
 import { socketConnect } from './src/helpers/webSocket.js';
 //Socket
 import { Server } from 'socket.io';
@@ -20,7 +18,7 @@ import {sendWhatsapp} from './src/helpers/twilio.js'
 
 
 
-const { MODE, LOCAL_PORT, MONGOCONNECTSTRING, SECRET } = process.env;
+const { MODE, LOCAL_PORT } = process.env;
 
 
 if (cluster.isPrimary && MODE === 'CLUSTER') {
@@ -48,21 +46,7 @@ if (cluster.isPrimary && MODE === 'CLUSTER') {
     app.use(infoLogger);
 
     //Este midleware inicia una session.
-    app.use(
-        session({
-            store: MongoStore.create({
-            mongoUrl:
-              MONGOCONNECTSTRING,
-            }),
-            secret: SECRET,
-            resave: true,
-            saveUninitialized: true,
-            //Esto no funciona muy bien ya que el servidor toma la hora local que no es la de Argentina.
-            cookie: {
-                maxAge: 600000, //10 minutos de expiracion de la sesion.
-            }
-        })
-        );
+    app.use(createMongoSession);
 
     //Inicializo passport
     app.use(passport.initialize());
