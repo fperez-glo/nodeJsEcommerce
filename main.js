@@ -17,7 +17,6 @@ import cartApi from './src/api/routes/cart.routes.js';
 import {sendWhatsapp} from './src/helpers/twilio.js'
 
 
-
 const { MODE, LOCAL_PORT } = process.env;
 
 
@@ -40,13 +39,11 @@ if (cluster.isPrimary && MODE === 'CLUSTER') {
     const app = express();
     const port = process.env.PORT || LOCAL_PORT || 8080;
 
-    
-
     //Middleware logger
     app.use(infoLogger);
 
     //Este midleware inicia una session.
-    app.use(createMongoSession);
+    app.use(createMongoSession());
 
     //Inicializo passport
     app.use(passport.initialize());

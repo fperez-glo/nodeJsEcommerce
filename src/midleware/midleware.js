@@ -35,7 +35,7 @@ console.log('MONGOCONNECTSTRING!!!!! : ', MONGOCONNECTSTRING)
 
 /** Midleware para levantar la session en Mongo Atlas */
 export const createMongoSession = () => {
-  session({
+  return (session({
     store: MongoStore.create({
     mongoUrl:
       MONGOCONNECTSTRING,
@@ -47,5 +47,5 @@ export const createMongoSession = () => {
     cookie: {
         maxAge: 600000, //10 minutos de expiracion de la sesion.
     }
-})
+}))
 }
