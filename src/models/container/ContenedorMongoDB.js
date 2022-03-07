@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
-import connection from '../config/config.js';
+import connection from '../config/connection.js';
 import { console as cLog, fileErr as fLog } from '../../helpers/logger.js';
 
 mongoose.connect(connection.mongodb.connectionString);
 
 export default class ContenedorMongoDB {
 
-    constructor(nombreColeccion, esquema) {
+    constructor(esquema, nombreColeccion) {
         this.coleccion = mongoose.model(nombreColeccion, esquema)
     }
 

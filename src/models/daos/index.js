@@ -3,7 +3,9 @@ import ChatDaoMongoDB from './chat/ChatDaoMongoDB.js';
 import ProductDaoMongoDB from './product/ProductDaoMongoDB.js'
 import UserDaoMongoDB from './user/UserDaoMongoDB.js';
 import CartDaoMongoDB from './cart/CartDaoMongoDB.js';
+import { ModelFactory } from '../ModelFactory.js';
 let chatDao, userDao, productDao, cartDao
+let modelFactory = new ModelFactory();
 
 switch (process.env.DATASERVER) {
     // case 'ARCHIVO':
@@ -17,7 +19,11 @@ switch (process.env.DATASERVER) {
     //     chatDao = new ChatDaoFirebase();
     //     break;
     case 'MONGODB':
-        chatDao = new ChatDaoMongoDB();
+        // chatDao = new ChatDaoMongoDB();
+        // productDao = new ProductDaoMongoDB();
+        // userDao = new UserDaoMongoDB();
+        // cartDao = new CartDaoMongoDB();
+        chatDao = new modelFactory.createModel('mensajes',)
         productDao = new ProductDaoMongoDB();
         userDao = new UserDaoMongoDB();
         cartDao = new CartDaoMongoDB();
