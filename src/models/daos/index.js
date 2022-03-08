@@ -1,8 +1,8 @@
 import 'dotenv/config';
-import ChatDaoMongoDB from './chat/ChatDaoMongoDB.js';
-import ProductDaoMongoDB from './product/ProductDaoMongoDB.js'
-import UserDaoMongoDB from './user/UserDaoMongoDB.js';
-import CartDaoMongoDB from './cart/CartDaoMongoDB.js';
+// import ChatDaoMongoDB from './chat/ChatDaoMongoDB.js';
+// import ProductDaoMongoDB from './product/ProductDaoMongoDB.js'
+// import UserDaoMongoDB from './user/UserDaoMongoDB.js';
+// import CartDaoMongoDB from './cart/CartDaoMongoDB.js';
 import { ModelFactory } from '../ModelFactory.js';
 let chatDao, userDao, productDao, cartDao
 let modelFactory = new ModelFactory();
@@ -23,10 +23,10 @@ switch (process.env.DATASERVER) {
         // productDao = new ProductDaoMongoDB();
         // userDao = new UserDaoMongoDB();
         // cartDao = new CartDaoMongoDB();
-        chatDao = new modelFactory.createModel('mensajes',)
-        productDao = new ProductDaoMongoDB();
-        userDao = new UserDaoMongoDB();
-        cartDao = new CartDaoMongoDB();
+        chatDao = modelFactory.createModel('mensajes');
+        productDao = modelFactory.createModel('productos');
+        userDao = modelFactory.createModel('users');
+        cartDao = modelFactory.createModel('carritos');
         break;
     default:
         // const ProductosDaoMem = require('./productos/ProductosDaoMem.js')
