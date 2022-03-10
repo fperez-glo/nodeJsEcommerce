@@ -4,6 +4,7 @@ export class ProductService {
 
     async getAllProduct () {
         return await productDao.getAll();
+
     }
 
     async postProduct (body) {

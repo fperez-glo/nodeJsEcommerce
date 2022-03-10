@@ -4,10 +4,21 @@ import { console as cLog, fileErr as fLog } from '../../helpers/logger.js';
 
 mongoose.connect(connection.mongodb.connectionString);
 
+let instance = null;
+
 export default class ContenedorMongoDB {
 
     constructor(esquema, nombreColeccion) {
-        this.coleccion = mongoose.model(nombreColeccion, esquema)
+        this.coleccion = mongoose.model(nombreColeccion, esquema);
+        this.instanceId = Math.random(200);
+    }
+
+    static getInstance () {
+        if(!instance) {
+            instance = new ContenedorMongoDB();
+        }
+    
+        return instance;
     }
 
     async get(id) {
@@ -22,8 +33,11 @@ export default class ContenedorMongoDB {
     };
 
     async getAll(searchFilter = {} ) {
+        console.log('LLEGO AL GETALL????:', searchFilter)
+        console.log('this coleccion:', this.coleccion)
         try {
             let docs = await this.coleccion.find(searchFilter, { __v: 0 }).lean();
+            console.log('docS!!!!!:', docs)
             return docs;
         } catch (error) {
             cLog.error(`Error al listar todo: ${error}, Metodo getAll`);

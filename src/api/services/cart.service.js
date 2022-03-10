@@ -1,6 +1,7 @@
 import { cartDao, userDao } from "../../models/daos/index.js";
 import { sendEmail } from "../../helpers/nodeMailer.js";
 import { sendSMS, sendWhatsapp } from "../../helpers/twilio.js";
+import { ModelFactory } from '../../models/ModelFactory.js';
 
 export class CartService {
   async getCartProducts(cartId) {
@@ -40,6 +41,8 @@ export class CartService {
   }
 
   async getUserCart({ userId }) {
+    console.log('user que llega ...:', userId)
+    console.log('cartDAO!!!:  ',cartDao)
     return await cartDao.getAll({ userId });
   }
 

@@ -10,7 +10,11 @@ export class CartController extends CartService {
     try {
       if(session.authorized){
       const userId = session.passport.user;
+      console.log('userid:', userId)
       const userCart = await super.getUserCart({ userId });
+        
+        console.log('USERCART!!!:', userCart)
+
       res.render("carrito", {userCart});
       } else {
           res.redirect('/');
@@ -79,7 +83,7 @@ export class CartController extends CartService {
       const userId = session.passport.user;
 
       const userCart = await super.addCartProduct(prodId, userId)
-      
+      console.log('userCART!!!!:', userCart)
       res.render('carrito', {userCart})
     } catch (err) {
       cLog.warn(`[ERROR]: ${err}`);

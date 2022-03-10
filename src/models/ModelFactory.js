@@ -12,16 +12,18 @@ import { cartDao, productDao } from "../models/daos/index.js";
 const autoIncrementId = mongoSequence(mongoose);
 const { Schema } = mongoose;
 
+let instance = null;
+
 class Model extends ContenedorMongoDB {
-  constructor(schema, table) {
-    super(schema, table);
+  constructor(schema, model) {
+    super(schema, model);
   }
+
 }
 
 class CartModel extends Model {
-  constructor() {
-    super(customCartSchema, this.table);
-    this.table = "carritos";
+  constructor(model) {
+    super(customCartSchema, model);
   }
 
   async save(userId, carrito = { productos: [] }) {
@@ -87,24 +89,23 @@ class CartModel extends Model {
 }
 
 class ChatModel extends Model {
-  constructor() {
-    super(this.mensajesSchema, this.table);
-    this.table = "mensajes";
-    this.mensajesSchema = mensajesSchema;
+  constructor(model) {
+    super(
+      mensajesSchema,
+      model
+    );
   }
 }
 
 class ProductModel extends Model {
-  constructor() {
-    super(productosSchema, this.tabla);
-    this.table = "productos";
+  constructor(model) {
+    super(productosSchema, model);
   }
 }
 
 class UserModel extends Model {
-  constructor() {
-    super(usersSchema, this.table);
-    this.table = "users";
+  constructor(model) {
+    super(usersSchema, model);
   }
 
   async findUser({ user, password }) {
@@ -120,20 +121,21 @@ class UserModel extends Model {
 }
 
 export class ModelFactory {
-  createModel(table) {
-    switch (table) {
+
+  createModel(model) {
+    switch (model) {
       // No se que hacer con esto... el carrito tiene varios metodos en la clase CartDaoMongoDB...
       case "carritos":
-        return new CartModel();
+        return new CartModel(model);
 
       case "mensajes":
-        return new ChatModel();
+        return new ChatModel(model);
 
       case "productos":
-        return new ProductModel();
+        return new ProductModel(model);
 
       case "users":
-        return new UserModel();
+        return new UserModel(model);
 
       default:
         break;
@@ -141,5 +143,5 @@ export class ModelFactory {
   }
 }
 
-const customCartSchema = new Schema({ carritosSchema });
+const customCartSchema = new Schema(carritosSchema);
 customCartSchema.plugin(autoIncrementId, { inc_field: "cartId" });

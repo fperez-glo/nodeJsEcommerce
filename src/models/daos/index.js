@@ -5,7 +5,6 @@ import 'dotenv/config';
 // import CartDaoMongoDB from './cart/CartDaoMongoDB.js';
 import { ModelFactory } from '../ModelFactory.js';
 let chatDao, userDao, productDao, cartDao
-let modelFactory = new ModelFactory();
 
 switch (process.env.DATASERVER) {
     // case 'ARCHIVO':
@@ -19,14 +18,20 @@ switch (process.env.DATASERVER) {
     //     chatDao = new ChatDaoFirebase();
     //     break;
     case 'MONGODB':
-        // chatDao = new ChatDaoMongoDB();
-        // productDao = new ProductDaoMongoDB();
-        // userDao = new UserDaoMongoDB();
-        // cartDao = new CartDaoMongoDB();
-        chatDao = modelFactory.createModel('mensajes');
-        productDao = modelFactory.createModel('productos');
-        userDao = modelFactory.createModel('users');
-        cartDao = modelFactory.createModel('carritos');
+        let MongoModelFactory = new ModelFactory();
+      
+        // chatDao = modelFactory.createModel('mensajes');
+        // productDao = modelFactory.createModel('productos');
+        // userDao = modelFactory.createModel('users');
+        // cartDao = modelFactory.createModel('carritos');
+        chatDao = MongoModelFactory.createModel('mensajes');
+        productDao = MongoModelFactory.createModel('productos');
+        userDao = MongoModelFactory.createModel('users');
+        cartDao = MongoModelFactory.createModel('carritos');
+        // console.log('chatDao: ', chatDao)
+        // console.log('productDao: ', productDao)
+        // console.log('userDao: ', userDao)
+        // console.log('cartDao: ', cartDao)
         break;
     default:
         // const ProductosDaoMem = require('./productos/ProductosDaoMem.js')
