@@ -25,7 +25,7 @@ async getAllProduct (req, res) {
         
         const products = await super.getAllProduct();
     
-        res.json({products});
+        res.status(201).json({products});
     } catch (err) {
         cLog.error(`[ERROR]: ${err}`);
         res.send({err});
@@ -35,11 +35,11 @@ async getAllProduct (req, res) {
 async postProduct ({ body }, res) {
     try {
         const itemCreated = await super.postProduct(body);
-        res.send(itemCreated);
+        res.status(202).json({itemCreated});
         res.redirect('/');
     } catch (err) {
         cLog.error(`[ERROR]: ${err}`);
-        res.send({err});
+        res.status(303).json({err});
     };
 }
 
@@ -62,10 +62,10 @@ async deleteProduct ({ params }, res) {
         const { id } = params;
         await super.deleteProduct(id);
         cLog.info(message);
-        res.send({message});
+        res.status(203).json({message});
     } catch (err) {
         cLog.error(`[ERROR]: ${err}`);
-        res.send({err});
+        res.status(303).json({err});
     };
 }
 

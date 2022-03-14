@@ -33,11 +33,8 @@ export default class ContenedorMongoDB {
     };
 
     async getAll(searchFilter = {} ) {
-        console.log('LLEGO AL GETALL????:', searchFilter)
-        console.log('this coleccion:', this.coleccion)
         try {
             let docs = await this.coleccion.find(searchFilter, { __v: 0 }).lean();
-            console.log('docS!!!!!:', docs)
             return docs;
         } catch (error) {
             cLog.error(`Error al listar todo: ${error}, Metodo getAll`);

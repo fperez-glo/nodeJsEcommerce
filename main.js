@@ -15,13 +15,13 @@ import {cpus as cpuQty } from 'os';
 import authApi from './src/api/routes/auth.routes.js';
 import prodApi from './src/api/routes/products.routes.js';
 import cartApi from './src/api/routes/cart.routes.js';
+import getHome from './src/api/routes/renderHome.routes.js'
 
 import {sendWhatsapp} from './src/helpers/twilio.js'
 
 
-
+export const app = express();
 const { MODE, PORT, MONGOCONNECTSTRING, SECRET } = process.env;
-
 
 if (cluster.isPrimary && MODE === 'CLUSTER') {
     console.log(`Proceso Master ejecutandose en pId: ${process.pid}`)
@@ -39,7 +39,7 @@ if (cluster.isPrimary && MODE === 'CLUSTER') {
   } else {
     //Me traigo el pathname para reemplazar al __dirname en los ES6modules
     //const {pathname: root} = new URL('../', import.meta.url)
-    const app = express();
+    
     const port = PORT || 8080;
 
     
@@ -92,7 +92,8 @@ if (cluster.isPrimary && MODE === 'CLUSTER') {
     })
 
     //Rutas definidas
-    app.use('/home', prodApi);
+    app.use('/home', getHome);
+    app.use('/products', prodApi);
     app.use('/cart', cartApi);
     app.use('/', authApi);
 
@@ -115,5 +116,3 @@ if (cluster.isPrimary && MODE === 'CLUSTER') {
       }); 
 
   }
-
-

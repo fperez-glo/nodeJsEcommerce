@@ -46,7 +46,7 @@
     "webpack-node-externals": "^3.0.0"
   },
   "scripts": {
-    "test": "mocha index.test.js",
+    "test": "mocha src/test/products.test.js",
     "test-manual": "mocha index.prueba.manual.js",
     "start-nodemon": "nodemon main.js",
     "start": "node main.js",
