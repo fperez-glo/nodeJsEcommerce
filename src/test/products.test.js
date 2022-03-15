@@ -22,11 +22,22 @@ describe("API - /products ", () => {
     expect(response.status).to.eql(202);
   });
 
+  it("Actualiza un producto a la coleccion", async () => {
+    const response = await request(app)
+      .put("/products/GGAS662")
+      .send({
+        title: "TEST_actualizado",
+      })
+    expect(response.status).to.eql(203);
+  });
+
   it("Borra un producto a la coleccion", async () => {
     const response = await request(app)
       .delete("/products/GGAS662")
     expect(response.status).to.eql(203);
   });
+
+  
 
  
 });
