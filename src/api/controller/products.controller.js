@@ -12,7 +12,7 @@ export class ProductController extends ProductService {
         if(req.session.fieldName) {
             fieldName = req.session.fieldName;
         }
-        const products = await super.getAllProduct();
+        const products = await super.getAllProds();
         console.log('OBTENGO LOS PRODUCTOS POR REPOSITORY!!:', products)
         res.render('index',{ products, authorized:req.session.authorized, fieldName });
     } else {
@@ -23,7 +23,7 @@ export class ProductController extends ProductService {
 async getAllProduct (req, res) {
     try {
         
-        const products = await super.getAllProduct();
+        const products = await super.getAllProds();
     
         res.status(201).json({products});
     } catch (err) {

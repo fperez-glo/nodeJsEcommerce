@@ -41,11 +41,11 @@ export class CartController extends CartService {
 
   async postGenerateCart(req, res) {
     try {
-      await super.postGenerateCart();
-      res.send(`El carrito se genero exitosamente.`);
+      await super.postGenerateCart(req.body.userId);
+      res.status(201).json(`El carrito se genero exitosamente.`);
     } catch (err) {
       cLog.warn(`[ERROR]: ${err}`);
-      res.send({ message: err });
+      res.status(501).json({ message: err });
     }
   }
 
@@ -80,10 +80,10 @@ export class CartController extends CartService {
   async addCartProduct ({ body, session }, res) {
     try {
       const { prodId } = body;
-      const userId = session.passport.user;
-
+      const userId = session.passport?.user || body.userId;
+      
       const userCart = await super.addCartProduct(prodId, userId)
-      console.log('userCART!!!!:', userCart)
+      
       res.render('carrito', {userCart})
     } catch (err) {
       cLog.warn(`[ERROR]: ${err}`);

@@ -5,7 +5,12 @@ import { ModelFactory } from '../../models/ModelFactory.js';
 
 export class CartService {
   async getCartProducts(cartId) {
-    return await cartDao.getCartProducts({ cartId: parseInt(cartId) });
+    try {
+      return await cartDao.getCartProducts({ cartId: parseInt(cartId) });  
+    } catch (error) {
+      throw error;
+    }
+    
   }
 
   async postGenerateCart(userId) {
@@ -41,8 +46,6 @@ export class CartService {
   }
 
   async getUserCart({ userId }) {
-    console.log('user que llega ...:', userId)
-    console.log('cartDAO!!!:  ',cartDao)
     return await cartDao.getAll({ userId });
   }
 

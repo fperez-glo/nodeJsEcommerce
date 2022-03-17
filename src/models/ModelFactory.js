@@ -101,6 +101,10 @@ class ProductModel extends Model {
   constructor(model) {
     super(productosSchema, model);
   }
+
+  async getAllProds (searchFilter) {
+    return await super.getAll(searchFilter)
+  }
 }
 
 class UserModel extends Model {

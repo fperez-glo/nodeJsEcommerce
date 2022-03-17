@@ -2,9 +2,8 @@ import { productDao } from "../../models/daos/index.js";
 
 export class ProductService {
 
-    async getAllProduct () {
-        return await productDao.getAll();
-
+    async getAllProds (searchFilter = undefined) {
+        return await productDao.getAllProds(searchFilter);
     }
 
     async postProduct (body) {
@@ -12,7 +11,7 @@ export class ProductService {
     }
 
     async putProduct (id, body) {
-        await productDao.updateItem(id, body);
+        await productDao.putUpdate(id, body);
     }
 
     async deleteProduct (id) {
