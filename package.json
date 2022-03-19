@@ -48,7 +48,9 @@
     "webpack-node-externals": "^3.0.0"
   },
   "scripts": {
-    "test": "mocha src/test/cart.test.js",
+    "test-prod": "mocha src/test/products.test.js",
+    "test-cart": "mocha src/test/cart.test.js",
+    "test":"mocha src/test/products.test.js && mocha src/test/cart/test.js",
     "test-manual": "mocha index.prueba.manual.js",
     "start-nodemon": "nodemon main.js",
     "start": "node graphql.js",
