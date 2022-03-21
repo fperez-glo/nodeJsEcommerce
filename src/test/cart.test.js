@@ -16,11 +16,14 @@ describe('API Carrito - /cart', ()=> {
     
 
     it('Añade productos al carrito', async ()=> {
-        await request(app).post('/cart/addProduct')
-        .send({prodId: 'MONGODB', userId: '6216c920faebd6591fb4f820'});
+        await request(app)
+            .post('/cart/addProduct')
+            .send({prodId: 'MONGODB', userId: '6216c920faebd6591fb4f820'})
         const userCart = await cartService.getUserCart({userId: '6216c920faebd6591fb4f820'});
         const selectCartProds = await cartService.getCartProducts(userCart[0].cartId)
+        
         expect(selectCartProds[0].sku).to.eql('MONGODB');
+        
     })
 
     it('Devuelve los productos de algun carrito', async ()=> {
@@ -32,7 +35,8 @@ describe('API Carrito - /cart', ()=> {
     it('Elimina productos del carrito', async ()=> {
         try {
             const userCart = await cartService.getUserCart({userId: '6216c920faebd6591fb4f820'}); 
-            await request(app).delete(`/cart/${userCart[0].cartId}/productos/MONGODB`);
+            await request(app)
+                .delete(`/cart/${userCart[0].cartId}/productos/MONGODB`)
             const selectCartProds = await cartService.getCartProducts(userCart[0].cartId)
             console.log('selectcarProd', selectCartProds)
             expect(selectCartProds[0]?.sku).not.eql('MONGODB');    
@@ -44,7 +48,8 @@ describe('API Carrito - /cart', ()=> {
 
     it('Elimina el carrito', async ()=> {
         const userCart = await cartService.getUserCart({userId: '6216c920faebd6591fb4f820'});
-        await request(app).delete(`/cart/${userCart[0].cartId}`);
+        await request(app)
+            .delete(`/cart/${userCart[0].cartId}`)
         const checkDeletedCart = await cartService.getUserCart({userId: '6216c920faebd6591fb4f820'});
         expect(checkDeletedCart.length).to.eql(0);
     })
