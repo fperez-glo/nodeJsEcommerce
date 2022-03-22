@@ -14,6 +14,15 @@ const schema = buildSchema(`
         telefono: String
     }
 
+    type Producto {
+      sku: Int,
+      title: String,
+      description: String,
+      price: Int,
+      thubmnail: String,
+      stock: Int
+  }
+
     type Query {
         clientes: [Cliente]
         cliente(id: Int): Cliente
