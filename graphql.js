@@ -7,50 +7,61 @@ import { buildSchema } from "graphql";
 
 //tipo Query son solo para consultas
 //tipo Mutation son para eliminar, agregar, actualizar, etc...
-const schema = buildSchema(`
-    type Cliente {
-        id: Int,
-        nombre: String,
-        telefono: String
-    }
-
-    type Producto {
-      sku: Int,
-      title: String,
-      description: String,
-      price: Int,
-      thubmnail: String,
-      stock: Int
+const graphQLschema = buildSchema(`
+  type Cliente {
+      id: Int,
+      nombre: String,
+      telefono: String
   }
 
-    type Query {
-        clientes: [Cliente]
-        cliente(id: Int): Cliente
-    }
+  type Producto {
+    sku: String,
+    title: String,
+    description: String,
+    price: Int,
+    thubmnail: String,
+    stock: Int
+  }
 
-    type Mutation {
-        addClient(nombre: String, telefono: String): Cliente
-    }
+  type Carrito {
+    products: Producto,
+    userId: String,
+    timeStamp: String,
+  }
+
+  type Query {
+    productos: [Producto]
+    carritos: [Carrito]
+    producto(id: String): Producto
+    prodsCarritos(id: Int): Carrito
+  }
+
+  type Mutation {
+    addClient(nombre: String, telefono: String): Cliente
+  }
 
 `);
 
 const clientes = [];
 let counter = 1;
-
+const productos = [{sku: '1', price:3332}, {sku: '2'}, {sku: 'asda'}, {sku: 'asdass112'}]
 
 // Generalmente los metodos del schema de graphql se guardan en una 
 // variable llamada root.
 const root = {
-  clientes: () => {
-    return clientes;
+  productos: () => {
+    return  productos;
   },
 
-  cliente: (data) => {
-    for (let i = 0; i < clientes.length; i++) {
-      if (clientes[i].id == data.id) return clientes[1];
-    }
+  producto: ({id}) => {
+    let product
+    productos.forEach(prod => {
+      if (prod.sku == id) {
+        product = prod;
+      };
+    })
 
-    return null;
+    return product || null;
   },
 
   addClient: (data) => {
@@ -71,7 +82,7 @@ const app = express();
 
 //Midleware de graphql
 app.use('/graphql', graphqlHTTP({
-    schema,
+    schema: graphQLschema,
     rootValue: root,
 }))
 

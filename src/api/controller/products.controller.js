@@ -13,7 +13,6 @@ export class ProductController extends ProductService {
             fieldName = req.session.fieldName;
         }
         const products = await super.getAllProds();
-        console.log('OBTENGO LOS PRODUCTOS POR REPOSITORY!!:', products)
         res.render('index',{ products, authorized:req.session.authorized, fieldName });
     } else {
         res.redirect('/');

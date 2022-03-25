@@ -1,4 +1,8 @@
 import { console as cLog } from "../helpers/logger.js";
+import { graphqlHTTP } from "express-graphql";
+import { graphQLschema } from '../models/config/schemas.js';
+import { graphQlRoot } from '../api/controller/graphql.controller.js'
+
 
 /** Valida si el usuario es administrador para acceder a determinadas rutas. */
 export const isAdmin = (req, res, next) => {
@@ -25,3 +29,9 @@ export const infoLogger = ({ method, originalUrl }, { statusCode }, next) => {
   cLog.info(logInfo);
   next();
 };
+
+//Midleware de graphql
+export const graphQLHTTP = graphqlHTTP({
+  schema: graphQLschema,
+  rootValue: graphQlRoot,
+})

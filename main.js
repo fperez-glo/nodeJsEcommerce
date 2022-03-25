@@ -4,7 +4,7 @@ import express from 'express';
 import session from 'express-session';
 import passport from 'passport';
 import MongoStore from 'connect-mongo';
-import { ifRouteNotExists, infoLogger } from './src/midleware/midleware.js';
+import { ifRouteNotExists, infoLogger, graphQLHTTP } from './src/midleware/midleware.js';
 import { socketConnect } from './src/helpers/webSocket.js';
 //Socket
 import { Server } from 'socket.io';
@@ -66,9 +66,10 @@ if (cluster.isPrimary && MODE === 'CLUSTER') {
 
     //Inicializo passport
     app.use(passport.initialize());
-    app.use(passport.session())
+    app.use(passport.session());
 
-    
+    //Midleware de GraphQL
+    app.use('/graphql', graphQLHTTP)
 
     //Seteo las rutas del motor de plantillas ejs.
     app.set('view engine', 'ejs');

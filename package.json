@@ -48,20 +48,12 @@
     "webpack-node-externals": "^3.0.0"
   },
   "scripts": {
-<<<<<<< HEAD
     "test-cart": "mocha src/test/cart.test.js",
     "test-product": "mocha src/test/products.test.js",
     "test": "npm run test-cart && npm run test-product",
-=======
-    "test-prod": "mocha src/test/products.test.js",
-    "test-cart": "mocha src/test/cart.test.js",
-    "test":"mocha src/test/products.test.js && mocha src/test/cart/test.js",
-    "test-manual": "mocha index.prueba.manual.js",
->>>>>>> 2fb65021cf13adb183d54c25afb0d9b9c51d9f89
-    "start-nodemon": "nodemon main.js",
-    "start": "node graphql.js",
-    "start:dev": "nodemon --watch main.js",
-    "graphql": "nodemon --watch graphql.js",
+    "graphql": "node graphql.js",
+    "start": "node main.js",
+    "start:dev": "nodemon main.js",
     "start:prod": "nodemon dist/main.js",
     "build:prod": "webpack --watch --config=webpack.config.js --mode production",
     "build": "webpack --config=webpack.config.js --mode development"

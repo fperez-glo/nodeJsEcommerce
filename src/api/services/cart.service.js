@@ -3,7 +3,9 @@ import { sendEmail } from "../../helpers/nodeMailer.js";
 import { sendSMS, sendWhatsapp } from "../../helpers/twilio.js";
 import { ModelFactory } from '../../models/ModelFactory.js';
 
+
 export class CartService {
+
   async getCartProducts(cartId) {
     try {
       return await cartDao.getCartProducts({ cartId: parseInt(cartId) });  

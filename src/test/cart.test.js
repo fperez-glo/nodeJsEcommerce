@@ -38,7 +38,6 @@ describe('API Carrito - /cart', ()=> {
             await request(app)
                 .delete(`/cart/${userCart[0].cartId}/productos/MONGODB`)
             const selectCartProds = await cartService.getCartProducts(userCart[0].cartId)
-            console.log('selectcarProd', selectCartProds)
             expect(selectCartProds[0]?.sku).not.eql('MONGODB');    
         } catch (error) {
             expect(error).to.eql('No se encontraron productos en el carrito.')
