@@ -2,8 +2,8 @@
   "$schema": "https://deno.land/x/denon@2.5.0/schema.json",
   "scripts": {
     "start": {
-      "cmd": "deno run --allow-net --allow-env main.ts",
-      "desc": "run --allow-net --allow-env main.ts"
+      "cmd": "deno run --allow-net --allow-env main.tsx",
+      "desc": "run --allow-net --allow-env main.tsx"
     }
   }
 }
