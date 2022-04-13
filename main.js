@@ -15,10 +15,15 @@ import {cpus as cpuQty } from 'os';
 import authApi from './src/api/routes/auth.routes.js';
 import prodApi from './src/api/routes/products.routes.js';
 import cartApi from './src/api/routes/cart.routes.js';
-import getHome from './src/api/routes/renderHome.routes.js'
+import getHome from './src/api/routes/renderHome.routes.js';
 
-import {sendWhatsapp} from './src/helpers/twilio.js'
+//--------
+import AWS from 'aws-sdk';
 
+const config = new AWS.Config();
+
+// console.log('config:',config);
+//--------
 
 export const app = express();
 const { MODE, PORT, MONGOCONNECTSTRING, SECRET } = process.env;
@@ -79,18 +84,6 @@ if (cluster.isPrimary && MODE === 'CLUSTER') {
     app.use(express.json());
     //Este midleware te permite recibir el body que se envia como POST desde un formulario HTML
     app.use(express.urlencoded({extended: false}));
-
-
-    app.post('/wp', async(req,res)=> {
-      try {
-        const message = await sendWhatsapp('Detalle del pedido:');
-        res.json({message})
-      } catch (error) {
-        console.log('error:',error)
-        res.json({error})
-      }
-     
-    })
 
     //Rutas definidas
     app.use('/home', getHome);

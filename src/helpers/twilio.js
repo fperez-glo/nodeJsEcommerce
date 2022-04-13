@@ -18,11 +18,12 @@ export const sendSMS = async(text, addressee = MY_PHONE_NUMBER) => {
 
 export const sendWhatsapp = async(text, addressee = MY_PHONE_NUMBER) => {
     try {
-        client.messages.create({
+        const response = await client.messages.create({
             body: text,
             from: `whatsapp:${TWILIO_PHONE_WP_NUMBER}`,
             to: `whatsapp:${addressee}`,
-        });
+        })
+        return response;
     } catch (error) {
         throw error;
     };
