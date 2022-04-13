@@ -1,7 +1,13 @@
+*{
+
+background-color: gray;
+}
+
 #logOutContainter {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: red;
 }
 
 #chatBox {

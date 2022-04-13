@@ -1,5 +1,7 @@
 import 'dotenv/config';
 import http from 'http'
+import path, { dirname }  from 'path';
+import { fileURLToPath } from 'url';
 import express from 'express';
 import session from 'express-session';
 import passport from 'passport';
@@ -16,14 +18,6 @@ import authApi from './src/api/routes/auth.routes.js';
 import prodApi from './src/api/routes/products.routes.js';
 import cartApi from './src/api/routes/cart.routes.js';
 import getHome from './src/api/routes/renderHome.routes.js';
-
-//--------
-import AWS from 'aws-sdk';
-
-const config = new AWS.Config();
-
-// console.log('config:',config);
-//--------
 
 export const app = express();
 const { MODE, PORT, MONGOCONNECTSTRING, SECRET } = process.env;
@@ -42,13 +36,7 @@ if (cluster.isPrimary && MODE === 'CLUSTER') {
     });
   
   } else {
-    //Me traigo el pathname para reemplazar al __dirname en los ES6modules
-    //const {pathname: root} = new URL('../', import.meta.url)
-    
     const port = PORT || 8080;
-
-    
-
     //Middleware logger
     app.use(infoLogger);
 
@@ -76,9 +64,14 @@ if (cluster.isPrimary && MODE === 'CLUSTER') {
     //Midleware de GraphQL
     app.use('/graphql', graphQLHTTP)
 
-    //Seteo las rutas del motor de plantillas ejs.
-    app.set('view engine', 'ejs');
-    app.set('views', 'src/views');
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+   //Seteo las rutas del motor de plantillas ejs.
+   app.set('view engine', 'ejs');
+   app.set('views','src/views');
+
+    app.use(express.static(path.resolve(__dirname, 'src/views')))
+ 
 
     //Este midleware te permite recibir el body que se envia como JSON desde POSTMAN por ej.
     app.use(express.json());

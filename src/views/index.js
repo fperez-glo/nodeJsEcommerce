@@ -4,27 +4,6 @@ let chatOpened = false
 //Tuve que declarar esta variable global porque sino perdia el dato.
 let alias, email, nombre, apellido, anios, avatarUrl
 
-
-// const sendAuthInfo = async () => {
-
-//     const user = document.querySelector("#userParam").value;
-//     const password = document.querySelector("#pswParam").value;
-
-//     //no me funka esto.. lo mando directo del form html y fue..
-//     //const myRequest = new Request('http://localhost:8080/auth/authLogIn', {method: 'POST', body: 'ASDASDASDS' });
-//     //await fetch(myRequest);
-    
-//     return false;
-// }
-
-// const logOutUser = () => {
-//     console.log('desloguear!!!')
-// }
-
-
-
-
-
 socket.on("serverProductsResponse", (products)=>{
     
     renderProds(products);
@@ -127,16 +106,15 @@ const sendMsg = () => {
         },
         text: document.getElementById("msgInput").value,
     };
-
- 
-    
     socket.emit('userMessage',message);
-
     document.getElementById("msgInput").value = '';
     
 };
 
 const confirmUser = () => {
+
+    console.log('entra a confirmUser?')
+
     email = document.getElementById('email').value;
     nombre = document.getElementById('nombre').value;
     apellido = document.getElementById('apellido').value;
