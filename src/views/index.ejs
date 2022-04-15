@@ -9,7 +9,8 @@
 
       %> <%- include('templates/navBar') %>
 
-      <%- include('templates/prodForm') %> <%- include('templates/productos') %>
+      <% if(isAdmin) { %> <%- include('templates/prodForm') %> <% } %>
+      <%- include('templates/productos') %>
       <hr />
 
       <div class="container">

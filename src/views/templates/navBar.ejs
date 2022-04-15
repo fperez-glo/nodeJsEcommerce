@@ -1,13 +1,12 @@
 <nav id="navBar" class="navbar navbar-dark bg-dark d-flex flex-row justify-content-center">
-  
     <div class="d-flex flex-row justify-content-between " id="navbarSupportedContent">
       <div id="menuOptions" class="d-flex flex-row  align-items-center">
-        <ul class="navbar-nav mr-auto d-flex flex-row">
+        <ul class="navbar-nav mr-auto d-flex flex-row justify-content-between" id="menuOptionsList">
           <li class="nav-item active">
-            <a class="nav-link" href="/">Home </a>
+            <a class="nav-link" href="/">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/cart">Cart</a>
+            <a class="nav-link" href="/cart">Carrito</a>
           </li>
         </ul>
       </div>      
@@ -15,8 +14,8 @@
       <div id="buttonsContainer" class="d-flex flex-row  align-items-center">
         
         <form action="/signUpAditionalData" method="get" novalidate">
-          <button class='btn btn-warning' type="submit" style="border-radius: 100%; margin: 5px;">
-            <img id="avatar" src="../public/resources/621434799773d7eb0aab50df.avatar.png" width="40" height="40">
+          <button class='btn btn-warning' type="submit">
+            <img id="avatar" src="../public/resources/<%= userAvatar %>" width="40" height="40">
           </button>
         </form>
         <form action="/authLogOut" method="post" novalidate">

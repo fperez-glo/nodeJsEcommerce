@@ -4,6 +4,7 @@ import { userDao } from '../models/daos/index.js'
 import { encrypt, compare } from './crypto.js';
 import { sendEmail } from './nodeMailer.js';
 import { console as cLog } from './logger.js'
+import { avatarSearch } from "../helpers/utils.js";
 
 //PASSPORT LOCAL
 passport.use('local-login', new LocalStrategy({
@@ -19,10 +20,13 @@ passport.use('local-login', new LocalStrategy({
         const provideAccess = compare(password, searchUser[0].password);
        
         if (provideAccess) {
+            console.log("EXEC avatarSearch: ",avatarSearch(searchUser[0].user))
             if(searchUser[0].role==='admin'){
                 cLog.info(`Se ha logueado el usuario Administrador: ${searchUser[0].user}`)
-                req.session.administrador=true
-            };
+                req.session.administrador= true;
+            } else {
+                req.session.administrador= false;
+            }
             req.session.authorized = true;
             req.session.fieldName = searchUser[0].fieldName;
             return done(null, searchUser);

@@ -1,6 +1,6 @@
 *{
-
-background-color: gray;
+    color: white;
+    background-color: #262f3d;
 }
 
 #logOutContainter {
@@ -36,6 +36,16 @@ p {
     font-style: italic;
 }
 
-#avatar {
-    border-radius: 100%;
+#menuOptions {
+    justify-content: center;
+    width: 200px;
+}
+
+#menuOptionsList li {
+    padding: 0px 20px;
+    color: whitesmoke;
+}
+
+#navbarSupportedContent {
+    width: 100%;
 }

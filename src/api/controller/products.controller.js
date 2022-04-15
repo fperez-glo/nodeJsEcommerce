@@ -8,12 +8,13 @@ export class ProductController extends ProductService {
 
   async getToHome (req, res) {
     let fieldName
+    console.log("SESSION DATA:", req.session)
     if(req.session.authorized){
         if(req.session.fieldName) {
             fieldName = req.session.fieldName;
         }
         const products = await super.getAllProds();
-        res.render('index',{ products, authorized:req.session.authorized, fieldName });
+        res.render('index',{ products, authorized:req.session.authorized, fieldName, isAdmin: req.session.administrador, userAvatar: req.session.passport.userAvatar  });
     } else {
         res.redirect('/');
     }
