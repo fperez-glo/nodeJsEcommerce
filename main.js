@@ -8,6 +8,7 @@ import passport from 'passport';
 import MongoStore from 'connect-mongo';
 import { ifRouteNotExists, infoLogger, graphQLHTTP } from './src/midleware/midleware.js';
 import { socketConnect } from './src/helpers/webSocket.js';
+import { chatDao} from "./src/models/daos/index.js"
 //Socket
 import { Server } from 'socket.io';
 //CLUSTER MODULE
@@ -66,17 +67,17 @@ if (cluster.isPrimary && MODE === 'CLUSTER') {
 
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = dirname(__filename);
+    console.log("DIRNAME:", __dirname)
    //Seteo las rutas del motor de plantillas ejs.
    app.set('view engine', 'ejs');
-   app.set('views','src/views');
-
-    app.use(express.static(path.resolve(__dirname, 'src/views')))
- 
+   app.set('views','./src/views');
 
     //Este midleware te permite recibir el body que se envia como JSON desde POSTMAN por ej.
     app.use(express.json());
     //Este midleware te permite recibir el body que se envia como POST desde un formulario HTML
     app.use(express.urlencoded({extended: false}));
+
+    app.use(express.static(__dirname+"/src/views"))
 
     //Rutas definidas
     app.use('/home', getHome);
@@ -92,14 +93,14 @@ if (cluster.isPrimary && MODE === 'CLUSTER') {
     const io = new Server(server);
 
     //Conexion con el Socket para el cliente.
-    io.on("connection", (socket)=> {socketConnect(socket)});
+    io.on("connection", (socket)=> {socketConnect(io,socket)});
 
-    app.listen(process.env.PORT || port, ()=> {
+    server.listen(process.env.PORT || port, ()=> {
         if (!cluster.isPrimary) {
           console.log(`Worker process start ${process.pid}, port: ${port}`)
         } else {
           console.log(`Server pId: ${process.pid}, port: ${port}`)
         };
-      }); 
+      });
 
   }

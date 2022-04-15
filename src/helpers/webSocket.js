@@ -1,4 +1,3 @@
-import { print } from "./utils.js";
 import { chatDao } from "../models/daos/index.js";
 import { normalize, schema } from "normalizr";
 import moment from "moment";
@@ -17,7 +16,7 @@ const mensajesSchema = new schema.Entity(
   { idAttribute: "mensajes" }
 );
 
-export const socketConnect = (socket) => {
+export const socketConnect = (io,socket) => {
   cLog.info("Se ha conectado un cliente al Chat");
 
   //ACA RECIBO EL MENSAJE DESDE LA RUTA "/" DONDE SE ENCUENTRA EL CHAT
@@ -49,7 +48,7 @@ export const socketConnect = (socket) => {
     mensajes = { mensajes: chats, id: "msg" };
 
     const messageNormalize = normalize(mensajes, mensajesSchema);
-    print(messageNormalize);
+    // print(messageNormalize);
 
     io.sockets.emit("serverChatResponse", chats);
   });
