@@ -1,8 +1,6 @@
 import { cartDao, userDao } from "../../models/daos/index.js";
 import { sendEmail } from "../../helpers/nodeMailer.js";
 import { sendSMS, sendWhatsapp } from "../../helpers/twilio.js";
-import { ModelFactory } from '../../models/ModelFactory.js';
-
 
 export class CartService {
 
@@ -11,8 +9,7 @@ export class CartService {
       return await cartDao.getCartProducts({ cartId: parseInt(cartId) });  
     } catch (error) {
       throw error;
-    }
-    
+    } 
   }
 
   async postGenerateCart(userId) {
