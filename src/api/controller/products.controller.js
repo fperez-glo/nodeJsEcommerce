@@ -8,13 +8,13 @@ export class ProductController extends ProductService {
 
   async getToHome (req, res) {
     let fieldName
-    console.log("SESSION DATA:", req.session)
     if(req.session.authorized){
         if(req.session.fieldName) {
             fieldName = req.session.fieldName;
         }
+        const avatarPath = req.session.avatarPath || "/public/resources/default_avatar.jpeg";
         const products = await super.getAllProds();
-        res.render('index',{ products, authorized:req.session.authorized, fieldName, isAdmin: req.session.administrador, userAvatar: req.session.passport.userAvatar  });
+        res.render('index',{ products, authorized:req.session.authorized, fieldName, isAdmin: req.session.administrador, avatarPath  });
     } else {
         res.redirect('/');
     }
@@ -34,8 +34,7 @@ async getAllProduct (req, res) {
 
 async postProduct ({ body }, res) {
     try {
-        const itemCreated = await super.postProduct(body);
-        res.status(202).json({itemCreated});
+        await super.postProduct(body);
         res.redirect('/');
     } catch (err) {
         cLog.error(`[ERROR]: ${err}`);

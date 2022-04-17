@@ -7,7 +7,6 @@ import NodemonPlugin from 'nodemon-webpack-plugin';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-//console.log('rooot:',path.resolve(__dirname, 'dist'))
 export default {
     entry: './main.js',
     output: {

@@ -1,4 +1,5 @@
 import multer from 'multer';
+import { userDao } from "../models/daos/index.js";
 
 //Configurar multer para poder recibir archivos con distintos formatos.
 const storage = multer.diskStorage({
@@ -7,12 +8,15 @@ const storage = multer.diskStorage({
         //recibe el nombre de la carpeta donde se va a guardar la informacion.
         cb(null, './src/views/public/resources');
     },
-    filename: ({session}, file, cb)=> {
+    filename: async ({session}, file, cb)=> {
         //recibe el nombre con el cual se va a guardar el archivo.
         const { user } = session.passport;
         const fileExtension = file.originalname.slice(file.originalname.length - 3, file.originalname.length);
-        session.passport.userAvatar = `${user}_avatar.${fileExtension}`;
-        cb(null, `${user}_avatar.${fileExtension}`);
+        const fileName = `${user}_avatar.${fileExtension}`;
+        const avatarPath = `/public/resources/${fileName}`;
+        await userDao.putUpdate(user, { avatarPath });
+        session.avatarPath = avatarPath;
+        cb(null, fileName);
     },
 });
 

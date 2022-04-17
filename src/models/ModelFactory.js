@@ -119,7 +119,16 @@ class UserModel extends Model {
     } else {
       searchFilter = { user };
     }
+    return super.getAll(searchFilter);
+  }
 
+  async findUserById({ _id, password }) {
+    let searchFilter;
+    if (password) {
+      searchFilter = { _id, password };
+    } else {
+      searchFilter = { _id };
+    }
     return super.getAll(searchFilter);
   }
 }

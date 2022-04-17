@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <%- include('templates/head') %>
-  <body class="container">
+  <body class="container" id="mainBodyContainer">
     <% if(!authorized){ %> 
       <% if(!signUp){ %> <%- include('templates/logInForm')%> 
       <% } else {%> <%- include('templates/signUpForm') %> <% } %> 
@@ -11,15 +11,12 @@
 
       <% if(isAdmin) { %> <%- include('templates/prodForm') %> <% } %>
       <%- include('templates/productos') %>
-      <hr />
 
-      <div class="container">
+      <div class="container" id="emptyChatButton">
         <button class="btn btn-warning" onclick="{emptyChatBox()}">
           Vaciar Chat
         </button>
       </div>
-
-      <hr />
 
       <div id="chatBox" class="container"><%- include('templates/chat') %></div>
     <% } %>

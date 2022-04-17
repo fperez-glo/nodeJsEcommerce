@@ -1,14 +1,14 @@
-<div>
+<div id="productsTable">
   <h1>Productos registrados:</h1>
-  <hr />
-  <form class="form-inline my-2 my-lg-0 d-flex flex-row">
+  <form class="form-inline my-2 my-lg-0 d-flex flex-row" id="searchInputForm">
     <input
       class="form-control mr-sm-2"
       type="search"
       placeholder="Search"
       aria-label="Search"
+      id="searchInput"
     />
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+    <button class="btn btn-success my-2 my-sm-0" type="submit">
       Search
     </button>
   </form>
@@ -22,6 +22,7 @@
           <th scope="col">Producto</th>
           <th scope="col">Precio</th>
           <th scope="col">Miniatura</th>
+          <th scope="col"></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -45,7 +46,6 @@
               />
                 <img
                 src="https://cdn1.iconfinder.com/data/icons/shopping-e-commerce-10/33/cart-512.png"
-                alt=""
                 height="25"
                 width="25"
               />
@@ -53,13 +53,23 @@
               
             </button>
           </td>
+          <% if(isAdmin) { %>
+            <td>
+              <button id="deleteButton" class="btn deleteBtn" value="<%= prod.sku %>" name="prodId">
+                <img
+                src="https://cdn1.iconfinder.com/data/icons/color-bold-style/21/56-256.png"
+                height="22"
+                width="22"
+              />
+              </button>
+            </td>
+          <% } %>
         </tr>
         <% }) %>
       </tbody>
     </table>
   </form>
   <% }else { %>
-  <hr />
 
   <h3>No hay productos para mostrar.</h3>
   <% } %>

@@ -32,7 +32,7 @@ const usersSchema = {
   adress: { type: String, require: true },
   age: { type: Number, require: true },
   phone: { type: String, require: true },
-  avatar: { type: String, require: true },
+  avatarPath: { type: String, require: true, default: "/public/resources/default_avatar.jpeg" },
   role: { type: String, default: "costumer" },
   createDate: { type: Date, default: moment() },
 };

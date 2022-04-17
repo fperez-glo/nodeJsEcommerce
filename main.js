@@ -8,7 +8,6 @@ import passport from 'passport';
 import MongoStore from 'connect-mongo';
 import { ifRouteNotExists, infoLogger, graphQLHTTP } from './src/midleware/midleware.js';
 import { socketConnect } from './src/helpers/webSocket.js';
-import { chatDao} from "./src/models/daos/index.js"
 //Socket
 import { Server } from 'socket.io';
 //CLUSTER MODULE
@@ -67,10 +66,10 @@ if (cluster.isPrimary && MODE === 'CLUSTER') {
 
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = dirname(__filename);
-    console.log("DIRNAME:", __dirname)
+
    //Seteo las rutas del motor de plantillas ejs.
-   app.set('view engine', 'ejs');
-   app.set('views','./src/views');
+    app.set('view engine', 'ejs');
+    app.set('views','./src/views');
 
     //Este midleware te permite recibir el body que se envia como JSON desde POSTMAN por ej.
     app.use(express.json());

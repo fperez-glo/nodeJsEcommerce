@@ -2,6 +2,7 @@ import { chatDao } from "../models/daos/index.js";
 import { normalize, schema } from "normalizr";
 import moment from "moment";
 import { console as cLog } from "./logger.js";
+import { ProductService } from "../api/services/products.service.js";
 
 //Definicion de las entidades para normalizar la data del chat
 const authorSchema = new schema.Entity("author", {}, { idAttribute: "email" });
@@ -15,6 +16,8 @@ const mensajesSchema = new schema.Entity(
   { mensajes: [mensajeSchema] },
   { idAttribute: "mensajes" }
 );
+
+const productService = new ProductService();
 
 export const socketConnect = (io,socket) => {
   cLog.info("Se ha conectado un cliente al Chat");
@@ -52,4 +55,15 @@ export const socketConnect = (io,socket) => {
 
     io.sockets.emit("serverChatResponse", chats);
   });
+
+  socket.on('clientDeleteItem', async(prodId) => {
+    try {
+        await productService.deleteProduct(prodId);
+        const getAllProducts = await productService.getAllProds();
+        io.sockets.emit('serverProductsResponse',getAllProducts)
+    } catch (error) {
+      throw {message: error};
+    }
+    
+})
 };

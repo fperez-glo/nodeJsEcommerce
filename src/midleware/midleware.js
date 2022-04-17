@@ -6,11 +6,11 @@ import { graphQlRoot } from '../api/controller/graphql.controller.js'
 
 /** Valida si el usuario es administrador para acceder a determinadas rutas. */
 export const isAdmin = (req, res, next) => {
-  if (true /*req.session.administrador*/) {
+  if (req.session.administrador) {
     next();
   } else {
     res.send({
-      message: `error: -1, ruta ${req.url} metodo ${req.method} no autorizada.`,
+      message: `error: -1, ruta ${req.url} metodo ${req.method}. Cliente no autorizado.`,
     });
   }
 };

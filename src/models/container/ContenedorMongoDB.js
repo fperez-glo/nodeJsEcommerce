@@ -65,7 +65,11 @@ export default class ContenedorMongoDB {
 
   async putUpdate(id, body) {
     try {
-      await this.coleccion.updateOne({ sku: id }, body);
+      if (this.coleccion == "productos") {
+        await this.coleccion.updateOne({ sku: id }, body);
+      } else {
+        await this.coleccion.updateOne({ _id: id }, body);
+      }
      
     } catch (error) {
       cLog.error(`Error al actualizar: ${error}, Metodo putUpdate`);

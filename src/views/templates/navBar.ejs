@@ -11,15 +11,15 @@
         </ul>
       </div>      
      
-      <div id="buttonsContainer" class="d-flex flex-row  align-items-center">
-        
+      <div id="logOutAvatarButtonsContainer" class="d-flex flex-row  align-items-center">
+        <label for="validationCustom01" >Bienvenido <strong><%= fieldName %>!</strong></label>
         <form action="/signUpAditionalData" method="get" novalidate">
-          <button class='btn btn-warning' type="submit">
-            <img id="avatar" src="../public/resources/<%= userAvatar %>" width="40" height="40">
+          <button class='btn btn-primary-outline' type="submit" style="border-radius: 100%;padding: 5px;">
+            <img id="avatar" src="<%= avatarPath %>" width="40" height="40">
           </button>
         </form>
         <form action="/authLogOut" method="post" novalidate">
-          <button class='btn btn-warning' type="submit" >LogOut</button>
+          <button class='btn btn-warning' type="submit" >Cerrar sesion</button>
         </form>
       </div>
     </div>

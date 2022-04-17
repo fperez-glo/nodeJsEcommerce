@@ -3,17 +3,16 @@ import fs from "fs";
 
   export const print = (objeto) => {
     const msg = util.inspect(objeto, false, 12, true);
-    //console.log("msgg:", msg);
   };
 
+  export const readFile = async (file) => {
+    const read = await fs.promises.readFile(`./${file}`, `utf-8`);
+    return read;
+  };
 
-  export const avatarSearch = (userId) => {
-    fs.readFile(`../views/public/resources/${userId}_avatar`, (error, data)=> {
-      if (error){
-        console.log(error);
-        return
-      }
-
-      console.log("data:",data)
-    })
+  export const writeFile = async (file, items) => {
+    await fs.promises.writeFile(
+      `./${file}`,
+      JSON.stringify(items, null, 2) + `\n`
+    );
   };

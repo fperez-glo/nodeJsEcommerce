@@ -7,12 +7,16 @@ export class CartController extends CartService {
   }
   
   async getCartHome({ session }, res) {
+    let fieldName
     try {
       if(session.authorized){
       const userId = session.passport.user;
       const userCart = await super.getUserCart({ userId });
-
-      res.render("carrito", {userCart});
+      const avatarPath = session.avatarPath || "/public/resources/default_avatar.jpeg";
+      if(session.fieldName) {
+        fieldName = session.fieldName;
+      }
+      res.render("carrito", { userCart, avatarPath, fieldName });
       } else {
           res.redirect('/');
       }
@@ -80,8 +84,8 @@ export class CartController extends CartService {
       const userId = session.passport?.user || body.userId;
       
       const userCart = await super.addCartProduct(prodId, userId)
-      
-      res.render('carrito', {userCart})
+      const avatarPath = session.avatarPath || "/public/resources/default_avatar.jpeg";
+      res.render('carrito', {userCart, avatarPath})
     } catch (err) {
       cLog.warn(`[ERROR]: ${err}`);
       res.send({ message: err });

@@ -42,7 +42,6 @@ export const graphQlRoot = {
     },
     addCartProduct: async({prodId, userId}) => {
         const response = await graphQlService.addCartProduct(prodId, userId);
-        console.log('response:', response)
         return  response[0]//{message: `Producto ${prodId} agregado al carrito del usuario ${userId}`, response}
     }
 
