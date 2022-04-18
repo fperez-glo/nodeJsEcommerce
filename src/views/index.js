@@ -39,7 +39,7 @@ const renderProds = (products) => {
             </button>
           </td>
           <td>
-            <button id="deleteButton" class="btn deleteBtn" value="${prod.sku}" name="prodId">
+            <button id="deleteButton" type="button" class="btn deleteBtn" value="${prod.sku}" name="prodId">
               <img
               src="https://cdn1.iconfinder.com/data/icons/color-bold-style/21/56-256.png"
               height="22"
@@ -87,7 +87,9 @@ const emptyChatBox = () => {
 
 // Delete products
 const deleteItem = (event) => {
+  
     const prodId = event.target['value'] || event.target.parentNode['value'];
+    console.log("entra en delete item??", prodId)
     socket.emit('clientDeleteItem', prodId);
 };
 const deleteButtons = document.querySelectorAll(".deleteBtn");
