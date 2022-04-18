@@ -1,7 +1,12 @@
 import { console as cLog } from "../helpers/logger.js";
+import session from 'express-session';
+import MongoStore from 'connect-mongo';
+import 'dotenv/config';
+const { MONGOCONNECTSTRING, SECRET } = process.env;
 import { graphqlHTTP } from "express-graphql";
 import { graphQLschema } from '../models/config/schemas.js';
 import { graphQlRoot } from '../api/controller/graphql.controller.js'
+
 
 /** Valida si el usuario es administrador para acceder a determinadas rutas. */
 export const isAdmin = (req, res, next) => {
@@ -29,6 +34,22 @@ export const infoLogger = ({ method, originalUrl }, { statusCode }, next) => {
   next();
 };
 
+/** Midleware para levantar la session en Mongo Atlas */
+export const createMongoSession = () => {
+  return (session({
+    store: MongoStore.create({
+    mongoUrl:
+      MONGOCONNECTSTRING,
+    }),
+    secret: SECRET,
+    resave: true,
+    saveUninitialized: true,
+    //Esto no funciona muy bien ya que el servidor toma la hora local que no es la de Argentina.
+    cookie: {
+        maxAge: 600000, //10 minutos de expiracion de la sesion.
+    }
+}))
+}
 //Midleware de graphql
 export const graphQLHTTP = graphqlHTTP({
   schema: graphQLschema,
