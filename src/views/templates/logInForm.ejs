@@ -1,6 +1,6 @@
-<div id='loginFormContainer' class='container'>
+<div class='container' id='loginFormContainer'>
 
-    <h2>Formulario de Login</h2>
+    <h2>Iniciar sesion</h2>
     
     <% if (loginError) { %>
       <br>
@@ -9,8 +9,8 @@
         El usuario no esta registrado.
       </div>
     <% } %>
-
-    <form class="col g-3 needs-validation" action="/passportLogin"   method="post" novalidate>
+    <div id="formContainer">
+      <form id="loginForm" class="col g-3 needs-validation" action="/passportLogin"   method="post" novalidate>
         <div class="col-md-4">
           <label for="validationCustom01" class="form-label">Usuario</label>
           <input type="text" class="form-control" id="userParam" name='user' required>
@@ -26,20 +26,16 @@
             Parece bien!
           </div>
         </div>
-
-        <hr>
         
         <div class="col-12">
-          <button class="btn btn-primary" type="submit" >Log In</button>
-          <button class="btn btn-primary" type="reset">Limpiar</button>
+          <button id="logInAndRegisterButton" class="btn btn-outline-warning" type="submit" >Log In</button>
+          
         </div>
-
-        <hr>
-        
       </form>
-
       <form action="/authSignUp" method="get" novalidate">  
-            <button class='btn btn-primary' type="submit" >Registrarse --> </button> 
-    </form>
+        <button id="redirectButtons" class='btn btn-outline-warning' type="submit" >Registrarse --> </button> 
+      </form>
+    </div>
+    
 
 </div>

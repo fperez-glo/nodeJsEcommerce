@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
     <%- include('templates/head') %>
-<body class="container">
-
-    <br>
+<body class="container" id="mainBodyAditionalDataContainer">
+    <%- include('templates/navBar') %>
     <h2>Informacion adicional del Perfil</h2>
-    <br>
-  
-    <form class="col g-3 needs-validation" enctype="multipart/form-data" action="/signUpAditionalData"   method="post" novalidate">
-        
+    <% if (!aditionalUserData?.fieldName) { %>
+      <form id="userInput" class="col g-3 needs-validation" enctype="multipart/form-data" action="/signUpAditionalData"   method="post" novalidate">     
         <div class="col-md-4">
           <label for="validationCustom01" class="form-label">Nombre</label>
           <input type="text" class="form-control" id="nameParam" name='fieldName'>
@@ -48,19 +45,40 @@
             Parece bien!
           </div>
         </div>
-
-        <hr>
         
-        <div class="col-12">
-          <button class="btn btn-primary" type="submit" >Confirmar</button>
-
-          <form action="/" method="get" novalidate">
-            <button class="btn btn-primary" type="submit">Omitir</button>
+        <div id="additionalDataButton" class="col-12">
+          <button id="additionalDataButton" class="btn btn-outline-warning" type="submit" >Confirmar</button>
+        </div>
+      </form>
+    <% } else { %>
+      <div id="aditionalDataLoadedContainer" class="container">
+        <div id="aditionalDataInfoContainer">
+          <% if(aditionalUserData.fieldName) { %>
+            <p>Nombre: <%= aditionalUserData.fieldName %></p>
+          <% } %>
+          <% if(aditionalUserData.adress) { %>
+            <p>Direccion: <%= aditionalUserData.adress %></p>
+          <% } %>
+          <% if(aditionalUserData.age) { %>
+            <p>Edad: <%= aditionalUserData.age %></p>
+          <% } %>
+          <% if(aditionalUserData.phone) { %>
+            <p>Telefono: <%= aditionalUserData.phone %></p>
+          <% } %>
+          <form id="editAditionalDataForm" class="col g-3 needs-validation" enctype="multipart/form-data" action="/editAditionalDataForm"   method="get" novalidate">
+            <div id="additionalDataButton" class="col-12">
+              <button id="additionalDataButton" class="btn btn-outline-warning" type="submit" >Editar</button>
+            </div>
           </form>
-
         </div>
         
-      </form>
-    
+        <div id="aditionalDataAvatarContainer" class="container"></div>
+          <% if(aditionalUserData.avatarPath) { %>
+            <p>Imagen de Perfil:</p>
+            <img aria-placeholder="Imagen de perfil" src="<%= aditionalUserData.avatarPath %>" width="350" height="350">
+          <% } %>
+        </div>
+      </div>
+    <% } %>
 </body>
 </html>

@@ -1,6 +1,6 @@
 import { Strategy as LocalStrategy } from 'passport-local';
 import passport from 'passport';
-import { userDao } from '../daos/index.js'
+import { userDao } from '../models/daos/index.js'
 import { encrypt, compare } from './crypto.js';
 import { sendEmail } from './nodeMailer.js';
 import { console as cLog } from './logger.js'
@@ -11,7 +11,6 @@ passport.use('local-login', new LocalStrategy({
     passwordField: 'password',
     passReqToCallback: true
 } ,async (req,user, password, done) => {
-
     const searchUser = await userDao.findUser({user});
 
     if (searchUser.length) {
@@ -21,7 +20,14 @@ passport.use('local-login', new LocalStrategy({
         if (provideAccess) {
             if(searchUser[0].role==='admin'){
                 cLog.info(`Se ha logueado el usuario Administrador: ${searchUser[0].user}`)
-                req.session.administrador=true
+                req.session.administrador= true;
+            } else {
+                req.session.administrador= false;
+            }
+            if(searchUser[0].avatarPath){
+                req.session.avatarPath = searchUser[0].avatarPath;
+            } else {
+                req.session.avatarPath = null;
             };
             req.session.authorized = true;
             req.session.fieldName = searchUser[0].fieldName;

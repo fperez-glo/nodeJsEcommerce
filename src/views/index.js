@@ -4,27 +4,6 @@ let chatOpened = false
 //Tuve que declarar esta variable global porque sino perdia el dato.
 let alias, email, nombre, apellido, anios, avatarUrl
 
-
-// const sendAuthInfo = async () => {
-
-//     const user = document.querySelector("#userParam").value;
-//     const password = document.querySelector("#pswParam").value;
-
-//     //no me funka esto.. lo mando directo del form html y fue..
-//     //const myRequest = new Request('http://localhost:8080/auth/authLogIn', {method: 'POST', body: 'ASDASDASDS' });
-//     //await fetch(myRequest);
-    
-//     return false;
-// }
-
-// const logOutUser = () => {
-//     console.log('desloguear!!!')
-// }
-
-
-
-
-
 socket.on("serverProductsResponse", (products)=>{
     
     renderProds(products);
@@ -35,17 +14,39 @@ const renderProds = (products) => {
         //Se arma el bulk para insertar al DOM html
         return `
         <tr>
-            <th scope="row" id="prodId"> ${prod.sku} </th>
-            <td> ${prod.description} </td>
-            <td>$ ${prod.price}</td>
-            <td>
+          <th scope="row" id="prodId">${prod.sku}</th>
+          <td>${prod.description}</td>
+          <td>$${prod.price}</td>
+          <td>
             <img src="${prod.thumbnail}" alt="" height="50" width="50" />
-            </td>
-            <td>
-                <button value="${prod.sku}" class='btn' onclick="deleteItem(event)">
-                    <img value="${prod.sku}" src="https://cdn1.iconfinder.com/data/icons/color-bold-style/21/56-256.png" alt="" height="20" width="20">
-                </button>
-            </td>
+          </td>
+          <td>
+            <button class="btn" type="submit" value="${prod.sku}" name="prodId">
+              <div id="cartIcon">
+                <img
+                src="https://cdn0.iconfinder.com/data/icons/medical-1-2/48/47-512.png"
+                alt=""
+                height="15"
+                width="15"
+              />
+                <img
+                src="https://cdn1.iconfinder.com/data/icons/shopping-e-commerce-10/33/cart-512.png"
+                height="25"
+                width="25"
+              />
+              </div>
+              
+            </button>
+          </td>
+          <td>
+            <button id="deleteButton" type="button" class="btn deleteBtn" value="${prod.sku}" name="prodId">
+              <img
+              src="https://cdn1.iconfinder.com/data/icons/color-bold-style/21/56-256.png"
+              height="22"
+              width="22"
+            />
+            </button>
+          </td>
         </tr>      
         `;
     })
@@ -72,26 +73,6 @@ const renderChat = (chats) => {
     document.querySelector('#chatArea').innerHTML = html;
 };
 
-
-const sendInfo = () => {
-    
-    const item = {
-        sku: document.querySelector("#tt").value,
-        price: document.querySelector("#pr").value,
-        description: document.querySelector("#td").value,
-        thumbnail: document.querySelector("#tb").value,
-    };
-    
-    socket.emit('clietProdSend', item);
-    
-    //Limpio los inputs del DOM html
-    document.querySelector('#tt').value = '';
-    document.querySelector('#pr').value = '';
-    document.querySelector('#tb').value = '';
-
-    return false;
-};
-
 const emptyChatBox = () => { 
     
 
@@ -103,16 +84,19 @@ const emptyChatBox = () => {
     
 };
 
-const deleteButton = document.getElementById("deleteButton");
 
-if (deleteButton){
-    
-    deleteButton.addEventListener('click', deleteItem)
-}
+// Delete products
 const deleteItem = (event) => {
+  
     const prodId = event.target['value'] || event.target.parentNode['value'];
+    console.log("entra en delete item??", prodId)
     socket.emit('clientDeleteItem', prodId);
 };
+const deleteButtons = document.querySelectorAll(".deleteBtn");
+
+Array.prototype.forEach.call(deleteButtons, function addClickListener(btn) {
+  btn.addEventListener('click', deleteItem);
+});
 
 const sendMsg = () => {
 
@@ -127,11 +111,7 @@ const sendMsg = () => {
         },
         text: document.getElementById("msgInput").value,
     };
-
- 
-    
     socket.emit('userMessage',message);
-
     document.getElementById("msgInput").value = '';
     
 };
@@ -142,7 +122,6 @@ const confirmUser = () => {
     apellido = document.getElementById('apellido').value;
     anios = document.getElementById('edad').value;
     alias = document.getElementById('usuario').value;
-    avatarUrl = document.getElementById('avatar').value;
  
     let html = `<div><b>Usuario Registrado: </b>${alias}</div>`
 

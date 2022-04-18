@@ -21,4 +21,3 @@ export const sendEmail = async (email) => {
         //text: "El usuario ha sido registrado.", // plain text body
         html, // html body
 })}
-

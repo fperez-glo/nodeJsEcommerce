@@ -8,11 +8,14 @@
     "npm": "8.2.0"
   },
   "dependencies": {
+    "aws-sdk": "^2.1104.0",
     "connect-mongo": "^4.6.0",
     "dotenv": "^16.0.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
+    "express-graphql": "^0.12.0",
     "express-session": "^1.17.2",
+    "graphql": "^16.3.0",
     "log4js": "^6.4.1",
     "moment": "^2.29.1",
     "mongoose": "^6.2.1",
@@ -34,7 +37,10 @@
     "@babel/runtime": "^7.16.3",
     "babel-loader": "^8.2.3",
     "babel-polyfill": "^6.26.0",
+    "chai": "^4.3.6",
+    "mocha": "^9.2.2",
     "nodemon": "^2.0.13",
+    "supertest": "^6.2.2",
     "ts-loader": "^9.2.6",
     "typescript": "^4.4.4",
     "webpack": "^5.69.1",
@@ -43,10 +49,12 @@
     "webpack-node-externals": "^3.0.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start-nodemon": "nodemon main.js",
+    "test-cart": "mocha src/test/cart.test.js",
+    "test-product": "mocha src/test/products.test.js",
+    "test": "npm run test-cart && npm run test-product",
+    "graphql": "node graphql.js",
     "start": "node main.js",
-    "start:dev": "nodemon --watch main.js",
+    "start:dev": "nodemon main.js",
     "start:prod": "nodemon dist/main.js",
     "build:prod": "webpack --watch --config=webpack.config.js --mode production",
     "build": "webpack --config=webpack.config.js --mode development"

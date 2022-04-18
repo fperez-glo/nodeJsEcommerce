@@ -7,11 +7,16 @@ export class CartController extends CartService {
   }
   
   async getCartHome({ session }, res) {
+    let fieldName
     try {
       if(session.authorized){
       const userId = session.passport.user;
       const userCart = await super.getUserCart({ userId });
-      res.render("carrito", {userCart});
+      const avatarPath = session.avatarPath || "/public/resources/default_avatar.jpeg";
+      if(session.fieldName) {
+        fieldName = session.fieldName;
+      }
+      res.render("carrito", { userCart, avatarPath, fieldName });
       } else {
           res.redirect('/');
       }
@@ -37,11 +42,11 @@ export class CartController extends CartService {
 
   async postGenerateCart(req, res) {
     try {
-      await super.postGenerateCart();
-      res.send(`El carrito se genero exitosamente.`);
+      await super.postGenerateCart(req.body.userId);
+      res.status(201).json(`El carrito se genero exitosamente.`);
     } catch (err) {
       cLog.warn(`[ERROR]: ${err}`);
-      res.send({ message: err });
+      res.status(501).json({ message: err });
     }
   }
 
@@ -76,11 +81,11 @@ export class CartController extends CartService {
   async addCartProduct ({ body, session }, res) {
     try {
       const { prodId } = body;
-      const userId = session.passport.user;
-
-      const userCart = await super.addCartProduct(prodId, userId)
+      const userId = session.passport?.user || body.userId;
       
-      res.render('carrito', {userCart})
+      const userCart = await super.addCartProduct(prodId, userId)
+      const avatarPath = session.avatarPath || "/public/resources/default_avatar.jpeg";
+      res.render('carrito', {userCart, avatarPath})
     } catch (err) {
       cLog.warn(`[ERROR]: ${err}`);
       res.send({ message: err });

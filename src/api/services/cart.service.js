@@ -1,10 +1,15 @@
-import { cartDao, userDao } from "../../daos/index.js";
+import { cartDao, userDao } from "../../models/daos/index.js";
 import { sendEmail } from "../../helpers/nodeMailer.js";
 import { sendSMS, sendWhatsapp } from "../../helpers/twilio.js";
 
 export class CartService {
+
   async getCartProducts(cartId) {
-    return await cartDao.getCartProducts({ cartId: parseInt(cartId) });
+    try {
+      return await cartDao.getCartProducts({ cartId: parseInt(cartId) });  
+    } catch (error) {
+      throw error;
+    } 
   }
 
   async postGenerateCart(userId) {
@@ -60,6 +65,7 @@ export class CartService {
                 ${JSON.stringify(userCart[0]?.products, 2, null)}`,
           });
 
+          //TODO: Agregar un objeto con la informacion presentada de manera mas entendible..
           await sendWhatsapp(`Nuevo Pedido de ${fieldName}, email: ${user}.
             Detalle del pedido:
             Productos:

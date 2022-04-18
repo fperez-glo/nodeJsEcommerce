@@ -1,6 +1,6 @@
 import express from "express";
 import { AuthController } from "../controller/auth.controller.js";
-import { upload } from "../../helpers/multer.js";
+import { upload } from "../../helpers/avatarMulterLocalStorage.js";
 
 import passport from "passport";
 
@@ -21,6 +21,7 @@ router.post(
   upload.single("avatar"),
   authController.postAditionalData
 );
+router.get("/editAditionalDataForm", authController.getEditAditionalDataForm)
 
 
 // router.post("/authSignUp", authController.postPassportSignUp);

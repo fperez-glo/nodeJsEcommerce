@@ -1,6 +1,6 @@
 <div id='signupFormContainer' class='container'>
 
-    <h2>Formulario de Registro</h2>
+    <h2>Registrarse</h2>
     
     <% if (signUpError) { %>
       <br>
@@ -12,7 +12,7 @@
       <br>
     <% } %>
 
-    <form class="col g-3 needs-validation" action="/authSignUp"   method="post" novalidate">
+    <form id="signUpForm" class="col g-3 needs-validation" action="/authSignUp"   method="post" novalidate">
         <div class="col-md-4">
           <label for="validationCustom01" class="form-label">Email</label>
           <input type="email" class="form-control" id="userParam" name='user' required>
@@ -28,20 +28,17 @@
             Parece bien!
           </div>
         </div>
-
-        <hr>
         
         <div class="col-12">
-          <button class="btn btn-primary" type="submit">Registrarse</button>
-          <button class="btn btn-primary" type="reset">Limpiar</button>
+          <button id="logInAndRegisterButton" class="btn btn-outline-warning" type="submit">Continuar</button>
+         
         </div>
         
       </form>
+      <form action="/" method="get" novalidate"> 
+        <button id="redirectButtons" class='btn btn-outline-warning' type="submit" > <-- Volver al Login</button> 
+      </form>
 
-      <hr>
-
-      <form action="/" method="get" novalidate">  
-        <button class='btn btn-primary' type="submit" > <-- Volver al Login</button> 
-    </form>
+      
 
 </div>

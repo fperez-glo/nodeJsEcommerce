@@ -12,9 +12,9 @@ export class ProductController extends ProductService {
         if(req.session.fieldName) {
             fieldName = req.session.fieldName;
         }
-        const products = await super.getAllProduct();
-        
-        res.render('index',{ products, authorized:req.session.authorized, fieldName });
+        const avatarPath = req.session.avatarPath || "/public/resources/default_avatar.jpeg";
+        const products = await super.getAllProds();
+        res.render('index',{ products, authorized:req.session.authorized, fieldName, isAdmin: req.session.administrador, avatarPath  });
     } else {
         res.redirect('/');
     }
@@ -23,9 +23,9 @@ export class ProductController extends ProductService {
 async getAllProduct (req, res) {
     try {
         
-        const products = await super.getAllProduct();
+        const products = await super.getAllProds();
     
-        res.json({products});
+        res.status(201).json({products});
     } catch (err) {
         cLog.error(`[ERROR]: ${err}`);
         res.send({err});
@@ -34,12 +34,11 @@ async getAllProduct (req, res) {
 
 async postProduct ({ body }, res) {
     try {
-        const itemCreated = await super.postProduct(body);
-        res.send(itemCreated);
+        await super.postProduct(body);
         res.redirect('/');
     } catch (err) {
         cLog.error(`[ERROR]: ${err}`);
-        res.send({err});
+        res.status(303).json({err});
     };
 }
 
@@ -62,10 +61,10 @@ async deleteProduct ({ params }, res) {
         const { id } = params;
         await super.deleteProduct(id);
         cLog.info(message);
-        res.send({message});
+        res.status(203).json({message});
     } catch (err) {
         cLog.error(`[ERROR]: ${err}`);
-        res.send({err});
+        res.status(303).json({err});
     };
 }
 
