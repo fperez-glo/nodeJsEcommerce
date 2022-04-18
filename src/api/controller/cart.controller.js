@@ -79,13 +79,18 @@ export class CartController extends CartService {
   }
 
   async addCartProduct ({ body, session }, res) {
+    let fieldName;
     try {
       const { prodId } = body;
       const userId = session.passport?.user || body.userId;
       
       const userCart = await super.addCartProduct(prodId, userId)
       const avatarPath = session.avatarPath || "/public/resources/default_avatar.jpeg";
-      res.render('carrito', {userCart, avatarPath})
+
+      if(session.fieldName) {
+        fieldName = session.fieldName;
+      }
+      res.render('carrito', { userCart, avatarPath, fieldName })
     } catch (err) {
       cLog.warn(`[ERROR]: ${err}`);
       res.send({ message: err });
